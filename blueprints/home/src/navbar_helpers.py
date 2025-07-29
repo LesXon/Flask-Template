@@ -384,6 +384,10 @@ def generate_nav_items(current_route: Optional[str] = None, user: Optional[Dict[
         navigation item or a dropdown menu.
     """
     nav_items = []
+    
+    # Check if user has permissions for Products module
+    has_products_permissions = user and has_module_permissions(user, 'products')
+    
     for item_config in NAV_CONFIG:
         route = item_config.get('route')
         route_prefix = item_config.get('route_prefix')
@@ -397,8 +401,17 @@ def generate_nav_items(current_route: Optional[str] = None, user: Optional[Dict[
         elif item_config['name'] == 'Products':
             module_name = 'products'
         
-        # If this is a protected module, check permissions
-        if module_name and user:
+        # Special logic: LesXon and Autotrackr only appear if user has Products permissions
+        if module_name in ['lesxon', 'autotrackr']:
+            # If user doesn't have Products permissions, skip LesXon and Autotrackr
+            if not has_products_permissions:
+                continue
+            # If user has Products permissions, check individual module permissions
+            if user and not has_module_permissions(user, module_name):
+                continue
+        
+        # If this is a protected module (Products), check permissions
+        elif module_name == 'products' and user:
             if not has_module_permissions(user, module_name):
                 continue  # Skip this menu item if user doesn't have permissions
         
