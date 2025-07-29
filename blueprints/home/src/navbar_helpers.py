@@ -1,5 +1,74 @@
 from typing import Any, Dict, List, Optional
 
+# Centralized menu permissions configuration
+MENU_PERMISSIONS = {
+    'lesxon': {
+        'lesxon_view': 'View data and reports',
+        'lesxon_download': 'Download files and datasets', 
+        'lesxon_zip': 'Create and manage zip archives',
+        'lesxon_transactions': 'Manage transaction data',
+        'lesxon_klines': 'View and analyze klines data',
+        'lesxon_supabase': 'Access LesXon Supabase integration'
+    },
+    'autotrackr': {
+        'autotrackr_service_orders': 'Manage service orders',
+        'autotrackr_erm_model': 'Access ERM model tools',
+        'autotrackr_supabase': 'Access Autotrackr Supabase integration'
+    },
+    'products': {
+        'products_electronics': 'Manage electronics catalog',
+        'products_clothing': 'Manage clothing catalog',
+        'products_home_garden': 'Manage home & garden catalog',
+        'products_all': 'View all products',
+        'products_new': 'Manage new product listings',
+        'products_manage': 'Full product management access'
+    }
+}
+
+def get_all_permissions():
+    """Get all available permissions as a flat list."""
+    all_perms = []
+    for module_perms in MENU_PERMISSIONS.values():
+        all_perms.extend(module_perms.keys())
+    return all_perms
+
+def get_module_permissions(module_name):
+    """Get permissions for a specific module."""
+    return list(MENU_PERMISSIONS.get(module_name, {}).keys())
+
+def create_default_permissions(modules=None):
+    """Create a default permissions dictionary for specified modules."""
+    if modules is None:
+        modules = MENU_PERMISSIONS.keys()
+    
+    permissions = {}
+    for module in modules:
+        if module in MENU_PERMISSIONS:
+            for perm in MENU_PERMISSIONS[module]:
+                permissions[perm] = True
+    return permissions
+
+def has_module_permissions(user: Optional[Dict[str, Any]], module_name: str) -> bool:
+    """
+    Check if the user has at least one permission for a specific module.
+    
+    Args:
+        user: User dictionary containing permissions
+        module_name: Name of the module (e.g., 'lesxon', 'autotrackr', 'products')
+        
+    Returns:
+        bool: True if user has any permission for the module, False otherwise
+    """
+    if not user or 'permissions' not in user:
+        return False
+    
+    permissions = user.get('permissions', {})
+    module_perms = get_module_permissions(module_name)
+    
+    # Check if user has at least one permission for this module
+    return any(permissions.get(perm, False) for perm in module_perms)
+
+
 """Helper functions for generating navbar context."""
 
 def get_navbar_context(
@@ -64,6 +133,13 @@ def get_navbar_context(
 
     # Generate and add the main navigation structure
     context['nav_items'] = generate_nav_items(current_route, user)
+    
+    # Add helper functions to context
+    context['has_lesxon_permissions'] = has_lesxon_permissions
+    context['has_autotrackr_permissions'] = has_autotrackr_permissions
+    context['has_module_permissions'] = has_module_permissions
+    context['get_module_permissions'] = get_module_permissions
+    context['get_user_permission_summary'] = get_user_permission_summary
     
     # Allow any provided kwargs to override the defaults
     context.update(kwargs)
@@ -312,6 +388,20 @@ def generate_nav_items(current_route: Optional[str] = None, user: Optional[Dict[
         route = item_config.get('route')
         route_prefix = item_config.get('route_prefix')
         
+        # Check if user has permissions for this module
+        module_name = None
+        if item_config['name'] == 'LesXon':
+            module_name = 'lesxon'
+        elif item_config['name'] == 'Autotrackr':
+            module_name = 'autotrackr'
+        elif item_config['name'] == 'Products':
+            module_name = 'products'
+        
+        # If this is a protected module, check permissions
+        if module_name and user:
+            if not has_module_permissions(user, module_name):
+                continue  # Skip this menu item if user doesn't have permissions
+        
         is_active = (route and current_route == route) or \
                     (route_prefix and current_route and current_route.startswith(route_prefix))
 
@@ -327,6 +417,12 @@ def generate_nav_items(current_route: Optional[str] = None, user: Optional[Dict[
 
         if 'children' in item_config:
             item['children'] = _build_menu_children(item_config['children'], current_route, user)
+            
+            # If this is a protected module and has no visible menu items (only headers/dividers), skip it
+            if module_name and user:
+                actual_menu_items = [child for child in item['children'] if 'name' in child]
+                if len(actual_menu_items) == 0:
+                    continue
 
         nav_items.append(item)
     
@@ -344,3 +440,69 @@ def generate_nav_items(current_route: Optional[str] = None, user: Optional[Dict[
         nav_items.insert(1, test_page)
     
     return nav_items
+
+def get_user_permission_summary(user: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Get a summary of user permissions organized by module.
+    
+    Args:
+        user: User dictionary containing permissions
+        
+    Returns:
+        dict: Summary with modules and their permission status
+    """
+    if not user or 'permissions' not in user:
+        return {'modules': {}, 'total_permissions': 0, 'has_access': False}
+    
+    permissions = user.get('permissions', {})
+    summary = {'modules': {}, 'total_permissions': 0, 'has_access': False}
+    
+    for module_name, module_perms in MENU_PERMISSIONS.items():
+        module_summary = {
+            'name': module_name.title(),
+            'permissions': {},
+            'has_access': False,
+            'permission_count': 0
+        }
+        
+        for perm_name, perm_desc in module_perms.items():
+            has_perm = permissions.get(perm_name, False)
+            module_summary['permissions'][perm_name] = {
+                'has_permission': has_perm,
+                'description': perm_desc
+            }
+            if has_perm:
+                module_summary['permission_count'] += 1
+                summary['total_permissions'] += 1
+        
+        module_summary['has_access'] = module_summary['permission_count'] > 0
+        summary['modules'][module_name] = module_summary
+    
+    summary['has_access'] = summary['total_permissions'] > 0
+    return summary
+
+def has_lesxon_permissions(user: Optional[Dict[str, Any]]) -> bool:
+    """
+    Check if the user has at least one LesXon permission.
+    Uses the centralized MENU_PERMISSIONS configuration.
+    
+    Args:
+        user: User dictionary containing permissions
+        
+    Returns:
+        bool: True if user has any LesXon permission, False otherwise
+    """
+    return has_module_permissions(user, 'lesxon')
+
+def has_autotrackr_permissions(user: Optional[Dict[str, Any]]) -> bool:
+    """
+    Check if the user has at least one Autotrackr permission.
+    Uses the centralized MENU_PERMISSIONS configuration.
+    
+    Args:
+        user: User dictionary containing permissions
+        
+    Returns:
+        bool: True if user has any Autotrackr permission, False otherwise
+    """
+    return has_module_permissions(user, 'autotrackr')

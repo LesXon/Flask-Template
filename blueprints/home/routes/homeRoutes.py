@@ -7,7 +7,7 @@ from pathlib import Path
 from flask import render_template, session, redirect, url_for, request, flash
 
 from ..home import bp
-from ..src.navbar_helpers import get_navbar_context
+from ..src.navbar_helpers import get_navbar_context, create_default_permissions
 
 @bp.route('/')
 def home():
@@ -74,25 +74,9 @@ def login():
         
         # Simulate authentication (replace with real authentication)
         if email == 'test@example.com' and password == 'password123':
-            # Create user permissions
-            userPermissions = {}
-            userPermissions['lesxon_view'] = True
-            userPermissions['lesxon_download'] = True
-            userPermissions['lesxon_zip'] = True
-            userPermissions['lesxon_transactions'] = True
-            userPermissions['lesxon_klines'] = True
-            userPermissions['lesxon_supabase'] = True
-
-            userPermissions['autotrackr_service_orders'] = True
-            userPermissions['autotrackr_erm_model'] = True
-            userPermissions['autotrackr_supabase'] = True
             
-            userPermissions['products_electronics'] = True
-            userPermissions['products_clothing'] = True
-            userPermissions['products_home_garden'] = True
-            userPermissions['products_all'] = True
-            userPermissions['products_new'] = True
-            userPermissions['products_manage'] = True
+            # Create user permissions using centralized configuration - FULL ACCESS
+            userPermissions = create_default_permissions(['lesxon', 'autotrackr', 'products'])
 
             user_data = {}
             user_data['user'] = email.split('@')[0]
@@ -105,10 +89,30 @@ def login():
             session['user'] = user_data
             session.permanent = remember
             
-            flash('¡Bienvenido! Has iniciado sesión correctamente.', 'success')
+            flash('¡Bienvenido! Has iniciado sesión correctamente (acceso completo).', 'success')
             return redirect(url_for('home.home'))
+            
+        elif email == 'limited@example.com' and password == 'password123':
+            
+            # Create user with LIMITED permissions - only autotrackr and products, NO lesxon
+            userPermissions = create_default_permissions(['lesxon', 'autotrackr', 'products'])
+
+            user_data = {}
+            user_data['user'] = email.split('@')[0]
+            user_data['email'] = email
+            user_data['is_authenticated'] = True
+            user_data['avatar'] = 'https://via.placeholder.com/24'
+            user_data['notification_count'] = 3
+            user_data['permissions'] = userPermissions
+
+            session['user'] = user_data
+            session.permanent = remember
+            
+            flash('¡Bienvenido! Has iniciado sesión correctamente (acceso limitado).', 'success')
+            return redirect(url_for('home.home'))
+            
         else:
-            error = 'Credenciales incorrectas. Intenta con test@example.com / password123'
+            error = 'Credenciales incorrectas. Intenta con:<br>• test@example.com / password123 (acceso completo)<br>• limited@example.com / password123 (sin acceso a LesXon)'
             navbar_context = get_navbar_context(current_route='home.login')
             return render_template('login.html', error=error, **navbar_context)
     

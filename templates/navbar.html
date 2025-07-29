@@ -155,13 +155,7 @@
       
       {# Render main navigation items #}
       {% for item in nav_items %}
-        {% if item.name == 'LesXon' %}
-          {% if current_user and current_user.is_authenticated %}
-            {{ render_nav_item(item) }}
-          {% endif %}
-        {% else %}
-          {{ render_nav_item(item) }}
-        {% endif %}
+        {{ render_nav_item(item) }}
       {% endfor %}
       
       {# Render any additional custom menu items #}
