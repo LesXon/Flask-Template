@@ -1,0 +1,859 @@
+{% extends "base.html" %}
+{% from "components/ui_components.html" import 
+    input_group, textarea_group, select_group, checkbox_group,
+    button, loading_button, alert, card
+%}
+
+{% block title %}Form Components Examples{% endblock %}
+
+{% block meta_description %}Comprehensive examples of form components with validation, accessibility, and responsive design{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-wpforms mr-2"></i>
+                Form Components Examples
+            </h1>
+            <p class="lead u-margin-bottom-xl">
+                This page demonstrates comprehensive form component usage with validation, accessibility features, and responsive design patterns.
+            </p>
+        </div>
+    </div>
+
+    <!-- Basic Form Example -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Basic Form Components</h2>
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="User Registration Form",
+                body='
+                <form id="registration-form" novalidate>
+                    ' + input_group(
+                        name="first_name",
+                        label="First Name",
+                        type="text",
+                        placeholder="Enter your first name",
+                        required=true,
+                        icon="fas fa-user",
+                        help_text="Your given name",
+                        autocomplete="given-name"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="last_name",
+                        label="Last Name",
+                        type="text",
+                        placeholder="Enter your last name",
+                        required=true,
+                        icon="fas fa-user",
+                        help_text="Your family name",
+                        autocomplete="family-name"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="email",
+                        label="Email Address",
+                        type="email",
+                        placeholder="Enter your email address",
+                        required=true,
+                        icon="fas fa-envelope",
+                        help_text="We will never share your email",
+                        autocomplete="email"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="phone",
+                        label="Phone Number",
+                        type="tel",
+                        placeholder="(555) 123-4567",
+                        icon="fas fa-phone",
+                        help_text="Optional - for account recovery",
+                        autocomplete="tel"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="password",
+                        label="Password",
+                        type="password",
+                        placeholder="Create a secure password",
+                        required=true,
+                        icon="fas fa-lock",
+                        help_text="Minimum 8 characters with letters and numbers",
+                        autocomplete="new-password"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="confirm_password",
+                        label="Confirm Password",
+                        type="password",
+                        placeholder="Confirm your password",
+                        required=true,
+                        icon="fas fa-lock",
+                        help_text="Must match the password above",
+                        autocomplete="new-password"
+                    ) + '
+                    
+                    ' + checkbox_group(
+                        name="terms",
+                        label="I agree to the Terms of Service and Privacy Policy",
+                        required=true,
+                        help_text="Please read our terms before agreeing"
+                    ) + '
+                    
+                    <div class="form-group">
+                        ' + loading_button(
+                            text="Create Account",
+                            type="submit",
+                            variant="primary",
+                            icon="fas fa-user-plus",
+                            loading_text="Creating Account...",
+                            class="mr-2"
+                        ) + '
+                        ' + button(
+                            text="Cancel",
+                            type="button",
+                            variant="secondary",
+                            icon="fas fa-times"
+                        ) + '
+                    </div>
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="Contact Form",
+                body='
+                <form id="contact-form" novalidate>
+                    ' + select_group(
+                        name="subject",
+                        label="Subject",
+                        options=[
+                            {"value": "", "text": "Select a subject..."},
+                            {"value": "general", "text": "General Inquiry"},
+                            {"value": "support", "text": "Technical Support"},
+                            {"value": "billing", "text": "Billing Question"},
+                            {"value": "feedback", "text": "Feedback"}
+                        ],
+                        required=true,
+                        icon="fas fa-tag",
+                        help_text="Choose the most appropriate category"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="contact_email",
+                        label="Your Email",
+                        type="email",
+                        placeholder="your.email@example.com",
+                        required=true,
+                        icon="fas fa-envelope",
+                        autocomplete="email"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="company",
+                        label="Company (Optional)",
+                        type="text",
+                        placeholder="Your company name",
+                        icon="fas fa-building",
+                        autocomplete="organization"
+                    ) + '
+                    
+                    ' + textarea_group(
+                        name="message",
+                        label="Message",
+                        placeholder="Please describe your inquiry in detail...",
+                        rows="5",
+                        required=true,
+                        icon="fas fa-comment",
+                        help_text="Provide as much detail as possible to help us assist you"
+                    ) + '
+                    
+                    ' + select_group(
+                        name="priority",
+                        label="Priority Level",
+                        options=[
+                            {"value": "low", "text": "Low - General inquiry"},
+                            {"value": "medium", "text": "Medium - Standard support"},
+                            {"value": "high", "text": "High - Urgent issue"}
+                        ],
+                        selected="medium",
+                        icon="fas fa-exclamation-circle"
+                    ) + '
+                    
+                    ' + checkbox_group(
+                        name="newsletter",
+                        label="Subscribe to our newsletter for updates",
+                        help_text="You can unsubscribe at any time"
+                    ) + '
+                    
+                    <div class="form-group">
+                        ' + loading_button(
+                            text="Send Message",
+                            type="submit",
+                            variant="primary",
+                            icon="fas fa-paper-plane",
+                            loading_text="Sending...",
+                            class="mr-2"
+                        ) + '
+                        ' + button(
+                            text="Clear Form",
+                            type="reset",
+                            variant="outline-secondary",
+                            icon="fas fa-eraser"
+                        ) + '
+                    </div>
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+    </div>
+
+    <!-- Form Validation Examples -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Form Validation Examples</h2>
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="Validation States",
+                body='
+                <form>
+                    <h5 class="text-success mb-3">Valid States</h5>
+                    
+                    ' + input_group(
+                        name="valid_email",
+                        label="Valid Email",
+                        type="email",
+                        value="user@example.com",
+                        icon="fas fa-envelope",
+                        class="is-valid"
+                    ) + '
+                    
+                    ' + select_group(
+                        name="valid_select",
+                        label="Valid Selection",
+                        options=[
+                            {"value": "option1", "text": "Option 1"},
+                            {"value": "option2", "text": "Option 2"}
+                        ],
+                        selected="option1",
+                        icon="fas fa-list",
+                        class="is-valid"
+                    ) + '
+                    
+                    <h5 class="text-danger mb-3 mt-4">Invalid States</h5>
+                    
+                    ' + input_group(
+                        name="invalid_email",
+                        label="Invalid Email",
+                        type="email",
+                        value="invalid-email",
+                        error="Please enter a valid email address",
+                        icon="fas fa-envelope"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="required_field",
+                        label="Required Field",
+                        type="text",
+                        required=true,
+                        error="This field is required",
+                        icon="fas fa-asterisk"
+                    ) + '
+                    
+                    ' + textarea_group(
+                        name="invalid_textarea",
+                        label="Message Too Short",
+                        value="Hi",
+                        error="Message must be at least 10 characters long",
+                        icon="fas fa-comment"
+                    ) + '
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="Real-time Validation Demo",
+                body='
+                <form id="validation-demo">
+                    ' + input_group(
+                        name="username",
+                        label="Username",
+                        type="text",
+                        placeholder="Choose a username",
+                        required=true,
+                        icon="fas fa-user",
+                        help_text="Must be 3-20 characters, letters and numbers only",
+                        id="username-input"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="demo_email",
+                        label="Email Address",
+                        type="email",
+                        placeholder="Enter your email",
+                        required=true,
+                        icon="fas fa-envelope",
+                        help_text="We will validate this in real-time",
+                        id="demo-email-input"
+                    ) + '
+                    
+                    ' + input_group(
+                        name="demo_password",
+                        label="Password",
+                        type="password",
+                        placeholder="Create a password",
+                        required=true,
+                        icon="fas fa-lock",
+                        help_text="Password strength will be shown below",
+                        id="demo-password-input"
+                    ) + '
+                    
+                    <div id="password-strength" class="mb-3">
+                        <small class="text-muted">Password strength: <span id="strength-text">Not entered</span></small>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div id="strength-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    ' + input_group(
+                        name="confirm_demo_password",
+                        label="Confirm Password",
+                        type="password",
+                        placeholder="Confirm your password",
+                        required=true,
+                        icon="fas fa-lock",
+                        help_text="Must match the password above",
+                        id="confirm-password-input"
+                    ) + '
+                    
+                    <div class="form-group">
+                        ' + button(
+                            text="Validate Form",
+                            type="submit",
+                            variant="primary",
+                            icon="fas fa-check",
+                            id="validate-btn"
+                        ) + '
+                    </div>
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+    </div>
+
+    <!-- Responsive Form Layouts -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Responsive Form Layouts</h2>
+        </div>
+        
+        <div class="col-12">
+            {{ card(
+                title="Multi-Column Responsive Form",
+                body='
+                <form>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="billing_first_name",
+                                label="First Name",
+                                type="text",
+                                required=true,
+                                icon="fas fa-user"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="billing_last_name",
+                                label="Last Name",
+                                type="text",
+                                required=true,
+                                icon="fas fa-user"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-12">
+                            ' + input_group(
+                                name="billing_email",
+                                label="Email Address",
+                                type="email",
+                                required=true,
+                                icon="fas fa-envelope"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-12">
+                            ' + input_group(
+                                name="address",
+                                label="Street Address",
+                                type="text",
+                                required=true,
+                                icon="fas fa-home"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="city",
+                                label="City",
+                                type="text",
+                                required=true,
+                                icon="fas fa-city"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-3">
+                            ' + select_group(
+                                name="state",
+                                label="State",
+                                options=[
+                                    {"value": "", "text": "Select..."},
+                                    {"value": "CA", "text": "California"},
+                                    {"value": "NY", "text": "New York"},
+                                    {"value": "TX", "text": "Texas"}
+                                ],
+                                required=true,
+                                icon="fas fa-map"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-3">
+                            ' + input_group(
+                                name="zip",
+                                label="ZIP Code",
+                                type="text",
+                                required=true,
+                                icon="fas fa-mail-bulk"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            ' + select_group(
+                                name="country",
+                                label="Country",
+                                options=[
+                                    {"value": "US", "text": "United States"},
+                                    {"value": "CA", "text": "Canada"},
+                                    {"value": "MX", "text": "Mexico"}
+                                ],
+                                selected="US",
+                                icon="fas fa-globe"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="phone_number",
+                                label="Phone Number",
+                                type="tel",
+                                icon="fas fa-phone"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="d-flex flex-column flex-md-row">
+                            ' + button(
+                                text="Save Address",
+                                type="submit",
+                                variant="primary",
+                                icon="fas fa-save",
+                                class="mb-2 mb-md-0 mr-md-2"
+                            ) + '
+                            ' + button(
+                                text="Reset Form",
+                                type="reset",
+                                variant="outline-secondary",
+                                icon="fas fa-undo"
+                            ) + '
+                        </div>
+                    </div>
+                </form>'
+            ) }}
+        </div>
+    </div>
+
+    <!-- Advanced Form Features -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Advanced Form Features</h2>
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="File Upload Form",
+                body='
+                <form enctype="multipart/form-data">
+                    ' + input_group(
+                        name="document_title",
+                        label="Document Title",
+                        type="text",
+                        required=true,
+                        icon="fas fa-file-alt",
+                        help_text="Give your document a descriptive title"
+                    ) + '
+                    
+                    <div class="form-group">
+                        <label for="file-upload" class="form-label">
+                            Upload File
+                            <span class="text-danger" aria-label="required">*</span>
+                        </label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file-upload" name="file" required>
+                            <label class="custom-file-label" for="file-upload">Choose file...</label>
+                        </div>
+                        <small class="form-text text-muted">
+                            Supported formats: PDF, DOC, DOCX, TXT (Max 10MB)
+                        </small>
+                    </div>
+                    
+                    ' + select_group(
+                        name="category",
+                        label="Document Category",
+                        options=[
+                            {"value": "", "text": "Select category..."},
+                            {"value": "report", "text": "Report"},
+                            {"value": "invoice", "text": "Invoice"},
+                            {"value": "contract", "text": "Contract"},
+                            {"value": "other", "text": "Other"}
+                        ],
+                        required=true,
+                        icon="fas fa-folder"
+                    ) + '
+                    
+                    ' + textarea_group(
+                        name="description",
+                        label="Description",
+                        placeholder="Provide a brief description of the document...",
+                        rows="3",
+                        icon="fas fa-align-left",
+                        help_text="Optional - helps with organization"
+                    ) + '
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="confidential" name="confidential">
+                            <label class="form-check-label" for="confidential">
+                                <i class="fas fa-lock mr-2"></i>Mark as confidential
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        ' + loading_button(
+                            text="Upload Document",
+                            type="submit",
+                            variant="primary",
+                            icon="fas fa-upload",
+                            loading_text="Uploading...",
+                            class="mr-2"
+                        ) + '
+                        ' + button(
+                            text="Cancel",
+                            type="button",
+                            variant="secondary",
+                            icon="fas fa-times"
+                        ) + '
+                    </div>
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+        
+        <div class="col-lg-6">
+            {{ card(
+                title="Search and Filter Form",
+                body='
+                <form id="search-form">
+                    ' + input_group(
+                        name="search_query",
+                        label="Search Query",
+                        type="search",
+                        placeholder="Enter search terms...",
+                        icon="fas fa-search",
+                        help_text="Search across all fields"
+                    ) + '
+                    
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            ' + select_group(
+                                name="search_category",
+                                label="Category",
+                                options=[
+                                    {"value": "", "text": "All categories"},
+                                    {"value": "users", "text": "Users"},
+                                    {"value": "documents", "text": "Documents"},
+                                    {"value": "reports", "text": "Reports"}
+                                ],
+                                icon="fas fa-filter"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-6">
+                            ' + select_group(
+                                name="sort_by",
+                                label="Sort By",
+                                options=[
+                                    {"value": "date_desc", "text": "Date (Newest first)"},
+                                    {"value": "date_asc", "text": "Date (Oldest first)"},
+                                    {"value": "name_asc", "text": "Name (A-Z)"},
+                                    {"value": "name_desc", "text": "Name (Z-A)"}
+                                ],
+                                selected="date_desc",
+                                icon="fas fa-sort"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="date_from",
+                                label="From Date",
+                                type="date",
+                                icon="fas fa-calendar"
+                            ) + '
+                        </div>
+                        <div class="col-12 col-md-6">
+                            ' + input_group(
+                                name="date_to",
+                                label="To Date",
+                                type="date",
+                                icon="fas fa-calendar"
+                            ) + '
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Status Filter</label>
+                        <div class="form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="status-active" name="status[]" value="active" checked>
+                            <label class="form-check-label" for="status-active">Active</label>
+                        </div>
+                        <div class="form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="status-inactive" name="status[]" value="inactive">
+                            <label class="form-check-label" for="status-inactive">Inactive</label>
+                        </div>
+                        <div class="form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="status-pending" name="status[]" value="pending">
+                            <label class="form-check-label" for="status-pending">Pending</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        ' + button(
+                            text="Search",
+                            type="submit",
+                            variant="primary",
+                            icon="fas fa-search",
+                            class="mr-2"
+                        ) + '
+                        ' + button(
+                            text="Clear Filters",
+                            type="button",
+                            variant="outline-secondary",
+                            icon="fas fa-eraser",
+                            onclick="clearFilters()"
+                        ) + '
+                    </div>
+                </form>',
+                card_class="h-100"
+            ) }}
+        </div>
+    </div>
+
+    <!-- Form Accessibility Examples -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Accessibility Features</h2>
+            <p class="text-muted mb-4">
+                All form components include comprehensive accessibility features including proper labeling, 
+                ARIA attributes, keyboard navigation, and screen reader support.
+            </p>
+        </div>
+        
+        <div class="col-12">
+            {{ alert(
+                message="<strong>Accessibility Features Included:</strong><br>
+                • Proper form labels and associations<br>
+                • ARIA attributes for enhanced screen reader support<br>
+                • Keyboard navigation and focus management<br>
+                • Error messages linked to form fields<br>
+                • Required field indicators<br>
+                • Help text properly associated with inputs",
+                type="info",
+                icon="fas fa-universal-access"
+            ) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File upload label update
+    const fileInputs = document.querySelectorAll('.custom-file-input');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'Choose file...';
+            const label = this.nextElementSibling;
+            label.textContent = fileName;
+        });
+    });
+    
+    // Password strength indicator
+    const passwordInput = document.getElementById('demo-password-input');
+    const strengthText = document.getElementById('strength-text');
+    const strengthBar = document.getElementById('strength-bar');
+    
+    if (passwordInput && strengthText && strengthBar) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            strengthText.textContent = strength.text;
+            strengthBar.style.width = strength.percentage + '%';
+            strengthBar.className = 'progress-bar ' + strength.class;
+        });
+    }
+    
+    // Password confirmation validation
+    const confirmPasswordInput = document.getElementById('confirm-password-input');
+    if (passwordInput && confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.classList.add('is-invalid');
+                showValidationError(this, 'Passwords do not match');
+            } else {
+                this.classList.remove('is-invalid');
+                hideValidationError(this);
+            }
+        });
+    }
+    
+    // Real-time email validation
+    const emailInput = document.getElementById('demo-email-input');
+    if (emailInput) {
+        emailInput.addEventListener('blur', function() {
+            const email = this.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email && !emailRegex.test(email)) {
+                this.classList.add('is-invalid');
+                showValidationError(this, 'Please enter a valid email address');
+            } else {
+                this.classList.remove('is-invalid');
+                hideValidationError(this);
+            }
+        });
+    }
+    
+    // Username validation
+    const usernameInput = document.getElementById('username-input');
+    if (usernameInput) {
+        usernameInput.addEventListener('input', function() {
+            const username = this.value;
+            const usernameRegex = /^[a-zA-Z0-9]{3,20}$/;
+            
+            if (username && !usernameRegex.test(username)) {
+                this.classList.add('is-invalid');
+                showValidationError(this, 'Username must be 3-20 characters, letters and numbers only');
+            } else {
+                this.classList.remove('is-invalid');
+                hideValidationError(this);
+            }
+        });
+    }
+    
+    // Form submission handlers
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            showAlert('Form submitted successfully! (This is a demo)', 'success');
+            
+            // Reset loading buttons
+            const loadingButtons = form.querySelectorAll('button[data-loading-text]');
+            loadingButtons.forEach(button => {
+                setTimeout(() => {
+                    if (window.UIComponents && window.UIComponents.hideLoadingState) {
+                        window.UIComponents.hideLoadingState(button);
+                    }
+                }, 2000);
+            });
+        });
+    });
+});
+
+function calculatePasswordStrength(password) {
+    let score = 0;
+    
+    if (password.length >= 8) score += 1;
+    if (password.match(/[a-z]/)) score += 1;
+    if (password.match(/[A-Z]/)) score += 1;
+    if (password.match(/[0-9]/)) score += 1;
+    if (password.match(/[^a-zA-Z0-9]/)) score += 1;
+    
+    const strengths = [
+        { text: 'Very Weak', percentage: 20, class: 'bg-danger' },
+        { text: 'Weak', percentage: 40, class: 'bg-warning' },
+        { text: 'Fair', percentage: 60, class: 'bg-info' },
+        { text: 'Good', percentage: 80, class: 'bg-primary' },
+        { text: 'Strong', percentage: 100, class: 'bg-success' }
+    ];
+    
+    return password.length === 0 ? 
+        { text: 'Not entered', percentage: 0, class: '' } : 
+        strengths[Math.min(score, 4)];
+}
+
+function showValidationError(input, message) {
+    let feedback = input.parentNode.querySelector('.invalid-feedback');
+    
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback';
+        input.parentNode.appendChild(feedback);
+    }
+    
+    feedback.textContent = message;
+    feedback.style.display = 'block';
+}
+
+function hideValidationError(input) {
+    const feedback = input.parentNode.querySelector('.invalid-feedback');
+    if (feedback) {
+        feedback.style.display = 'none';
+    }
+}
+
+function clearFilters() {
+    const form = document.getElementById('search-form');
+    if (form) {
+        form.reset();
+        showAlert('Filters cleared', 'info');
+    }
+}
+</script>
+{% endblock %}

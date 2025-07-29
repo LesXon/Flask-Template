@@ -1,0 +1,449 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, table, badge, alert %}
+
+{% block title %}
+    {{ super() }}
+    Órdenes de Servicio
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-clipboard-list mr-3" aria-hidden="true"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            {{ icon_card(
+                title="Filtros de Búsqueda",
+                icon="fas fa-filter",
+                icon_class="text-primary",
+                body=filter_form_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-9">
+            {{ icon_card(
+                title="Lista de Órdenes de Servicio",
+                icon="fas fa-list",
+                icon_class="text-info",
+                body=orders_table_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Estadísticas Rápidas",
+                icon="fas fa-chart-bar",
+                icon_class="text-success",
+                body=stats_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+        
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Acciones Rápidas",
+                icon="fas fa-bolt",
+                icon_class="text-warning",
+                body=quick_actions_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+        
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Notificaciones",
+                icon="fas fa-bell",
+                icon_class="text-danger",
+                body=notifications_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% macro filter_form_content() %}
+<form id="filterForm">
+    {{ input_group(
+        name="order_id",
+        label="ID de Orden",
+        type="text",
+        placeholder="SO-2024-001",
+        icon="fas fa-hashtag",
+        id="order_id"
+    ) }}
+    
+    {{ select_group(
+        name="status",
+        label="Estado",
+        options=[
+            {"value": "", "text": "Todos los estados"},
+            {"value": "pending", "text": "Pendiente"},
+            {"value": "in_progress", "text": "En Progreso"},
+            {"value": "completed", "text": "Completado"},
+            {"value": "cancelled", "text": "Cancelado"}
+        ],
+        icon="fas fa-tasks",
+        id="status"
+    ) }}
+    
+    {{ select_group(
+        name="priority",
+        label="Prioridad",
+        options=[
+            {"value": "", "text": "Todas las prioridades"},
+            {"value": "low", "text": "Baja"},
+            {"value": "medium", "text": "Media"},
+            {"value": "high", "text": "Alta"},
+            {"value": "urgent", "text": "Urgente"}
+        ],
+        icon="fas fa-exclamation-triangle",
+        id="priority"
+    ) }}
+    
+    {{ input_group(
+        name="customer",
+        label="Cliente",
+        type="text",
+        placeholder="Nombre del cliente",
+        icon="fas fa-user",
+        id="customer"
+    ) }}
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ input_group(
+                name="date_from",
+                label="Desde",
+                type="date",
+                icon="fas fa-calendar-alt",
+                id="date_from"
+            ) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_group(
+                name="date_to",
+                label="Hasta",
+                type="date",
+                icon="fas fa-calendar-alt",
+                id="date_to"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ button(
+            text="Buscar",
+            variant="primary",
+            icon="fas fa-search",
+            class="btn-block",
+            onclick="filterOrders()"
+        ) }}
+    </div>
+    
+    <div class="form-group mb-0">
+        {{ button(
+            text="Limpiar Filtros",
+            variant="outline-secondary",
+            icon="fas fa-eraser",
+            class="btn-block",
+            onclick="clearFilters()"
+        ) }}
+    </div>
+</form>
+{% endmacro %}
+
+{% macro orders_table_content() %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        {{ button(
+            text="Nueva Orden",
+            variant="success",
+            icon="fas fa-plus",
+            onclick="createNewOrder()"
+        ) }}
+        {{ button(
+            text="Exportar",
+            variant="outline-info",
+            icon="fas fa-download",
+            onclick="exportOrders()"
+        ) }}
+    </div>
+    <div>
+        <small class="text-muted">Mostrando 5 de 23 órdenes</small>
+    </div>
+</div>
+
+{{ table(
+    headers=["ID", "Cliente", "Descripción", "Estado", "Prioridad", "Fecha", "Técnico", "Acciones"],
+    caption="Lista de órdenes de servicio con filtros aplicados",
+    rows=[
+        [
+            "SO-2024-001",
+            "Empresa ABC",
+            "Mantenimiento preventivo equipos",
+            '<span class="badge badge-warning">En Progreso</span>',
+            '<span class="badge badge-danger">Alta</span>',
+            "2024-01-15",
+            "Juan Pérez",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewOrder(\'SO-2024-001\')" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editOrder(\'SO-2024-001\')" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-info" onclick="printOrder(\'SO-2024-001\')" title="Imprimir"><i class="fas fa-print"></i></button>' +
+            '</div>'
+        ],
+        [
+            "SO-2024-002",
+            "Corporación XYZ",
+            "Instalación nuevo sistema",
+            '<span class="badge badge-info">Pendiente</span>',
+            '<span class="badge badge-warning">Media</span>',
+            "2024-01-14",
+            "María García",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewOrder(\'SO-2024-002\')" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editOrder(\'SO-2024-002\')" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-info" onclick="printOrder(\'SO-2024-002\')" title="Imprimir"><i class="fas fa-print"></i></button>' +
+            '</div>'
+        ],
+        [
+            "SO-2024-003",
+            "Industrias DEF",
+            "Reparación urgente bomba",
+            '<span class="badge badge-success">Completado</span>',
+            '<span class="badge badge-dark">Urgente</span>',
+            "2024-01-13",
+            "Carlos López",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewOrder(\'SO-2024-003\')" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editOrder(\'SO-2024-003\')" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-info" onclick="printOrder(\'SO-2024-003\')" title="Imprimir"><i class="fas fa-print"></i></button>' +
+            '</div>'
+        ],
+        [
+            "SO-2024-004",
+            "Servicios GHI",
+            "Calibración instrumentos",
+            '<span class="badge badge-warning">En Progreso</span>',
+            '<span class="badge badge-success">Baja</span>',
+            "2024-01-12",
+            "Ana Martínez",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewOrder(\'SO-2024-004\')" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editOrder(\'SO-2024-004\')" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-info" onclick="printOrder(\'SO-2024-004\')" title="Imprimir"><i class="fas fa-print"></i></button>' +
+            '</div>'
+        ],
+        [
+            "SO-2024-005",
+            "Tecnología JKL",
+            "Actualización software",
+            '<span class="badge badge-secondary">Cancelado</span>',
+            '<span class="badge badge-warning">Media</span>',
+            "2024-01-11",
+            "Roberto Silva",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewOrder(\'SO-2024-005\')" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editOrder(\'SO-2024-005\')" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-info" onclick="printOrder(\'SO-2024-005\')" title="Imprimir"><i class="fas fa-print"></i></button>' +
+            '</div>'
+        ]
+    ],
+    striped=true,
+    hover=true,
+    responsive=true
+) }}
+
+<div class="d-flex justify-content-center mt-3">
+    <nav>
+        <ul class="pagination pagination-sm">
+            <li class="page-item disabled">
+                <span class="page-link">Anterior</span>
+            </li>
+            <li class="page-item active">
+                <span class="page-link">1</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endmacro %}
+
+{% macro stats_content() %}
+<div class="row text-center">
+    <div class="col-6">
+        <h4 class="u-text-info">23</h4>
+        <small class="text-muted">Total Órdenes</small>
+    </div>
+    <div class="col-6">
+        <h4 class="u-text-warning">8</h4>
+        <small class="text-muted">En Progreso</small>
+    </div>
+</div>
+<hr>
+<div class="row text-center">
+    <div class="col-6">
+        <h4 class="u-text-success">12</h4>
+        <small class="text-muted">Completadas</small>
+    </div>
+    <div class="col-6">
+        <h4 class="u-text-danger">3</h4>
+        <small class="text-muted">Pendientes</small>
+    </div>
+</div>
+<hr>
+<div class="text-center">
+    <h5 class="u-text-primary">87.5%</h5>
+    <small class="text-muted">Tasa de Completado</small>
+</div>
+{% endmacro %}
+
+{% macro quick_actions_content() %}
+<div class="d-grid gap-2">
+    {{ button(
+        text="Crear Orden",
+        variant="success",
+        icon="fas fa-plus",
+        class="mb-2",
+        onclick="createNewOrder()"
+    ) }}
+    
+    {{ button(
+        text="Asignar Técnico",
+        variant="info",
+        icon="fas fa-user-plus",
+        class="mb-2",
+        onclick="assignTechnician()"
+    ) }}
+    
+    {{ button(
+        text="Generar Reporte",
+        variant="warning",
+        icon="fas fa-file-alt",
+        class="mb-2",
+        onclick="generateReport()"
+    ) }}
+    
+    {{ button(
+        text="Configuración",
+        variant="secondary",
+        icon="fas fa-cog",
+        onclick="openSettings()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro notifications_content() %}
+<div class="list-group list-group-flush">
+    <div class="list-group-item d-flex align-items-center py-2">
+        <i class="fas fa-exclamation-triangle text-warning mr-2"></i>
+        <div class="flex-grow-1">
+            <small><strong>Orden SO-2024-001</strong></small>
+            <br>
+            <small class="text-muted">Vence en 2 horas</small>
+        </div>
+    </div>
+    
+    <div class="list-group-item d-flex align-items-center py-2">
+        <i class="fas fa-clock text-info mr-2"></i>
+        <div class="flex-grow-1">
+            <small><strong>Técnico disponible</strong></small>
+            <br>
+            <small class="text-muted">Juan Pérez libre</small>
+        </div>
+    </div>
+    
+    <div class="list-group-item d-flex align-items-center py-2">
+        <i class="fas fa-check-circle text-success mr-2"></i>
+        <div class="flex-grow-1">
+            <small><strong>Orden completada</strong></small>
+            <br>
+            <small class="text-muted">SO-2024-003</small>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    {{ button(
+        text="Ver Todas",
+        variant="outline-primary",
+        size="sm",
+        icon="fas fa-list",
+        onclick="viewAllNotifications()"
+    ) }}
+</div>
+{% endmacro %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterOrders() {
+    const orderId = document.getElementById('order_id').value;
+    const status = document.getElementById('status').value;
+    const priority = document.getElementById('priority').value;
+    
+    console.log('Filtrando órdenes:', { orderId, status, priority });
+    alert('Aplicando filtros de búsqueda...');
+}
+
+function clearFilters() {
+    document.getElementById('filterForm').reset();
+    alert('Filtros limpiados');
+}
+
+function createNewOrder() {
+    alert('Abriendo formulario para nueva orden de servicio...');
+}
+
+function exportOrders() {
+    alert('Exportando órdenes de servicio...');
+}
+
+function viewOrder(orderId) {
+    alert(`Viendo detalles de la orden: ${orderId}`);
+}
+
+function editOrder(orderId) {
+    alert(`Editando orden: ${orderId}`);
+}
+
+function printOrder(orderId) {
+    alert(`Imprimiendo orden: ${orderId}`);
+}
+
+function assignTechnician() {
+    alert('Abriendo asignación de técnicos...');
+}
+
+function generateReport() {
+    alert('Generando reporte de órdenes de servicio...');
+}
+
+function openSettings() {
+    alert('Abriendo configuración del módulo...');
+}
+
+function viewAllNotifications() {
+    alert('Mostrando todas las notificaciones...');
+}
+</script>
+{% endblock %} 

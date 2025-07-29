@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import icon_card %}
+{% from '_klines_macros.html' import config_form_content, chart_content, data_table_content %}
+
+{% block title %}
+    {{ super() }}
+    Análisis K-Lines
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-chart-candlestick mr-3"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            {{ icon_card(
+                title="Configuración de Análisis",
+                icon="fas fa-sliders-h",
+                icon_class="text-primary",
+                body=config_form_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-9">
+            {{ icon_card(
+                title="Gráfico K-Lines",
+                icon="fas fa-chart-line",
+                icon_class="text-success",
+                body=chart_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Datos de K-Lines",
+                icon="fas fa-table",
+                icon_class="text-info",
+                body=data_table_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateChart() {
+    const symbol = document.getElementById('symbol').value;
+    const interval = document.getElementById('interval').value;
+    const limit = document.getElementById('limit').value;
+    
+    console.log(`Actualizando gráfico para ${symbol} con intervalo ${interval} y límite ${limit}`);
+    alert(`Actualizando gráfico K-Lines para ${symbol}`);
+}
+
+function exportData() {
+    alert('Exportando datos K-Lines...');
+}
+
+function loadChart() {
+    alert('Cargando gráfico de velas japonesas...');
+}
+
+function loadMoreData() {
+    alert('Cargando más datos...');
+}
+</script>
+{% endblock %}
+
+

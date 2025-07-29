@@ -1,0 +1,389 @@
+{# UI Components Library - Reusable Jinja2 Macros #}
+{# Bootstrap 4 Cerulean Theme with Font Awesome Integration #}
+
+{# Card Component Macro #}
+{% macro card(title="", body="", footer="", header_class="", body_class="", footer_class="", card_class="", caller=None) %}
+<div class="card {{ card_class }}">
+  {% if title %}
+  <div class="card-header {{ header_class }}">
+    <h5 class="card-title mb-0">{{ title }}</h5>
+  </div>
+  {% endif %}
+  
+  {% if caller %}
+    <div class="card-body {{ body_class }}">
+      {{ caller() }}
+    </div>
+  {% elif body %}
+    <div class="card-body {{ body_class }}">
+      {{ body | safe }}
+    </div>
+  {% endif %}
+  
+  {% if footer %}
+  <div class="card-footer {{ footer_class }}">
+    {{ footer | safe }}
+  </div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Card with Icon Header #}
+{% macro icon_card(title="", body="", icon="", icon_class="text-primary", card_class="", caller=None) %}
+<div class="card {{ card_class }}">
+  {% if title or icon %}
+  <div class="card-header d-flex align-items-center">
+    {% if icon %}
+    <i class="{{ icon }} {{ icon_class }} mr-2"></i>
+    {% endif %}
+    {% if title %}
+    <h5 class="card-title mb-0">{{ title }}</h5>
+    {% endif %}
+  </div>
+  {% endif %}
+  
+  {% if caller %}
+    <div class="card-body">
+      {{ caller() }}
+    </div>
+  {% elif body %}
+  <div class="card-body">
+    {{ body | safe }}
+  </div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Button Component Macros #}
+{% macro button(text, type="button", variant="primary", size="", icon="", icon_position="left", disabled=false, id="", class="", onclick="", aria_label="", title="") %}
+<button type="{{ type }}" 
+        class="btn btn-{{ variant }} {{ 'btn-' + size if size }} {{ class }}" 
+        {% if id %}id="{{ id }}"{% endif %}
+        {% if disabled %}disabled aria-disabled="true"{% endif %}
+        {% if onclick %}onclick="{{ onclick }}"{% endif %}
+        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+        {% if title %}title="{{ title }}"{% endif %}
+        role="button">
+  {% if icon and icon_position == "left" %}
+  <i class="{{ icon }} mr-1" aria-hidden="true"></i>
+  {% endif %}
+  <span>{{ text }}</span>
+  {% if icon and icon_position == "right" %}
+  <i class="{{ icon }} ml-1" aria-hidden="true"></i>
+  {% endif %}
+</button>
+{% endmacro %}
+
+{# Icon Button (icon only) #}
+{% macro icon_button(icon, variant="primary", size="", title="", disabled=false, id="", class="", onclick="", aria_label="") %}
+<button type="button" 
+        class="btn btn-{{ variant }} {{ 'btn-' + size if size }} {{ class }}" 
+        {% if id %}id="{{ id }}"{% endif %}
+        {% if title %}title="{{ title }}"{% endif %}
+        {% if disabled %}disabled aria-disabled="true"{% endif %}
+        {% if onclick %}onclick="{{ onclick }}"{% endif %}
+        {% if aria_label %}aria-label="{{ aria_label }}"{% else %}aria-label="{{ title or 'Button' }}"{% endif %}
+        role="button">
+  <i class="{{ icon }}" aria-hidden="true"></i>
+  <span class="sr-only">{{ title or 'Button' }}</span>
+</button>
+{% endmacro %}
+
+{# Loading Button #}
+{% macro loading_button(text, type="submit", variant="primary", size="", icon="", loading_text="Loading...", id="", class="", aria_label="") %}
+<button type="{{ type }}" 
+        class="btn btn-{{ variant }} {{ 'btn-' + size if size }} {{ class }}" 
+        {% if id %}id="{{ id }}"{% endif %}
+        data-loading-text="{{ loading_text }}"
+        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+        role="button">
+  {% if icon %}
+  <i class="{{ icon }} mr-1" aria-hidden="true"></i>
+  {% endif %}
+  <span class="button-text">{{ text }}</span>
+  <span class="spinner-border spinner-border-sm ml-1 d-none" role="status" aria-hidden="true">
+    <span class="sr-only">{{ loading_text }}</span>
+  </span>
+</button>
+{% endmacro %}
+
+{# Form Input Group Macros #}
+{% macro input_group(name, label="", type="text", placeholder="", value="", required=false, icon="", help_text="", error="", id="", class="", autocomplete="") %}
+<div class="form-group">
+  {% if label %}
+  <label for="{{ id or name }}" class="form-label">
+    {{ label }}
+    {% if required %}<span class="text-danger" aria-label="required">*</span>{% endif %}
+  </label>
+  {% endif %}
+  
+  <div class="input-group">
+    {% if icon %}
+    <div class="input-group-prepend">
+      <span class="input-group-text" aria-hidden="true">
+        <i class="{{ icon }}" aria-hidden="true"></i>
+      </span>
+    </div>
+    {% endif %}
+    
+    <input type="{{ type }}" 
+           class="form-control {{ 'is-invalid' if error }} {{ class }}" 
+           name="{{ name }}" 
+           {% if id %}id="{{ id }}"{% else %}id="{{ name }}"{% endif %}
+           {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+           {% if value %}value="{{ value }}"{% endif %}
+           {% if required %}required aria-required="true"{% endif %}
+           {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+           {% if error %}aria-invalid="true" aria-describedby="{{ (id or name) }}-error"{% endif %}
+           {% if help_text %}aria-describedby="{{ (id or name) }}-help"{% endif %}>
+    
+    {% if error %}
+    <div class="invalid-feedback" id="{{ (id or name) }}-error" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+  </div>
+  
+  {% if help_text %}
+  <small class="form-text text-muted" id="{{ (id or name) }}-help">{{ help_text }}</small>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Textarea Input Group #}
+{% macro textarea_group(name, label="", placeholder="", value="", rows="3", required=false, icon="", help_text="", error="", id="", class="") %}
+<div class="form-group">
+  {% if label %}
+  <label for="{{ id or name }}" class="form-label">
+    {{ label }}
+    {% if required %}<span class="text-danger" aria-label="required">*</span>{% endif %}
+  </label>
+  {% endif %}
+  
+  <div class="input-group">
+    {% if icon %}
+    <div class="input-group-prepend">
+      <span class="input-group-text" aria-hidden="true">
+        <i class="{{ icon }}" aria-hidden="true"></i>
+      </span>
+    </div>
+    {% endif %}
+    
+    <textarea class="form-control {{ 'is-invalid' if error }} {{ class }}" 
+              name="{{ name }}" 
+              {% if id %}id="{{ id }}"{% else %}id="{{ name }}"{% endif %}
+              rows="{{ rows }}"
+              {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+              {% if required %}required aria-required="true"{% endif %}
+              {% if error %}aria-invalid="true" aria-describedby="{{ (id or name) }}-error"{% endif %}
+              {% if help_text %}aria-describedby="{{ (id or name) }}-help"{% endif %}>{{ value or '' }}</textarea>
+    
+    {% if error %}
+    <div class="invalid-feedback" id="{{ (id or name) }}-error" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+  </div>
+  
+  {% if help_text %}
+  <small class="form-text text-muted" id="{{ (id or name) }}-help">{{ help_text }}</small>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Select Input Group #}
+{% macro select_group(name, label="", options=[], selected="", required=false, icon="", help_text="", error="", id="", class="") %}
+<div class="form-group">
+  {% if label %}
+  <label for="{{ id or name }}" class="form-label">
+    {{ label }}
+    {% if required %}<span class="text-danger" aria-label="required">*</span>{% endif %}
+  </label>
+  {% endif %}
+  
+  <div class="input-group">
+    {% if icon %}
+    <div class="input-group-prepend">
+      <span class="input-group-text" aria-hidden="true">
+        <i class="{{ icon }}" aria-hidden="true"></i>
+      </span>
+    </div>
+    {% endif %}
+    
+    <select class="form-control {{ 'is-invalid' if error }} {{ class }}" 
+            name="{{ name }}" 
+            {% if id %}id="{{ id }}"{% else %}id="{{ name }}"{% endif %}
+            {% if required %}required aria-required="true"{% endif %}
+            {% if error %}aria-invalid="true" aria-describedby="{{ (id or name) }}-error"{% endif %}
+            {% if help_text %}aria-describedby="{{ (id or name) }}-help"{% endif %}>
+      {% for option in options %}
+        {% if option is string %}
+        <option value="{{ option }}" {{ 'selected' if option == selected }}>{{ option }}</option>
+        {% else %}
+        <option value="{{ option.value }}" {{ 'selected' if option.value == selected }}>{{ option.text }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+    
+    {% if error %}
+    <div class="invalid-feedback" id="{{ (id or name) }}-error" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+  </div>
+  
+  {% if help_text %}
+  <small class="form-text text-muted" id="{{ (id or name) }}-help">{{ help_text }}</small>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Checkbox Input Group #}
+{% macro checkbox_group(name, label="", checked=false, value="1", help_text="", error="", id="", class="") %}
+<div class="form-group form-check">
+  <input type="checkbox" 
+         class="form-check-input {{ 'is-invalid' if error }} {{ class }}" 
+         name="{{ name }}" 
+         {% if id %}id="{{ id }}"{% else %}id="{{ name }}"{% endif %}
+         value="{{ value }}"
+         {% if checked %}checked{% endif %}
+         {% if error %}aria-invalid="true" aria-describedby="{{ (id or name) }}-error"{% endif %}
+         {% if help_text %}aria-describedby="{{ (id or name) }}-help"{% endif %}
+         role="checkbox">
+  
+  {% if label %}
+  <label class="form-check-label" for="{{ id or name }}">
+    {{ label }}
+  </label>
+  {% endif %}
+  
+  {% if error %}
+  <div class="invalid-feedback" id="{{ (id or name) }}-error" role="alert">
+    {{ error }}
+  </div>
+  {% endif %}
+  
+  {% if help_text %}
+  <small class="form-text text-muted" id="{{ (id or name) }}-help">{{ help_text }}</small>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Alert Component #}
+{% macro alert(message, type="info", dismissible=false, icon="", class_="") %}
+<div class="alert alert-{{ type }} {{ 'alert-dismissible' if dismissible }} {{ class_ }}" 
+     role="alert" 
+     aria-live="polite" 
+     aria-atomic="true"
+     tabindex="0">
+  {% if icon %}
+  <i class="{{ icon }} mr-2" aria-hidden="true"></i>
+  {% endif %}
+  <span class="sr-only">{{ type|title }} message: </span>
+  {{ message | safe }}
+  {% if dismissible %}
+  <button type="button" 
+          class="close" 
+          data-dismiss="alert" 
+          aria-label="Close {{ type }} alert"
+          title="Close this alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Badge Component #}
+{% macro badge(text, variant="primary", pill=false) %}
+<span class="badge badge-{{ variant }} {{ 'badge-pill' if pill }}">{{ text }}</span>
+{% endmacro %}
+
+{# Progress Bar Component #}
+{% macro progress_bar(value, max=100, variant="primary", striped=false, animated=false, label="") %}
+<div class="progress">
+  <div class="progress-bar {{ 'bg-' + variant }} {{ 'progress-bar-striped' if striped }} {{ 'progress-bar-animated' if animated }}" 
+       role="progressbar" 
+       style="width: {{ (value / max * 100) }}%" 
+       aria-valuenow="{{ value }}" 
+       aria-valuemin="0" 
+       aria-valuemax="{{ max }}">
+    {% if label %}{{ label }}{% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{# Modal Component #}
+{% macro modal(id, title="", body="", footer="", size="", backdrop="true", keyboard="true") %}
+<div class="modal fade" 
+     id="{{ id }}" 
+     tabindex="-1" 
+     role="dialog" 
+     aria-labelledby="{{ id }}Label" 
+     aria-hidden="true" 
+     aria-modal="true"
+     data-backdrop="{{ backdrop }}" 
+     data-keyboard="{{ keyboard }}">
+  <div class="modal-dialog {{ 'modal-' + size if size }}" role="document">
+    <div class="modal-content">
+      {% if title %}
+      <div class="modal-header">
+        <h5 class="modal-title" id="{{ id }}Label">{{ title }}</h5>
+        <button type="button" 
+                class="close" 
+                data-dismiss="modal" 
+                aria-label="Close {{ title or 'modal' }}"
+                title="Close modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      
+      {% if body %}
+      <div class="modal-body">
+        {{ body | safe }}
+      </div>
+      {% endif %}
+      
+      {% if footer %}
+      <div class="modal-footer">
+        {{ footer | safe }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{# Table Component #}
+{% macro table(headers=[], rows=[], striped=true, bordered=false, hover=true, responsive=true, class="", caption="") %}
+{% if responsive %}<div class="table-responsive" role="region" aria-label="Data table">{% endif %}
+<table class="table {{ 'table-striped' if striped }} {{ 'table-bordered' if bordered }} {{ 'table-hover' if hover }} {{ class }}" 
+       role="table">
+  {% if caption %}
+  <caption class="sr-only">{{ caption }}</caption>
+  {% endif %}
+  
+  {% if headers %}
+  <thead>
+    <tr role="row">
+      {% for header in headers %}
+      <th scope="col" role="columnheader">{{ header | safe }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  {% endif %}
+  
+  {% if rows %}
+  <tbody>
+    {% for row in rows %}
+    <tr role="row">
+      {% for cell in row %}
+      <td role="cell">{{ cell | safe }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% if responsive %}</div>{% endif %}
+{% endmacro %}

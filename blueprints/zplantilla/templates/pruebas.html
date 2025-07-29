@@ -1,0 +1,494 @@
+{# 
+  ZPLANTILLA BLUEPRINT - COMPONENT DEMONSTRATION TEMPLATE
+  
+  This template demonstrates:
+  - All available UI components from ui_components.html
+  - Proper Bootstrap 4 grid layout
+  - Font Awesome icon usage patterns
+  - Interactive JavaScript functionality
+  - Mermaid diagram integration
+  - Responsive design patterns
+  
+  Use this as a reference for component usage in new blueprints.
+#}
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, table, alert %}
+
+{% block title %}
+    {{ super() }}
+    Plantilla de Pruebas - Demostración de Componentes
+{% endblock %}
+
+{# {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('pruebas.static', filename='zplantilla.css') }}">
+{% endblock %} #}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-flask mr-3"></i>
+                {% set pruebas = parameter['pruebas'] %}
+                {{ pruebas }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Componentes de UI",
+                icon="fas fa-puzzle-piece",
+                icon_class="text-primary",
+                body=ui_components_demo(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-8">
+            {{ icon_card(
+                title="Diagrama de Flujo de Pruebas",
+                icon="fas fa-sitemap",
+                icon_class="text-info",
+                body=flow_diagram_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Formulario de Prueba",
+                icon="fas fa-edit",
+                icon_class="text-success",
+                body=test_form_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Datos de Ejemplo",
+                icon="fas fa-table",
+                icon_class="text-warning",
+                body=sample_data_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Alertas y Notificaciones",
+                icon="fas fa-bell",
+                icon_class="text-secondary",
+                body=alerts_demo_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% macro ui_components_demo() %}
+<div class="d-grid gap-2">
+    <h6><i class="fas fa-mouse-pointer text-primary mr-2"></i>Botones</h6>
+    {{ button(
+        text="Primario",
+        variant="primary",
+        icon="fas fa-star",
+        class="mb-1",
+        onclick="showAlert('Botón primario clickeado')"
+    ) }}
+    {{ button(
+        text="Secundario",
+        variant="secondary",
+        icon="fas fa-cog",
+        class="mb-1",
+        onclick="showAlert('Botón secundario clickeado')"
+    ) }}
+    {{ button(
+        text="Éxito",
+        variant="success",
+        icon="fas fa-check",
+        class="mb-3",
+        onclick="showAlert('Botón de éxito clickeado')"
+    ) }}
+    
+    <h6><i class="fas fa-palette text-success mr-2"></i>Badges</h6>
+    <div class="mb-3">
+        <span class="badge badge-primary mr-1">Primario</span>
+        <span class="badge badge-success mr-1">Éxito</span>
+        <span class="badge badge-warning mr-1">Advertencia</span>
+        <span class="badge badge-danger">Peligro</span>
+    </div>
+    
+    <h6><i class="fas fa-list text-info mr-2"></i>Lista de Elementos</h6>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item d-flex align-items-center py-2">
+            <i class="fas fa-check-circle text-success mr-2"></i>
+            <span>Elemento completado</span>
+        </div>
+        <div class="list-group-item d-flex align-items-center py-2">
+            <i class="fas fa-clock text-warning mr-2"></i>
+            <span>Elemento pendiente</span>
+        </div>
+        <div class="list-group-item d-flex align-items-center py-2">
+            <i class="fas fa-times-circle text-danger mr-2"></i>
+            <span>Elemento fallido</span>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro flow_diagram_content() %}
+<div class="text-center mb-3">
+    <p class="text-muted">Diagrama de flujo interactivo para pruebas del sistema</p>
+</div>
+
+<a name="route0">
+<div class="mermaid">
+    %% Diagrama de Flujo de Pruebas
+    flowchart TD
+    
+    subgraph "Proceso de Pruebas":
+        A([Inicio]) --> B[Configurar Entorno]
+        B --> C{¿Datos Disponibles?}
+        C -->|Sí| D[Ejecutar Pruebas]
+        C -->|No| E[Generar Datos de Prueba]
+        E --> D
+        D --> F{¿Pruebas Exitosas?}
+        F -->|Sí| G[Generar Reporte]
+        F -->|No| H[Analizar Errores]
+        H --> I[Corregir Problemas]
+        I --> D
+        G --> J([Fin])
+    end
+    
+    %% Enlaces interactivos
+    click B href "#" "Configurar entorno de pruebas"
+    click D href "#" "Ejecutar suite de pruebas"
+    click G href "#" "Ver reporte de resultados"
+</div>
+
+<div class="text-center mt-4">
+    {{ button(
+        text="Iniciar Proceso",
+        variant="primary",
+        icon="fas fa-play",
+        onclick="startTestProcess()"
+    ) }}
+    {{ button(
+        text="Ver Logs",
+        variant="outline-info",
+        icon="fas fa-file-alt",
+        onclick="viewTestLogs()"
+    ) }}
+    {{ button(
+        text="Configurar",
+        variant="outline-secondary",
+        icon="fas fa-cog",
+        onclick="configureTests()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro test_form_content() %}
+<form id="testForm">
+    {{ input_group(
+        name="test_name",
+        label="Nombre de la Prueba",
+        type="text",
+        placeholder="Ingresa el nombre de la prueba",
+        icon="fas fa-tag",
+        id="test_name",
+        required=true
+    ) }}
+    
+    {{ select_group(
+        name="test_type",
+        label="Tipo de Prueba",
+        options=[
+            {"value": "unit", "text": "Prueba Unitaria"},
+            {"value": "integration", "text": "Prueba de Integración"},
+            {"value": "functional", "text": "Prueba Funcional"},
+            {"value": "performance", "text": "Prueba de Rendimiento"}
+        ],
+        icon="fas fa-list",
+        id="test_type",
+        required=true
+    ) }}
+    
+    {{ select_group(
+        name="priority",
+        label="Prioridad",
+        options=[
+            {"value": "low", "text": "Baja"},
+            {"value": "medium", "text": "Media"},
+            {"value": "high", "text": "Alta"},
+            {"value": "critical", "text": "Crítica"}
+        ],
+        selected="medium",
+        icon="fas fa-exclamation-triangle",
+        id="priority"
+    ) }}
+    
+    {{ input_group(
+        name="timeout",
+        label="Timeout (segundos)",
+        type="number",
+        placeholder="30",
+        value="30",
+        icon="fas fa-clock",
+        id="timeout",
+        help_text="Tiempo máximo de ejecución en segundos"
+    ) }}
+    
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="auto_retry" name="auto_retry" value="1">
+            <label class="custom-control-label" for="auto_retry">
+                <i class="fas fa-redo mr-1"></i>
+                Reintentar automáticamente en caso de fallo
+            </label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ button(
+            text="Ejecutar Prueba",
+            variant="success",
+            icon="fas fa-play",
+            class="mr-2",
+            onclick="executeTest()"
+        ) }}
+        {{ button(
+            text="Guardar Configuración",
+            variant="outline-primary",
+            icon="fas fa-save",
+            onclick="saveTestConfig()"
+        ) }}
+    </div>
+</form>
+{% endmacro %}
+
+{% macro sample_data_content() %}
+{{ table(
+    headers=["ID", "Nombre", "Estado", "Duración", "Resultado"],
+    rows=[
+        [
+            "001",
+            "test_user_login",
+            '<span class="badge badge-success">Pasó</span>',
+            "0.245s",
+            '<i class="fas fa-check-circle text-success"></i>'
+        ],
+        [
+            "002", 
+            "test_data_validation",
+            '<span class="badge badge-success">Pasó</span>',
+            "0.156s",
+            '<i class="fas fa-check-circle text-success"></i>'
+        ],
+        [
+            "003",
+            "test_api_response",
+            '<span class="badge badge-danger">Falló</span>',
+            "2.340s",
+            '<i class="fas fa-times-circle text-danger"></i>'
+        ],
+        [
+            "004",
+            "test_database_connection",
+            '<span class="badge badge-warning">Pendiente</span>',
+            "-",
+            '<i class="fas fa-clock text-warning"></i>'
+        ],
+        [
+            "005",
+            "test_file_upload",
+            '<span class="badge badge-info">Ejecutando</span>',
+            "1.234s",
+            '<i class="fas fa-spinner fa-spin text-info"></i>'
+        ]
+    ],
+    striped=true,
+    hover=true,
+    responsive=true,
+    class="table-sm"
+) }}
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <small class="text-muted">5 pruebas | 2 exitosas | 1 fallida | 2 pendientes</small>
+    <div>
+        {{ button(
+            text="Actualizar",
+            variant="outline-primary",
+            size="sm",
+            icon="fas fa-sync",
+            onclick="refreshTestData()"
+        ) }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro alerts_demo_content() %}
+<div class="row">
+    <div class="col-md-6">
+        <h6><i class="fas fa-info-circle text-info mr-2"></i>Alertas de Estado</h6>
+        
+        {{ alert(
+            message="<strong>Información:</strong> Esta es una alerta informativa de ejemplo.",
+            type="info",
+            icon="fas fa-info-circle",
+            dismissible=true
+        ) }}
+        
+        {{ alert(
+            message="<strong>Éxito:</strong> La operación se completó correctamente.",
+            type="success",
+            icon="fas fa-check-circle",
+            dismissible=true
+        ) }}
+        
+        {{ alert(
+            message="<strong>Advertencia:</strong> Revisa la configuración antes de continuar.",
+            type="warning",
+            icon="fas fa-exclamation-triangle",
+            dismissible=true
+        ) }}
+        
+        {{ alert(
+            message="<strong>Error:</strong> Se produjo un error durante la ejecución.",
+            type="danger",
+            icon="fas fa-times-circle",
+            dismissible=true
+        ) }}
+    </div>
+    
+    <div class="col-md-6">
+        <h6><i class="fas fa-cog text-secondary mr-2"></i>Controles de Demostración</h6>
+        
+        <div class="d-grid gap-2">
+            {{ button(
+                text="Mostrar Alerta Info",
+                variant="info",
+                icon="fas fa-info",
+                class="mb-2",
+                onclick="showDynamicAlert('info', 'Esta es una alerta dinámica de información')"
+            ) }}
+            
+            {{ button(
+                text="Mostrar Alerta Éxito",
+                variant="success",
+                icon="fas fa-check",
+                class="mb-2",
+                onclick="showDynamicAlert('success', 'Operación completada exitosamente')"
+            ) }}
+            
+            {{ button(
+                text="Mostrar Alerta Advertencia",
+                variant="warning",
+                icon="fas fa-exclamation-triangle",
+                class="mb-2",
+                onclick="showDynamicAlert('warning', 'Esto es una advertencia importante')"
+            ) }}
+            
+            {{ button(
+                text="Mostrar Alerta Error",
+                variant="danger",
+                icon="fas fa-times",
+                onclick="showDynamicAlert('danger', 'Se ha producido un error')"
+            ) }}
+        </div>
+        
+        <div id="dynamicAlerts" class="mt-3"></div>
+    </div>
+</div>
+{% endmacro %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showAlert(message) {
+    alert(message);
+}
+
+function startTestProcess() {
+    alert('Iniciando proceso de pruebas...\n1. Configurando entorno\n2. Cargando datos de prueba\n3. Ejecutando tests');
+}
+
+function viewTestLogs() {
+    alert('Abriendo logs de pruebas...');
+}
+
+function configureTests() {
+    alert('Abriendo configuración de pruebas...');
+}
+
+function executeTest() {
+    const testName = document.getElementById('test_name').value;
+    const testType = document.getElementById('test_type').value;
+    
+    if (!testName) {
+        alert('Por favor, ingresa un nombre para la prueba');
+        return;
+    }
+    
+    alert(`Ejecutando prueba: ${testName} (Tipo: ${testType})`);
+}
+
+function saveTestConfig() {
+    alert('Guardando configuración de prueba...');
+}
+
+function refreshTestData() {
+    alert('Actualizando datos de pruebas...');
+}
+
+function showDynamicAlert(type, message) {
+    const alertsContainer = document.getElementById('dynamicAlerts');
+    const alertId = 'alert_' + Date.now();
+    
+    const iconMap = {
+        'info': 'fas fa-info-circle',
+        'success': 'fas fa-check-circle',
+        'warning': 'fas fa-exclamation-triangle',
+        'danger': 'fas fa-times-circle'
+    };
+    
+    const alertHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert" id="${alertId}">
+            <i class="${iconMap[type]} mr-2"></i>
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    
+    alertsContainer.innerHTML = alertHTML;
+    
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        const alertElement = document.getElementById(alertId);
+        if (alertElement) {
+            $(alertElement).alert('close');
+        }
+    }, 5000);
+}
+
+// Initialize tooltips and other Bootstrap components
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Initialize popovers
+    $('[data-toggle="popover"]').popover();
+});
+</script>
+{% endblock %}
+
+

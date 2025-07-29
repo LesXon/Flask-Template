@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card, icon_card, button, badge %}
+
+{% block title %}
+    {{ super() }}
+    Vista Lesxon
+{% endblock %}
+
+{% macro diagram_content() %}
+<a name="route0">
+<div class="mermaid">
+    %% Diagrama de Flujo
+    flowchart TD
+    
+    subgraph Activities:
+      1([Start]) -->|flow| 2[route1]
+      2 -->3([End])
+    end 
+    
+    %% Enlaces
+    click 2 href "route1"
+</div>
+{% endmacro %}
+
+{% macro quick_actions_content() %}
+<div class="d-grid gap-2">
+    {{ button(
+        text="Procesar Datos",
+        variant="primary",
+        icon="fas fa-play",
+        class="mb-2",
+        onclick="processData()"
+    ) }}
+    {{ button(
+        text="Ver Reportes",
+        variant="info",
+        icon="fas fa-file-alt",
+        class="mb-2",
+        onclick="viewReports()"
+    ) }}
+    {{ button(
+        text="Configuración",
+        variant="secondary",
+        icon="fas fa-cog",
+        onclick="openSettings()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro stats_content() %}
+<div class="text-center">
+    <div class="row">
+        <div class="col-6 mb-3">
+            <h4 class="u-text-primary mb-1">1,234</h4>
+            <small class="text-muted d-block">Registros</small>
+            {{ badge("Activo", variant="success", pill=true) }}
+        </div>
+        <div class="col-6 mb-3">
+            <h4 class="u-text-success mb-1">98.5%</h4>
+            <small class="text-muted d-block">Precisión</small>
+            {{ badge("Excelente", variant="success", pill=true) }}
+        </div>
+    </div>
+    <hr class="my-3">
+    <div class="row">
+        <div class="col-6">
+            <h4 class="u-text-info mb-1">45</h4>
+            <small class="text-muted d-block">Procesos</small>
+            {{ badge("En línea", variant="info", pill=true) }}
+        </div>
+        <div class="col-6">
+            <h4 class="u-text-warning mb-1">12</h4>
+            <small class="text-muted d-block">Pendientes</small>
+            {{ badge("Revisión", variant="warning", pill=true) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro tools_content() %}
+<div class="list-group list-group-flush">
+    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+        <i class="fas fa-download text-primary mr-2"></i>
+        Descargar Datos
+    </a>
+    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+        <i class="fas fa-upload text-success mr-2"></i>
+        Cargar Archivo
+    </a>
+    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+        <i class="fas fa-sync text-info mr-2"></i>
+        Sincronizar
+    </a>
+    <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+        <i class="fas fa-history text-warning mr-2"></i>
+        Ver Historial
+    </a>
+</div>
+{% endmacro %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-chart-line mr-3"></i>
+                {% set pruebas = parameter['pruebas'] %}
+                {{ pruebas }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            {% call icon_card(
+                title="Diagrama de Flujo del Proceso",
+                icon="fas fa-sitemap",
+                icon_class="text-info",
+                card_class="u-shadow u-margin-bottom-lg"
+            ) %}
+                {{ diagram_content() }}
+            {% endcall %}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {% call icon_card(
+                title="Acciones Rápidas",
+                icon="fas fa-bolt",
+                icon_class="text-warning",
+                card_class="u-shadow-sm"
+            ) %}
+                {{ quick_actions_content() }}
+            {% endcall %}
+        </div>
+        <div class="col-md-4">
+            {% call icon_card(
+                title="Estadísticas",
+                icon="fas fa-chart-bar",
+                icon_class="text-success",
+                card_class="u-shadow-sm"
+            ) %}
+                {{ stats_content() }}
+            {% endcall %}
+        </div>
+        <div class="col-md-4">
+            {% call icon_card(
+                title="Herramientas",
+                icon="fas fa-tools",
+                icon_class="text-primary",
+                card_class="u-shadow-sm"
+            ) %}
+                {{ tools_content() }}
+            {% endcall %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function processData() {
+    alert('Procesando datos...');
+}
+
+function viewReports() {
+    alert('Abriendo reportes...');
+}
+
+function openSettings() {
+    alert('Abriendo configuración...');
+}
+</script>
+{% endblock %}
+
+

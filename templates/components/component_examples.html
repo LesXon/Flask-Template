@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% from "components/ui_components.html" import 
+    card, icon_card, button, icon_button, loading_button,
+    input_group, textarea_group, select_group, checkbox_group,
+    alert, badge, progress_bar, modal, table
+%}
+
+{% block title %}UI Components Examples{% endblock %}
+
+{% block meta_description %}Comprehensive examples of all UI components available in the Flask ETL application{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-puzzle-piece mr-2"></i>
+                UI Components Library
+            </h1>
+            <p class="lead u-margin-bottom-xl">
+                This page demonstrates the usage of all available UI component macros with the Cerulean theme.
+            </p>
+        </div>
+    </div>
+
+    <!-- Card Components -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Card Components</h2>
+        </div>
+        
+        <div class="col-md-6 u-margin-bottom-lg">
+            {{ card(
+                title="Basic Card",
+                body="<p>This is a basic card component with title and body content. It uses the Cerulean theme styling.</p>",
+                card_class="h-100"
+            ) }}
+        </div>
+        
+        <div class="col-md-6 u-margin-bottom-lg">
+            {{ icon_card(
+                title="Icon Card",
+                body="<p>This card includes an icon in the header for better visual hierarchy and user experience.</p>",
+                icon="fas fa-star",
+                icon_class="text-warning",
+                card_class="h-100"
+            ) }}
+        </div>
+    </div>
+
+    <!-- Button Components -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Button Components</h2>
+        </div>
+        
+        <div class="col-12 u-margin-bottom-lg">
+            <div class="d-flex flex-wrap gap-2">
+                {{ button("Primary Button", variant="primary", icon="fas fa-check") }}
+                {{ button("Secondary Button", variant="secondary", icon="fas fa-cog", icon_position="right") }}
+                {{ button("Success Button", variant="success", icon="fas fa-save") }}
+                {{ button("Danger Button", variant="danger", icon="fas fa-trash") }}
+                {{ icon_button("fas fa-edit", variant="info", title="Edit") }}
+                {{ icon_button("fas fa-download", variant="success", title="Download") }}
+                {{ loading_button("Submit Form", type="submit", variant="primary", icon="fas fa-paper-plane") }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Components -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Form Components</h2>
+        </div>
+        
+        <div class="col-md-6">
+            <form>
+                {{ input_group(
+                    name="username",
+                    label="Username",
+                    type="text",
+                    placeholder="Enter your username",
+                    required=true,
+                    icon="fas fa-user",
+                    help_text="Choose a unique username"
+                ) }}
+                
+                {{ input_group(
+                    name="email",
+                    label="Email Address",
+                    type="email",
+                    placeholder="Enter your email",
+                    required=true,
+                    icon="fas fa-envelope"
+                ) }}
+                
+                {{ input_group(
+                    name="password",
+                    label="Password",
+                    type="password",
+                    placeholder="Enter your password",
+                    required=true,
+                    icon="fas fa-lock"
+                ) }}
+                
+                {{ select_group(
+                    name="role",
+                    label="User Role",
+                    options=[
+                        {"value": "admin", "text": "Administrator"},
+                        {"value": "user", "text": "Regular User"},
+                        {"value": "viewer", "text": "Viewer Only"}
+                    ],
+                    required=true,
+                    icon="fas fa-user-tag"
+                ) }}
+                
+                {{ textarea_group(
+                    name="bio",
+                    label="Biography",
+                    placeholder="Tell us about yourself...",
+                    rows="4",
+                    icon="fas fa-align-left",
+                    help_text="Optional field"
+                ) }}
+                
+                {{ checkbox_group(
+                    name="terms",
+                    label="I agree to the terms and conditions",
+                    required=true
+                ) }}
+                
+                <div class="form-group">
+                    {{ loading_button("Create Account", type="submit", variant="primary", icon="fas fa-user-plus") }}
+                    {{ button("Cancel", type="button", variant="secondary", icon="fas fa-times") }}
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-md-6">
+            <h3 class="u-text-primary">Form Validation Example</h3>
+            <form>
+                {{ input_group(
+                    name="invalid_email",
+                    label="Email with Error",
+                    type="email",
+                    value="invalid-email",
+                    error="Please enter a valid email address",
+                    icon="fas fa-envelope"
+                ) }}
+                
+                {{ input_group(
+                    name="required_field",
+                    label="Required Field",
+                    type="text",
+                    required=true,
+                    error="This field is required",
+                    icon="fas fa-asterisk"
+                ) }}
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert Components -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Alert Components</h2>
+        </div>
+        
+        <div class="col-12">
+            {{ alert("This is a primary alert with an icon!", type="primary", dismissible=true, icon="fas fa-info-circle") }}
+            {{ alert("This is a success alert!", type="success", dismissible=true, icon="fas fa-check-circle") }}
+            {{ alert("This is a warning alert!", type="warning", dismissible=true, icon="fas fa-exclamation-triangle") }}
+            {{ alert("This is a danger alert!", type="danger", dismissible=true, icon="fas fa-times-circle") }}
+            {{ alert("This is an info alert!", type="info", dismissible=false, icon="fas fa-info-circle") }}
+        </div>
+    </div>
+
+    <!-- Badge and Progress Components -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-md-6">
+            <h2 class="u-text-primary u-margin-bottom-lg">Badge Components</h2>
+            <p>
+                Status: {{ badge("Active", variant="success") }}
+                Priority: {{ badge("High", variant="danger", pill=true) }}
+                Category: {{ badge("Development", variant="primary") }}
+                Count: {{ badge("42", variant="secondary", pill=true) }}
+            </p>
+        </div>
+        
+        <div class="col-md-6">
+            <h2 class="u-text-primary u-margin-bottom-lg">Progress Bar Components</h2>
+            {{ progress_bar(value=25, variant="primary", label="25%") }}
+            {{ progress_bar(value=50, variant="success", striped=true) }}
+            {{ progress_bar(value=75, variant="warning", striped=true, animated=true) }}
+            {{ progress_bar(value=90, variant="danger") }}
+        </div>
+    </div>
+
+    <!-- Table Component -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Table Component</h2>
+            {{ table(
+                headers=["ID", "Name", "Email", "Role", "Status", "Actions"],
+                rows=[
+                    ["1", "John Doe", "john@example.com", "Admin", badge("Active", variant="success"), button("Edit", variant="primary", size="sm", icon="fas fa-edit")],
+                    ["2", "Jane Smith", "jane@example.com", "User", badge("Inactive", variant="secondary"), button("Edit", variant="primary", size="sm", icon="fas fa-edit")],
+                    ["3", "Bob Johnson", "bob@example.com", "Viewer", badge("Active", variant="success"), button("Edit", variant="primary", size="sm", icon="fas fa-edit")]
+                ],
+                striped=true,
+                hover=true,
+                responsive=true
+            ) }}
+        </div>
+    </div>
+
+    <!-- Modal Component -->
+    <div class="row u-margin-bottom-xl">
+        <div class="col-12">
+            <h2 class="u-text-primary u-margin-bottom-lg">Modal Component</h2>
+            {{ button("Open Modal", variant="primary", icon="fas fa-window-maximize", onclick="$('#exampleModal').modal('show')") }}
+            
+            {{ modal(
+                id="exampleModal",
+                title="Example Modal",
+                body="<p>This is an example modal dialog with the Cerulean theme styling.</p><p>You can include any content here, including forms, tables, or other components.</p>",
+                footer=button("Close", variant="secondary", onclick="$('#exampleModal').modal('hide')") + " " + button("Save Changes", variant="primary", icon="fas fa-save")
+            ) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Example of using the loading button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simulate form submission delay
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent actual submission for demo
+                
+                // Simulate processing time
+                setTimeout(() => {
+                    showAlert('Form submitted successfully!', 'success');
+                    
+                    // Reset loading buttons
+                    const loadingButtons = form.querySelectorAll('button[data-loading-text]');
+                    loadingButtons.forEach(button => {
+                        if (window.UIComponents && window.UIComponents.hideLoadingState) {
+                            window.UIComponents.hideLoadingState(button);
+                        }
+                    });
+                }, 2000);
+            });
+        });
+    });
+</script>
+{% endblock %}

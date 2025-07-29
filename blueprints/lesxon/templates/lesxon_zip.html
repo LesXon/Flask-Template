@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import icon_card %}
+{% from '_zip_macros.html' import create_zip_content, zip_files_content, extract_manage_content %}
+
+{% block title %}
+    {{ super() }}
+    Gestión de Archivos ZIP
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-file-archive mr-3"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Crear Archivo ZIP",
+                icon="fas fa-plus-circle",
+                icon_class="text-success",
+                body=create_zip_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-8">
+            {{ icon_card(
+                title="Archivos ZIP Disponibles",
+                icon="fas fa-archive",
+                icon_class="text-primary",
+                body=zip_files_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Extraer y Gestionar",
+                icon="fas fa-expand-arrows-alt",
+                icon_class="text-info",
+                body=extract_manage_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordProtectCheckbox = document.getElementById('password_protect');
+    const passwordField = document.getElementById('passwordField');
+    
+    passwordProtectCheckbox.addEventListener('change', function() {
+        passwordField.style.display = this.checked ? 'block' : 'none';
+    });
+});
+
+function createZip() {
+    const zipName = document.getElementById('zip_name').value;
+    const selectedFiles = document.querySelectorAll('input[name="files[]"]:checked');
+    
+    if (!zipName) {
+        alert('Por favor, ingresa un nombre para el archivo ZIP');
+        return;
+    }
+    
+    if (selectedFiles.length === 0) {
+        alert('Por favor, selecciona al menos un archivo');
+        return;
+    }
+    
+    const fileNames = Array.from(selectedFiles).map(cb => cb.value);
+    console.log(`Creando ZIP: ${zipName} con archivos:`, fileNames);
+    alert(`Creando archivo ZIP: ${zipName}.zip con ${selectedFiles.length} archivos`);
+}
+
+function selectAllFiles() {
+    const checkboxes = document.querySelectorAll('input[name="files[]"]');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    
+    checkboxes.forEach(cb => {
+        cb.checked = !allChecked;
+    });
+}
+
+function downloadZip(filename) {
+    alert(`Descargando archivo ZIP: ${filename}`);
+}
+
+function viewZipContents(filename) {
+    alert(`Mostrando contenido de: ${filename}`);
+}
+
+function extractZip(filename) {
+    if (confirm(`¿Extraer el archivo ${filename}?`)) {
+        alert(`Extrayendo archivo: ${filename}`);
+    }
+}
+
+function deleteZip(filename) {
+    if (confirm(`¿Estás seguro de que quieres eliminar ${filename}?`)) {
+        alert(`Eliminando archivo: ${filename}`);
+    }
+}
+
+function cleanTempFiles() {
+    if (confirm('¿Eliminar todos los archivos temporales?')) {
+        alert('Limpiando archivos temporales...');
+    }
+}
+
+function handleZipUpload(input) {
+    const file = input.files[0];
+    if (file) {
+        alert(`Archivo seleccionado: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+    }
+}
+
+function verifyIntegrity() {
+    alert('Verificando integridad de archivos ZIP...');
+}
+
+function repairFiles() {
+    alert('Iniciando reparación de archivos...');
+}
+
+function showStats() {
+    alert('Mostrando estadísticas de uso de archivos ZIP...');
+}
+</script>
+{% endblock %}
+
+

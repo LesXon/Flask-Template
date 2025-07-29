@@ -1,0 +1,286 @@
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, textarea_group, table, alert %}
+
+{% macro connection_status_content() %}
+<div class="text-center mb-3">
+    <div class="mb-3">
+        <i class="fas fa-circle text-success fa-2x"></i>
+    </div>
+    <h5 class="text-success">Conectado</h5>
+    <p class="text-muted small">Supabase PostgreSQL</p>
+</div>
+
+<div class="border-top pt-3">
+    <div class="row text-center">
+        <div class="col-6">
+            <h6 class="u-text-primary">127</h6>
+            <small class="text-muted">Tablas</small>
+        </div>
+        <div class="col-6">
+            <h6 class="u-text-success">98.5%</h6>
+            <small class="text-muted">Uptime</small>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    {{ button(
+        text="Probar Conexión",
+        variant="outline-success",
+        icon="fas fa-heartbeat",
+        class="btn-block btn-sm",
+        onclick="testConnection()"
+    ) }}
+</div>
+
+<div class="mt-2">
+    {{ button(
+        text="Ver Configuración",
+        variant="outline-info",
+        icon="fas fa-cog",
+        class="btn-block btn-sm",
+        onclick="showConfig()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro sql_query_content() %}
+<form id="sqlQueryForm">
+    {{ textarea_group(
+        name="sql_query",
+        label="Consulta SQL",
+        placeholder="SELECT * FROM tabla WHERE condicion = 'valor';",
+        rows="8",
+        icon="fas fa-code",
+        id="sql_query",
+        help_text="Escribe tu consulta SQL aquí"
+    ) }}
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ select_group(
+                name="query_limit",
+                label="Límite de Resultados",
+                options=[
+                    {"value": "10", "text": "10 registros"},
+                    {"value": "50", "text": "50 registros"},
+                    {"value": "100", "text": "100 registros"},
+                    {"value": "500", "text": "500 registros"},
+                    {"value": "1000", "text": "1000 registros"}
+                ],
+                selected="100",
+                icon="fas fa-list-ol",
+                id="query_limit"
+            ) }}
+        </div>
+        <div class="col-md-6">
+            {{ select_group(
+                name="output_format",
+                label="Formato de Salida",
+                options=[
+                    {"value": "table", "text": "Tabla"},
+                    {"value": "json", "text": "JSON"},
+                    {"value": "csv", "text": "CSV"}
+                ],
+                selected="table",
+                icon="fas fa-file-export",
+                id="output_format"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ button(
+            text="Ejecutar Consulta",
+            variant="primary",
+            icon="fas fa-play",
+            class="mr-2",
+            onclick="executeQuery()"
+        ) }}
+        {{ button(
+            text="Limpiar",
+            variant="outline-secondary",
+            icon="fas fa-eraser",
+            onclick="clearQuery()"
+        ) }}
+    </div>
+</form>
+
+<div class="border-top pt-3">
+    <h6><i class="fas fa-history text-muted mr-2"></i>Consultas Recientes</h6>
+    <div class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-action py-2" onclick="loadQuery('SELECT * FROM klines ORDER BY timestamp DESC LIMIT 10')">
+            <small class="text-muted">SELECT * FROM klines ORDER BY...</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action py-2" onclick="loadQuery('SELECT symbol, COUNT(*) FROM transactions GROUP BY symbol')">
+            <small class="text-muted">SELECT symbol, COUNT(*) FROM...</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action py-2" onclick="loadQuery('SELECT * FROM users WHERE created_at > NOW() - INTERVAL 7 DAY')">
+            <small class="text-muted">SELECT * FROM users WHERE...</small>
+        </a>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro database_tables_content() %}
+{{ table(
+    headers=["Tabla", "Registros", "Tamaño", "Acciones"],
+    rows=[
+        [
+            '<i class="fas fa-table text-primary mr-2"></i><span class="font-weight-bold">klines</span>',
+            '<span class="badge badge-info">1,234,567</span>',
+            '<small class="text-muted">~45 MB</small>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="describeTable(\'klines\')" title="Describir estructura"><i class="fas fa-info"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="queryTable(\'klines\')" title="Consultar tabla"><i class="fas fa-search"></i></button>' +
+            '<button class="btn btn-outline-warning" onclick="exportTable(\'klines\')" title="Exportar datos"><i class="fas fa-download"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<i class="fas fa-table text-primary mr-2"></i><span class="font-weight-bold">transactions</span>',
+            '<span class="badge badge-info">45,678</span>',
+            '<small class="text-muted">~12 MB</small>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="describeTable(\'transactions\')" title="Describir estructura"><i class="fas fa-info"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="queryTable(\'transactions\')" title="Consultar tabla"><i class="fas fa-search"></i></button>' +
+            '<button class="btn btn-outline-warning" onclick="exportTable(\'transactions\')" title="Exportar datos"><i class="fas fa-download"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<i class="fas fa-table text-primary mr-2"></i><span class="font-weight-bold">users</span>',
+            '<span class="badge badge-info">1,234</span>',
+            '<small class="text-muted">~2 MB</small>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="describeTable(\'users\')" title="Describir estructura"><i class="fas fa-info"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="queryTable(\'users\')" title="Consultar tabla"><i class="fas fa-search"></i></button>' +
+            '<button class="btn btn-outline-warning" onclick="exportTable(\'users\')" title="Exportar datos"><i class="fas fa-download"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<i class="fas fa-table text-primary mr-2"></i><span class="font-weight-bold">market_data</span>',
+            '<span class="badge badge-info">987,654</span>',
+            '<small class="text-muted">~38 MB</small>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="describeTable(\'market_data\')" title="Describir estructura"><i class="fas fa-info"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="queryTable(\'market_data\')" title="Consultar tabla"><i class="fas fa-search"></i></button>' +
+            '<button class="btn btn-outline-warning" onclick="exportTable(\'market_data\')" title="Exportar datos"><i class="fas fa-download"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<i class="fas fa-table text-primary mr-2"></i><span class="font-weight-bold">orders</span>',
+            '<span class="badge badge-info">23,456</span>',
+            '<small class="text-muted">~8 MB</small>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="describeTable(\'orders\')" title="Describir estructura"><i class="fas fa-info"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="queryTable(\'orders\')" title="Consultar tabla"><i class="fas fa-search"></i></button>' +
+            '<button class="btn btn-outline-warning" onclick="exportTable(\'orders\')" title="Exportar datos"><i class="fas fa-download"></i></button>' +
+            '</div>'
+        ]
+    ],
+    striped=true,
+    hover=true,
+    responsive=true,
+    class="table-sm",
+    caption="Tablas disponibles en la base de datos Supabase"
+) }}
+
+<div class="mt-3">
+    {{ button(
+        text="Actualizar Lista",
+        variant="outline-info",
+        icon="fas fa-sync",
+        class="btn-block btn-sm",
+        onclick="refreshTables()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro data_operations_content() %}
+<div class="d-grid gap-2">
+    {{ button(
+        text="Backup Base de Datos",
+        variant="success",
+        icon="fas fa-download",
+        class="mb-2",
+        onclick="backupDatabase()"
+    ) }}
+    
+    {{ button(
+        text="Importar Datos",
+        variant="info",
+        icon="fas fa-upload",
+        class="mb-2",
+        onclick="importData()"
+    ) }}
+    
+    {{ button(
+        text="Exportar Tabla",
+        variant="warning",
+        icon="fas fa-file-export",
+        class="mb-2",
+        onclick="exportTable()"
+    ) }}
+    
+    {{ button(
+        text="Optimizar Tablas",
+        variant="secondary",
+        icon="fas fa-tachometer-alt",
+        class="mb-2",
+        onclick="optimizeTables()"
+    ) }}
+    
+    {{ button(
+        text="Ver Logs",
+        variant="outline-dark",
+        icon="fas fa-file-alt",
+        onclick="viewLogs()"
+    ) }}
+</div>
+
+<div class="border-top mt-3 pt-3">
+    <h6><i class="fas fa-chart-pie text-muted mr-2"></i>Uso de Almacenamiento</h6>
+    <div class="progress mb-2">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+            65%
+        </div>
+    </div>
+    <small class="text-muted">6.5 GB de 10 GB utilizados</small>
+</div>
+{% endmacro %}
+
+{% macro query_results_content() %}
+<div id="queryResults">
+    {{ alert(
+        message="<i class='fas fa-info-circle mr-2'></i>Ejecuta una consulta SQL para ver los resultados aquí.",
+        type="info"
+    ) }}
+</div>
+
+<div id="sampleResults" style="display: none;">
+    {{ table(
+        headers=["ID", "Symbol", "Timestamp", "Open", "High", "Low", "Close", "Volume"],
+        rows=[
+            ["1", "BTCUSDT", "2024-01-15 10:00:00", "$42,500.00", "$42,750.00", "$42,300.00", "$42,650.00", "125.45"],
+            ["2", "ETHUSDT", "2024-01-15 10:00:00", "$2,850.00", "$2,890.00", "$2,840.00", "$2,875.00", "456.78"],
+            ["3", "ADAUSDT", "2024-01-15 10:00:00", "$0.45", "$0.46", "$0.44", "$0.45", "12,345.67"]
+        ],
+        striped=true,
+        hover=true,
+        responsive=true
+    ) }}
+    
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted">Mostrando 3 de 1,234 registros (Tiempo de ejecución: 0.045s)</small>
+        <div>
+            {{ button(
+                text="Exportar Resultados",
+                variant="outline-primary",
+                size="sm",
+                icon="fas fa-download",
+                onclick="exportResults()"
+            ) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+</rewritten_file>

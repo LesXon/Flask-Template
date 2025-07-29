@@ -1,0 +1,654 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import icon_card, card %}
+
+{% block title %}
+    {{ super() }}
+    Bienvenido
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+   {% set operating_system = parameter['operating_system'] %}
+   {% set user = parameter['user'] %}
+   {% set documents_path = parameter['documents_path'] %}      
+   {% set currentDirectory = parameter['currentDirectory'] %}
+   {% set timestamp = parameter['timestamp'] %}
+
+   <!-- Header Section -->
+   <div class="row mb-4">
+     <div class="col-12">
+       <div class="text-center">
+         <h1 class="display-4 title mt-4 mb-3">
+           <i class="fas fa-database text-primary mr-3"></i>Flask Template
+         </h1>
+         <p class="lead text-muted">Data Processing & Analysis Platform</p>
+       </div>
+     </div>
+   </div>
+
+   <!-- System Information & Strategy Cards -->
+   <div class="row mb-4">
+     <!-- System Information -->
+     <div class="col-lg-8 col-md-12 mb-3">
+       {{ icon_card(
+         title="System Information",
+         icon="fas fa-info-circle",
+         icon_class="text-info",
+         body='
+         <div class="row">
+           <div class="col-md-6">
+             <div class="d-flex align-items-center mb-2">
+               <i class="fas fa-desktop text-muted mr-2"></i>
+               <span><strong>OS:</strong> ' + operating_system + '</span>
+             </div>
+             <div class="d-flex align-items-center mb-2">
+               <i class="fas fa-user text-muted mr-2"></i>
+               <span><strong>User:</strong> ' + user + '</span>
+             </div>
+           </div>
+           <div class="col-md-6">
+             <div class="d-flex align-items-center mb-2">
+               <i class="fas fa-folder text-muted mr-2"></i>
+               <span><strong>Directory:</strong> ' + documents_path + '</span>
+             </div>
+             <div class="d-flex align-items-center mb-2">
+               <i class="fas fa-clock text-muted mr-2"></i>
+               <span><strong>Time:</strong> ' + timestamp + '</span>
+             </div>
+           </div>
+         </div>',
+         card_class="h-100"
+       ) }}
+     </div>
+     <div class="col-lg-4 col-md-12 mb-3">
+       {{ card(
+         title="Trading Strategy",
+         body='
+         <div class="border-left border-info pl-3">
+           <h6 class="text-info mb-2">
+             <i class="fas fa-cogs mr-2"></i>Automated Operations
+           </h6>
+           <div class="list-group list-group-flush">
+             <a href="' ~ url_for('lesxon.zip') ~ '" class="list-group-item list-group-item-action border-0 px-0 py-1">
+               <i class="fas fa-file-archive text-muted mr-2"></i>Data Archiving
+             </a>
+             <a href="' ~ url_for('lesxon.klines') ~ '" class="list-group-item list-group-item-action border-0 px-0 py-1">
+               <i class="fas fa-chart-bar text-muted mr-2"></i>Klines Analysis
+             </a>
+             <a href="' ~ url_for('lesxon.transactions') ~ '" class="list-group-item list-group-item-action border-0 px-0 py-1">
+               <i class="fas fa-exchange-alt text-muted mr-2"></i>Transaction Management
+             </a>
+             <a href="' ~ url_for('lesxon.download') ~ '" class="list-group-item list-group-item-action border-0 px-0 py-1">
+               <i class="fas fa-download text-muted mr-2"></i>Download Data
+             </a>
+             <a href="' ~ url_for('lesxon.supabase') ~ '" class="list-group-item list-group-item-action border-0 px-0 py-1">
+               <i class="fas fa-database text-muted mr-2"></i>Supabase Integration
+             </a>
+           </div>
+         </div>
+         ',
+         card_class="h-100"
+       ) }}
+     </div>
+   </div>
+
+   <!-- Main Tools Dashboard -->
+   <div class="row mb-4">
+     <!-- AI Tools Section -->
+     <div class="col-lg-6 col-md-12 mb-4">
+       <div class="card h-100">
+         <div class="card-header" id="aiToolsHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none" type="button" data-toggle="collapse" data-target="#aiToolsCollapse" aria-expanded="true" aria-controls="aiToolsCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-robot text-primary mr-2"></i>
+                   <span class="font-weight-bold">AI Tools</span>
+                   <small class="text-muted ml-2">Artificial Intelligence Platforms</small>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="aiToolsCollapse" class="collapse show" aria-labelledby="aiToolsHeader">
+           <div class="card-body">
+             <div class="row">
+               <!-- AI Platforms -->
+               <div class="col-md-6 mb-3">
+                 <div class="border-left border-primary pl-3">
+                   <h6 class="text-primary mb-2">
+                     <i class="fas fa-comments mr-2"></i>Chat Platforms
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://chatgpt.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>ChatGPT
+                     </a>
+                     <a href="https://claude.ai/new" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Claude
+                     </a>
+                     <a href="https://gemini.google.com/app" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Google Gemini
+                     </a>
+                     <a href="https://grok.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Grok
+                     </a>
+                     <a href="https://chat.deepseek.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>DeepSeek
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Development & Media -->
+               <div class="col-md-6 mb-3">
+                 <div class="border-left border-success pl-3">
+                   <h6 class="text-success mb-2">
+                     <i class="fas fa-code mr-2"></i>Development
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.cursor.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Cursor IDE
+                     </a>
+                     <a href="https://platform.openai.com/tokenizer" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Tokenizer
+                     </a>
+                   </div>
+                 </div>
+                 <div class="border-left border-danger pl-3 mt-3">
+                   <h6 class="text-danger mb-2">
+                     <i class="fas fa-video mr-2"></i>Media
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://app.heygen.com/home" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>HeyGen Videos
+                     </a>
+                     <a href="https://notebooklm.google/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>NotebookLM
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Prompt Tools -->
+               <div class="col-12">
+                 <div class="border-left border-warning pl-3">
+                   <h6 class="text-warning mb-2">
+                     <i class="fas fa-magic mr-2"></i>Prompt Tools
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.juancmejia.com/transformacion-digital/generador-automatico-de-prompts-para-chatgpt/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Generador de Prompts
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- Utilities & Tools Section -->
+     <div class="col-lg-6 col-md-12 mb-4">
+       <div class="card h-100">
+         <div class="card-header" id="utilitiesHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none" type="button" data-toggle="collapse" data-target="#utilitiesCollapse" aria-expanded="true" aria-controls="utilitiesCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-tools text-secondary mr-2"></i>
+                   <span class="font-weight-bold">Utilities & Tools</span>
+                   <small class="text-muted ml-2">Productivity & Development</small>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="utilitiesCollapse" class="collapse show" aria-labelledby="utilitiesHeader">
+           <div class="card-body">
+             <div class="row">
+               <!-- Translation & Text -->
+               <div class="col-md-6 mb-3">
+                 <div class="border-left border-info pl-3">
+                   <h6 class="text-info mb-2">
+                     <i class="fas fa-language mr-2"></i>Translation
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.deepl.com" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>DeepL
+                     </a>
+                     <a href="https://translate.google.com/?hl=es&sl=en&tl=es&op=docs" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Google Translate
+                     </a>
+                   </div>
+                 </div>
+                 <div class="border-left border-warning pl-3 mt-3">
+                   <h6 class="text-warning mb-2">
+                     <i class="fas fa-spell-check mr-2"></i>Text Processing
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://languagetool.org/es" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Grammar Check
+                     </a>
+                     <a href="https://mayusculasminusculas.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Case Converter
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Development & Microsoft -->
+               <div class="col-md-6 mb-3">
+                 <div class="border-left border-success pl-3">
+                   <h6 class="text-success mb-2">
+                     <i class="fas fa-database mr-2"></i>Development
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://sqliteviewer.app" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>SQLite Viewer
+                     </a>
+                     <a href="https://www.mermaidchart.com/app/dashboard" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Mermaid Editor
+                     </a>
+                     <a href="https://vscode.dev/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>VS Code Web
+                     </a>
+                   </div>
+                 </div>
+                 <div class="border-left border-primary pl-3 mt-3">
+                   <h6 class="text-primary mb-2">
+                     <i class="fab fa-microsoft mr-2"></i>Microsoft
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.microsoft.com/es-co/microsoft-365" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Microsoft 365
+                     </a>
+                     <a href="https://to-do.office.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>To Do
+                     </a>
+                     <a href="https://planner.cloud.microsoft" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Planner
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <!-- Advanced Platforms & Resources -->
+   <div class="row mb-4">
+     <!-- Axionomic AI Section -->
+     <div class="col-lg-6 col-md-12 mb-4">
+       <div class="card border-primary h-100">
+         <div class="card-header bg-light" id="axionomicHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#axionomicCollapse" aria-expanded="false" aria-controls="axionomicCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-brain text-primary mr-2"></i>
+                   <span class="font-weight-bold">Axionomic AI</span>
+                   <small class="text-muted ml-2">Advanced AI Protocols</small>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="axionomicCollapse" class="collapse" aria-labelledby="axionomicHeader">
+           <div class="card-body">
+             <div class="row">
+               <!-- Main Links -->
+               <div class="col-12 mb-3">
+                 <div class="border-left border-info pl-3">
+                   <h6 class="text-info mb-2">
+                     <i class="fas fa-link mr-2"></i>Main Links
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.axionomic.ai" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Axionomic.ai
+                     </a>
+                     <a href="https://github.com/AxionomicAI/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fab fa-github text-muted mr-2"></i>GitHub Axionomic
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- MCP Protocol -->
+               <div class="col-12 mb-3">
+                 <div class="border-left border-warning pl-3">
+                   <h6 class="text-warning mb-2">
+                     <i class="fas fa-plug mr-2"></i>MCP Protocol
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://modelcontextprotocol.io/introduction" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Official Documentation
+                     </a>
+                     <a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fab fa-github text-muted mr-2"></i>Python SDK
+                     </a>
+                     <a href="https://preview.redd.it/cjfgiwrfwb7e1.jpeg?width=1080&crop=smart&auto=webp&s=2cd178434e90b13c0794793d8994fe9d5223e5f1" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Evolution Diagram
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Additional Protocols -->
+               <div class="col-md-6">
+                 <div class="border-left border-success pl-3">
+                   <h6 class="text-success mb-2">
+                     <i class="fas fa-exchange-alt mr-2"></i>A2A Protocol
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://a2aprotocol.ai/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>A2A Protocol
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <div class="col-md-6">
+                 <div class="border-left border-info pl-3">
+                   <h6 class="text-info mb-2">
+                     <i class="fas fa-users mr-2"></i>MetaGPT
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://github.com/FoundationAgents/MetaGPT" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fab fa-github text-muted mr-2"></i>MetaGPT
+                     </a>
+                     <a href="https://docs.deepwisdom.ai/main/en/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Documentation
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- LesXon Platform Section -->
+     <div class="col-lg-6 col-md-12 mb-4">
+       <div class="card border-success h-100">
+         <div class="card-header bg-light" id="lesxonHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#lesxonCollapse" aria-expanded="false" aria-controls="lesxonCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-chart-line text-success mr-2"></i>
+                   <span class="font-weight-bold">LesXon Platform</span>
+                   <small class="text-muted ml-2">Data Analysis & Trading</small>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="lesxonCollapse" class="collapse" aria-labelledby="lesxonHeader">
+           <div class="card-body">
+             <div class="row">
+               <!-- Platform Links -->
+               <div class="col-12 mb-3">
+                 <div class="border-left border-info pl-3">
+                   <h6 class="text-info mb-2">
+                     <i class="fas fa-link mr-2"></i>Platform Links
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.lesxon.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>LesXon.com
+                     </a>
+                     <a href="https://github.com/AxionomicAI/lesxon-engine" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fab fa-github text-muted mr-2"></i>LesXon Engine
+                     </a>
+                     <a href="https://openapi-generator.tech/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>OpenAPI Generator
+                     </a>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Documentation -->
+               <div class="col-12">
+                 <div class="border-left border-warning pl-3">
+                   <h6 class="text-warning mb-2">
+                     <i class="fas fa-book mr-2"></i>Documentation
+                   </h6>
+                   <div class="list-group list-group-flush">
+                     <a href="https://www.lesxon.com/manual/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Procedures Manual
+                     </a>
+                     <a href="https://www.lesxon.com/manual/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                       <i class="fas fa-external-link-alt text-muted mr-2"></i>Data Dictionary
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <!-- Quick Access Resources -->
+   <div class="row mb-4">
+     <!-- Analytics & Development -->
+     <div class="col-lg-4 col-md-6 mb-4">
+       <div class="card border-info h-100">
+         <div class="card-header bg-light" id="analyticsHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#analyticsCollapse" aria-expanded="false" aria-controls="analyticsCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-chart-bar text-info mr-2"></i>
+                   <span class="font-weight-bold">Analytics & Tools</span>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="analyticsCollapse" class="collapse" aria-labelledby="analyticsHeader">
+           <div class="card-body">
+             <div class="border-left border-primary pl-3">
+               <h6 class="text-primary mb-2">
+                 <i class="fas fa-chart-line mr-2"></i>Analytics
+               </h6>
+               <div class="list-group list-group-flush">
+                 <a href="https://datastudio.google.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Google Data Studio
+                 </a>
+                 <a href="https://cloud.google.com/looker-studio" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Looker Studio
+                 </a>
+                 <a href="https://imagecolorpicker.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Color Picker
+                 </a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- Cryptocurrency News -->
+     <div class="col-lg-4 col-md-6 mb-4">
+       <div class="card border-warning h-100">
+         <div class="card-header bg-light" id="cryptoHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#cryptoCollapse" aria-expanded="false" aria-controls="cryptoCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fab fa-bitcoin text-warning mr-2"></i>
+                   <span class="font-weight-bold">Crypto News</span>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="cryptoCollapse" class="collapse" aria-labelledby="cryptoHeader">
+           <div class="card-body">
+             <div class="border-left border-warning pl-3">
+               <h6 class="text-warning mb-2">
+                 <i class="fas fa-newspaper mr-2"></i>News Sources
+               </h6>
+               <div class="list-group list-group-flush">
+                 <a href="https://es.cointelegraph.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Cointelegraph
+                 </a>
+                 <a href="https://www.criptonoticias.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>CriptoNoticias
+                 </a>
+                 <a href="https://www.diariobitcoin.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Diario Bitcoin
+                 </a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- General News -->
+     <div class="col-lg-4 col-md-6 mb-4">
+       <div class="card border-secondary h-100">
+         <div class="card-header bg-light" id="newsHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#newsCollapse" aria-expanded="false" aria-controls="newsCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-newspaper text-secondary mr-2"></i>
+                   <span class="font-weight-bold">General News</span>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="newsCollapse" class="collapse" aria-labelledby="newsHeader">
+           <div class="card-body">
+             <div class="border-left border-secondary pl-3">
+               <h6 class="text-secondary mb-2">
+                 <i class="fas fa-globe mr-2"></i>News Sources
+               </h6>
+               <div class="list-group list-group-flush">
+                 <a href="https://www.bbc.com/news" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>BBC News
+                 </a>
+                 <a href="https://www.reuters.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>Reuters
+                 </a>
+                 <a href="https://www.eltiempo.com/" target="_blank" class="list-group-item list-group-item-action border-0 px-0 py-1">
+                   <i class="fas fa-external-link-alt text-muted mr-2"></i>El Tiempo
+                 </a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   <!-- Investment Strategy Visualization -->
+   <div class="row mb-4">
+     <div class="col-12">
+       <div class="card border-success">
+         <div class="card-header bg-light" id="strategyHeader">
+           <h5 class="mb-0">
+             <button class="btn btn-link text-left w-100 text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#strategyCollapse" aria-expanded="false" aria-controls="strategyCollapse">
+               <div class="d-flex align-items-center justify-content-between">
+                 <div>
+                   <i class="fas fa-chart-pie text-success mr-2"></i>
+                   <span class="font-weight-bold">Investment Strategy</span>
+                   <small class="text-muted ml-2">LesXon Platform Visualization</small>
+                 </div>
+                 <i class="fas fa-chevron-down"></i>
+               </div>
+             </button>
+           </h5>
+         </div>
+         <div id="strategyCollapse" class="collapse" aria-labelledby="strategyHeader">
+           <div class="card-body">
+             <div class="text-center mb-3">
+               <a href="https://www.lesxon.com/" target="_blank" class="btn btn-outline-success">
+                 <i class="fas fa-external-link-alt mr-2"></i>Visit LesXon Platform
+               </a>
+             </div>
+             <div class="mermaid">
+    flowchart BT
+
+    %% ------- DEFINITION COLORS
+    %% blue
+    classDef color1 fill:#2374f7,stroke:#000,stroke-width:2px,color:#000
+    %% green
+    classDef color2 fill:#00FF00,stroke:#000,stroke-width:2px,color:#000
+    %% orange
+    classDef color3 fill:#fc822b,stroke:#000,stroke-width:2px,color:#000
+
+    %% Boxes
+    classDef box1Color fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px
+    classDef box2Color fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px
+
+    %% ------- DEFINITION OF GRAPHS
+    %% Storages
+    RWA>Real World Assets<br/>RWA]:::color3
+    MARKET>Market<br/>Virtual Assets]:::color3
+    FIAT>FIAT]:::color3
+    INVESTMENTS>Investments<br/>Virtual Assets]:::color3
+
+    %% Process
+    BUY((1.BUY)):::color2
+    SELL((2.SELL)):::color2
+    PASSIVE((2.Passive<br/>Income)):::color2
+    INVEST((1.Invest)):::color2
+
+    %% ------- GRAPHIC DESIGN
+    subgraph **INVESTMENT STRATEGY**
+      subgraph **VIRTUAL_WORLD**
+        MARKET
+        BUY
+        SELL
+        INVESTMENTS
+      end
+
+      subgraph **REAL_WORLD**
+        RWA
+        PASSIVE
+        FIAT
+        INVEST
+      end
+    end
+
+    %% ------- FLOWS
+    MARKET ---> |Bear Market| BUY
+    BUY ---> |Virtual Assets| INVESTMENTS
+    INVESTMENTS ---> |Bull Market| SELL
+    SELL ---> |Virtual Assets| MARKET
+
+    RWA ---> |RWA| PASSIVE
+    PASSIVE ---> |COP,USDT| FIAT
+    FIAT ---> |COP| INVEST
+    INVEST ---> |RWA| RWA
+
+    SELL ---> |USDT| FIAT
+    FIAT ---> |COP,USDT| BUY
+
+    %% ------- COLOR SETTINGS
+    class **VIRTUAL_WORLD** box1Color
+    class **REAL_WORLD** box2Color
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import alert, card %}
+{% from '_transactions_macros.html' import filter_form_content, results_content %}
+
+{% block title %}
+    {{ super() }}
+    Transacciones
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center title mb-4">
+                <i class="fas fa-exchange-alt text-primary mr-3"></i>
+                Transacciones
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {% if error %}
+                {{ alert(error, type="danger", icon="fas fa-exclamation-triangle") }}
+            {% endif %}
+            
+            {% if success %}
+                {{ alert(success, type="success", icon="fas fa-check-circle") }}
+            {% endif %}
+
+            {{ card(
+                title="Filtros de Búsqueda",
+                body=filter_form_content(),
+                card_class="shadow-sm"
+            ) }}
+        </div>
+        
+        <div class="col-md-8">
+            {{ card(
+                title="Resultados de Transacciones",
+                body=results_content(
+                    transactions=transactions, 
+                    total_count=total_transactions, 
+                    page=page,
+                    per_page=per_page
+                ),
+                card_class="shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filterForm');
+    const submitBtn = document.getElementById('filterBtn');
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Clear previous validation states
+        clearValidationStates();
+        
+        let isValid = true;
+        const formData = new FormData(form);
+        
+        // Symbol validation (optional)
+        const symbol = formData.get('symbol');
+        if (symbol && symbol.length < 3) {
+            showFieldError('symbol', 'El símbolo debe tener al menos 3 caracteres');
+            isValid = false;
+        }
+        
+        // Date validation
+        const startDate = formData.get('start_date');
+        const endDate = formData.get('end_date');
+        
+        if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+            showFieldError('end_date', 'La fecha fin debe ser posterior a la fecha inicio');
+            isValid = false;
+        }
+        
+        // Amount validation
+        const minAmount = parseFloat(formData.get('min_amount')) || 0;
+        const maxAmount = parseFloat(formData.get('max_amount')) || 0;
+        
+        if (minAmount < 0) {
+            showFieldError('min_amount', 'El monto mínimo no puede ser negativo');
+            isValid = false;
+        }
+        
+        if (maxAmount < 0) {
+            showFieldError('max_amount', 'El monto máximo no puede ser negativo');
+            isValid = false;
+        }
+        
+        if (minAmount > 0 && maxAmount > 0 && minAmount > maxAmount) {
+            showFieldError('max_amount', 'El monto máximo debe ser mayor al mínimo');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Show loading state
+            showLoadingState(submitBtn);
+            
+            // Submit form (in a real app, this would be an AJAX call)
+            setTimeout(() => {
+                form.submit();
+            }, 1000);
+        }
+    });
+    
+    // Real-time validation
+    const symbolInput = document.getElementById('symbol');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    
+    symbolInput.addEventListener('blur', function() {
+        const symbol = this.value;
+        if (symbol && symbol.length >= 3) {
+            showFieldSuccess('symbol');
+        } else if (symbol && symbol.length < 3) {
+            showFieldError('symbol', 'El símbolo debe tener al menos 3 caracteres');
+        }
+    });
+    
+    endDateInput.addEventListener('change', function() {
+        const startDate = startDateInput.value;
+        const endDate = this.value;
+        
+        if (startDate && endDate && new Date(startDate) <= new Date(endDate)) {
+            showFieldSuccess('end_date');
+        } else if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+            showFieldError('end_date', 'La fecha fin debe ser posterior a la fecha inicio');
+        }
+    });
+});
+
+function clearForm() {
+    document.getElementById('filterForm').reset();
+    clearValidationStates();
+}
+
+function showFieldError(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
+    feedback.textContent = message;
+    feedback.classList.add('invalid-feedback');
+    feedback.classList.remove('valid-feedback');
+    
+    if (!field.parentNode.querySelector('.invalid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function showFieldSuccess(fieldName) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback, .valid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-valid');
+    field.classList.remove('is-invalid');
+    feedback.textContent = '¡Correcto!';
+    feedback.classList.add('valid-feedback');
+    feedback.classList.remove('invalid-feedback');
+    
+    if (!field.parentNode.querySelector('.valid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function clearValidationStates() {
+    const fields = document.querySelectorAll('.form-control');
+    fields.forEach(field => {
+        field.classList.remove('is-valid', 'is-invalid');
+    });
+    
+    const feedbacks = document.querySelectorAll('.invalid-feedback, .valid-feedback');
+    feedbacks.forEach(feedback => feedback.remove());
+}
+
+function createFeedbackElement() {
+    const feedback = document.createElement('div');
+    return feedback;
+}
+
+function showLoadingState(button) {
+    const buttonText = button.querySelector('.button-text');
+    const spinner = button.querySelector('.spinner-border');
+    
+    button.disabled = true;
+    buttonText.textContent = button.getAttribute('data-loading-text');
+    spinner.classList.remove('d-none');
+}
+</script>
+{% endblock %}
+
+

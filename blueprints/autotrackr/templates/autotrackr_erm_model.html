@@ -1,0 +1,525 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, table, alert %}
+
+{% block title %}
+    {{ super() }}
+    Modelo ERM
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-project-diagram mr-3" aria-hidden="true"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            {{ icon_card(
+                title="Herramientas de Modelado",
+                icon="fas fa-tools",
+                icon_class="text-primary",
+                body=modeling_tools_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-9">
+            {{ icon_card(
+                title="Diagrama ERM",
+                icon="fas fa-sitemap",
+                icon_class="text-info",
+                body=erm_diagram_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Entidades del Modelo",
+                icon="fas fa-cube",
+                icon_class="text-success",
+                body=entities_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Relaciones",
+                icon="fas fa-link",
+                icon_class="text-warning",
+                body=relationships_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Propiedades de la Entidad Seleccionada",
+                icon="fas fa-list-alt",
+                icon_class="text-secondary",
+                body=entity_properties_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% macro modeling_tools_content() %}
+<div class="d-grid gap-2">
+    {{ button(
+        text="Nueva Entidad",
+        variant="success",
+        icon="fas fa-plus",
+        class="mb-2",
+        onclick="createEntity()"
+    ) }}
+    
+    {{ button(
+        text="Nueva Relación",
+        variant="info",
+        icon="fas fa-link",
+        class="mb-2",
+        onclick="createRelationship()"
+    ) }}
+    
+    {{ button(
+        text="Validar Modelo",
+        variant="warning",
+        icon="fas fa-check-circle",
+        class="mb-2",
+        onclick="validateModel()"
+    ) }}
+    
+    {{ button(
+        text="Generar SQL",
+        variant="primary",
+        icon="fas fa-code",
+        class="mb-2",
+        onclick="generateSQL()"
+    ) }}
+    
+    {{ button(
+        text="Exportar Modelo",
+        variant="secondary",
+        icon="fas fa-download",
+        class="mb-2",
+        onclick="exportModel()"
+    ) }}
+    
+    {{ button(
+        text="Importar Modelo",
+        variant="outline-secondary",
+        icon="fas fa-upload",
+        onclick="importModel()"
+    ) }}
+</div>
+
+<hr>
+
+<div class="form-group">
+    <label class="form-label">
+        <i class="fas fa-search mr-2"></i>
+        Buscar Entidad
+    </label>
+    {{ input_group(
+        name="search_entity",
+        type="text",
+        placeholder="Nombre de entidad...",
+        icon="fas fa-search",
+        id="search_entity"
+    ) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">
+        <i class="fas fa-eye mr-2"></i>
+        Vista del Diagrama
+    </label>
+    {{ select_group(
+        name="diagram_view",
+        options=[
+            {"value": "logical", "text": "Vista Lógica"},
+            {"value": "physical", "text": "Vista Física"},
+            {"value": "conceptual", "text": "Vista Conceptual"}
+        ],
+        selected="logical",
+        icon="fas fa-eye",
+        id="diagram_view"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro erm_diagram_content() %}
+<div class="text-center p-5 bg-light rounded">
+    <div class="mb-4">
+        <i class="fas fa-project-diagram fa-5x text-muted" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-muted">Diagrama Entidad-Relación</h4>
+    <p class="text-muted">El diagrama ERM se mostrará aquí con las entidades y sus relaciones</p>
+    
+    <div class="mermaid">
+        erDiagram
+            CUSTOMER ||--o{ ORDER : places
+            ORDER ||--|{ LINE-ITEM : contains
+            CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+            
+            CUSTOMER {
+                int customer_id PK
+                string name
+                string email
+                string phone
+                date created_at
+            }
+            
+            ORDER {
+                int order_id PK
+                int customer_id FK
+                date order_date
+                decimal total_amount
+                string status
+            }
+            
+            LINE-ITEM {
+                int line_id PK
+                int order_id FK
+                int product_id FK
+                int quantity
+                decimal unit_price
+            }
+            
+            DELIVERY-ADDRESS {
+                int address_id PK
+                int customer_id FK
+                string street
+                string city
+                string postal_code
+            }
+    </div>
+    
+    <div class="mt-4">
+        {{ button(
+            text="Editar Diagrama",
+            variant="primary",
+            icon="fas fa-edit",
+            onclick="editDiagram()"
+        ) }}
+        {{ button(
+            text="Zoom In",
+            variant="outline-secondary",
+            icon="fas fa-search-plus",
+            onclick="zoomIn()"
+        ) }}
+        {{ button(
+            text="Zoom Out",
+            variant="outline-secondary",
+            icon="fas fa-search-minus",
+            onclick="zoomOut()"
+        ) }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro entities_content() %}
+<div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-cube text-primary mr-2"></i>
+            <div>
+                <strong>CUSTOMER</strong>
+                <br>
+                <small class="text-muted">5 atributos</small>
+            </div>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-primary" onclick="selectEntity('CUSTOMER')" title="Seleccionar">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="btn btn-outline-success" onclick="editEntity('CUSTOMER')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-cube text-success mr-2"></i>
+            <div>
+                <strong>ORDER</strong>
+                <br>
+                <small class="text-muted">5 atributos</small>
+            </div>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-primary" onclick="selectEntity('ORDER')" title="Seleccionar">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="btn btn-outline-success" onclick="editEntity('ORDER')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-cube text-info mr-2"></i>
+            <div>
+                <strong>LINE-ITEM</strong>
+                <br>
+                <small class="text-muted">5 atributos</small>
+            </div>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-primary" onclick="selectEntity('LINE-ITEM')" title="Seleccionar">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="btn btn-outline-success" onclick="editEntity('LINE-ITEM')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-cube text-warning mr-2"></i>
+            <div>
+                <strong>DELIVERY-ADDRESS</strong>
+                <br>
+                <small class="text-muted">5 atributos</small>
+            </div>
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-primary" onclick="selectEntity('DELIVERY-ADDRESS')" title="Seleccionar">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="btn btn-outline-success" onclick="editEntity('DELIVERY-ADDRESS')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3 text-center">
+    <small class="text-muted">4 entidades en el modelo</small>
+</div>
+{% endmacro %}
+
+{% macro relationships_content() %}
+<div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+    <div class="list-group-item">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <strong>CUSTOMER → ORDER</strong>
+                <br>
+                <small class="text-muted">
+                    <span class="badge badge-info">1:N</span>
+                    places
+                </small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" onclick="editRelationship('customer_order')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="list-group-item">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <strong>ORDER → LINE-ITEM</strong>
+                <br>
+                <small class="text-muted">
+                    <span class="badge badge-success">1:N</span>
+                    contains
+                </small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" onclick="editRelationship('order_lineitem')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="list-group-item">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <strong>CUSTOMER → DELIVERY-ADDRESS</strong>
+                <br>
+                <small class="text-muted">
+                    <span class="badge badge-warning">N:M</span>
+                    uses
+                </small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" onclick="editRelationship('customer_address')" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3 text-center">
+    <small class="text-muted">3 relaciones definidas</small>
+</div>
+{% endmacro %}
+
+{% macro entity_properties_content() %}
+<div class="row">
+    <div class="col-md-6">
+        <h6><i class="fas fa-info-circle text-primary mr-2"></i>Información General</h6>
+        <div class="border rounded p-3">
+            <div class="form-group">
+                <label class="form-label"><strong>Nombre de la Entidad:</strong></label>
+                <p class="mb-1">CUSTOMER</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label"><strong>Descripción:</strong></label>
+                <p class="mb-1">Entidad que representa a los clientes del sistema</p>
+            </div>
+            <div class="form-group mb-0">
+                <label class="form-label"><strong>Tipo:</strong></label>
+                <p class="mb-0">Entidad Fuerte</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <h6><i class="fas fa-list text-success mr-2"></i>Atributos</h6>
+        {{ table(
+            headers=["Atributo", "Tipo", "Restricciones"],
+            caption="Atributos de la entidad CUSTOMER seleccionada",
+            rows=[
+                ["customer_id", "INT", '<span class="badge badge-primary">PK</span>'],
+                ["name", "VARCHAR(100)", '<span class="badge badge-warning">NOT NULL</span>'],
+                ["email", "VARCHAR(255)", '<span class="badge badge-info">UNIQUE</span>'],
+                ["phone", "VARCHAR(20)", ""],
+                ["created_at", "TIMESTAMP", '<span class="badge badge-secondary">DEFAULT NOW()</span>']
+            ],
+            striped=true,
+            class="table-sm"
+        ) }}
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                {{ button(
+                    text="Agregar Atributo",
+                    variant="success",
+                    size="sm",
+                    icon="fas fa-plus",
+                    onclick="addAttribute()"
+                ) }}
+                {{ button(
+                    text="Editar Entidad",
+                    variant="primary",
+                    size="sm",
+                    icon="fas fa-edit",
+                    onclick="editEntity('CUSTOMER')"
+                ) }}
+            </div>
+            <div>
+                {{ button(
+                    text="Eliminar Entidad",
+                    variant="danger",
+                    size="sm",
+                    icon="fas fa-trash",
+                    onclick="deleteEntity('CUSTOMER')"
+                ) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function createEntity() {
+    alert('Abriendo formulario para crear nueva entidad...');
+}
+
+function createRelationship() {
+    alert('Abriendo formulario para crear nueva relación...');
+}
+
+function validateModel() {
+    alert('Validando modelo ERM...\n✓ Todas las entidades tienen clave primaria\n✓ Las relaciones están bien definidas\n✓ No hay dependencias circulares');
+}
+
+function generateSQL() {
+    alert('Generando script SQL DDL del modelo...');
+}
+
+function exportModel() {
+    alert('Exportando modelo ERM...');
+}
+
+function importModel() {
+    alert('Importando modelo ERM...');
+}
+
+function editDiagram() {
+    alert('Abriendo editor de diagrama...');
+}
+
+function zoomIn() {
+    alert('Aumentando zoom del diagrama...');
+}
+
+function zoomOut() {
+    alert('Disminuyendo zoom del diagrama...');
+}
+
+function selectEntity(entityName) {
+    alert(`Entidad seleccionada: ${entityName}`);
+}
+
+function editEntity(entityName) {
+    alert(`Editando entidad: ${entityName}`);
+}
+
+function editRelationship(relationshipId) {
+    alert(`Editando relación: ${relationshipId}`);
+}
+
+function addAttribute() {
+    alert('Agregando nuevo atributo a la entidad...');
+}
+
+function deleteEntity(entityName) {
+    if (confirm(`¿Estás seguro de que quieres eliminar la entidad ${entityName}?`)) {
+        alert(`Eliminando entidad: ${entityName}`);
+    }
+}
+
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search_entity');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            console.log('Buscando entidad:', searchTerm);
+        });
+    }
+    
+    const diagramView = document.getElementById('diagram_view');
+    if (diagramView) {
+        diagramView.addEventListener('change', function() {
+            const view = this.value;
+            console.log('Cambiando vista del diagrama a:', view);
+            alert(`Cambiando a vista: ${view}`);
+        });
+    }
+});
+</script>
+{% endblock %} 

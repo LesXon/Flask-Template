@@ -1,0 +1,153 @@
+{% from 'components/ui_components.html' import input_group, select_group, card, alert, table, badge %}
+
+{% macro filter_form_content() %}
+<form method="POST" action="{{ url_for('lesxon.transactions') }}" id="filterForm" novalidate>
+    {{ input_group(
+        name="symbol",
+        label="Símbolo",
+        type="text",
+        placeholder="Ej: BTCUSDT",
+        value=request.form.get('symbol', '') if request.form else '',
+        icon="fas fa-coins",
+        error=errors.get('symbol') if errors else None,
+        id="symbol",
+        help_text="Símbolo del par de trading"
+    ) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ input_group(
+                name="start_date",
+                label="Fecha Inicio",
+                type="date",
+                value=request.form.get('start_date', '') if request.form else '',
+                icon="fas fa-calendar-alt",
+                error=errors.get('start_date') if errors else None,
+                id="start_date"
+            ) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_group(
+                name="end_date",
+                label="Fecha Fin",
+                type="date",
+                value=request.form.get('end_date', '') if request.form else '',
+                icon="fas fa-calendar-alt",
+                error=errors.get('end_date') if errors else None,
+                id="end_date"
+            ) }}
+        </div>
+    </div>
+
+    {{ select_group(
+        name="transaction_type",
+        label="Tipo de Transacción",
+        options=[
+            {"value": "", "text": "Todos los tipos"},
+            {"value": "buy", "text": "Compra"},
+            {"value": "sell", "text": "Venta"},
+            {"value": "deposit", "text": "Depósito"},
+            {"value": "withdrawal", "text": "Retiro"}
+        ],
+        selected=request.form.get('transaction_type', '') if request.form else '',
+        icon="fas fa-filter",
+        error=errors.get('transaction_type') if errors else None,
+        id="transaction_type"
+    ) }}
+
+    {{ input_group(
+        name="min_amount",
+        label="Monto Mínimo",
+        type="number",
+        placeholder="0.00",
+        value=request.form.get('min_amount', '') if request.form else '',
+        icon="fas fa-dollar-sign",
+        error=errors.get('min_amount') if errors else None,
+        id="min_amount",
+        help_text="Monto mínimo en USD"
+    ) }}
+
+    {{ input_group(
+        name="max_amount",
+        label="Monto Máximo",
+        type="number",
+        placeholder="0.00",
+        value=request.form.get('max_amount', '') if request.form else '',
+        icon="fas fa-dollar-sign",
+        error=errors.get('max_amount') if errors else None,
+        id="max_amount",
+        help_text="Monto máximo en USD"
+    ) }}
+
+    <div class="form-group">
+        <button type="submit" id="filterBtn" class="btn btn-primary btn-block">
+            <i class="fas fa-search mr-2" aria-hidden="true"></i>
+            Buscar Transacciones
+        </button>
+    </div>
+
+    <div class="form-group mb-0">
+        <button type="button" class="btn btn-outline-secondary btn-block" onclick="clearForm()">
+            <i class="fas fa-eraser mr-1"></i>
+            Limpiar Filtros
+        </button>
+    </div>
+</form>
+{% endmacro %}
+
+{%- macro results_content(transactions=None, total_count=0, page=1, per_page=10) -%}
+    {% if transactions %}
+        {{ table(
+            headers=[
+                '<i class="fas fa-calendar mr-1"></i>Fecha',
+                '<i class="fas fa-coins mr-1"></i>Símbolo',
+                '<i class="fas fa-exchange-alt mr-1"></i>Tipo',
+                '<i class="fas fa-dollar-sign mr-1"></i>Monto',
+                '<i class="fas fa-chart-line mr-1"></i>Precio',
+                '<i class="fas fa-cogs mr-1"></i>Acciones'
+            ],
+            rows=transactions,
+            striped=true,
+            hover=true,
+            responsive=true,
+            caption="Historial de transacciones financieras"
+        ) }}
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="d-flex align-items-center">
+                <small class="text-muted mr-3">
+                    Mostrando {{ transactions|length }} de {{ total_count }} transacciones
+                </small>
+            </div>
+            {% if total_count > per_page %}
+                <nav aria-label="Paginación de transacciones">
+                    <ul class="pagination pagination-sm mb-0">
+                        {# Lógica de paginación (simplificada) #}
+                        <li class="page-item {{ 'disabled' if page == 1 }}">
+                            <a class="page-link" href="#" aria-label="Página anterior">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ page }}</span>
+                        </li>
+                        <li class="page-item">
+                           <a class="page-link" href="#">{{ page + 1 }}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Página siguiente">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    {% else %}
+        {{ alert(
+            message='<i class="fas fa-info-circle mr-2"></i>No se encontraron transacciones con los filtros aplicados. Intenta con otros criterios.',
+            type='info',
+            class_='mt-3'
+        ) }}
+    {% endif %}
+{%- endmacro -%} 

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import icon_card %}
+{% from '_download_macros.html' import download_config_content, download_status_content, download_history_content %}
+
+{% block title %}
+    {{ super() }}
+    Descargas
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-download mr-3"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Configurar Descarga",
+                icon="fas fa-cog",
+                icon_class="text-primary",
+                body=download_config_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-8">
+            {{ icon_card(
+                title="Estado de Descargas",
+                icon="fas fa-tasks",
+                icon_class="text-info",
+                body=download_status_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Historial de Descargas",
+                icon="fas fa-history",
+                icon_class="text-success",
+                body=download_history_content(download_history),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function startDownload() {
+    const dataType = document.getElementById('data_type').value;
+    const symbol = document.getElementById('symbol').value;
+    const format = document.getElementById('format').value;
+    
+    console.log(`Iniciando descarga de ${dataType} para ${symbol} en formato ${format}`);
+    alert(`Iniciando descarga de ${dataType} para ${symbol}`);
+}
+
+function scheduleDownload() {
+    alert('Abriendo programador de descargas...');
+}
+
+function viewAllDownloads() {
+    alert('Mostrando todas las descargas...');
+}
+
+function downloadFile(filename) {
+    alert(`Descargando archivo: ${filename}`);
+}
+
+function previewFile(filename) {
+    alert(`Mostrando vista previa de: ${filename}`);
+}
+
+function deleteFile(filename) {
+    if (confirm(`¿Estás seguro de que quieres eliminar ${filename}?`)) {
+        alert(`Eliminando archivo: ${filename}`);
+    }
+}
+
+function retryDownload(downloadId) {
+    alert(`Reintentando descarga: ${downloadId}`);
+}
+
+function viewError(downloadId) {
+    alert(`Mostrando detalles del error para: ${downloadId}`);
+}
+
+function cleanCompleted() {
+    if (confirm('¿Eliminar todos los archivos completados?')) {
+        alert('Limpiando archivos completados...');
+    }
+}
+</script>
+{% endblock %}
+
+

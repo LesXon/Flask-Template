@@ -1,0 +1,334 @@
+<!--
+  PURPOSE:
+  This template renders a responsive, accessible, and highly dynamic navigation bar.
+  It is designed to be controlled via a context dictionary from a Flask backend,
+  allowing for full customization of navigation links, user authentication status,
+  and other features. It uses a Jinja2 macro to avoid code repetition for
+  navigation items.
+-->
+
+{#-
+  MACRO: render_nav_item
+  Renders a single navigation item, which can be a simple link or a dropdown menu.
+  - item: A dictionary representing the navigation item.
+-#}
+{% macro render_nav_item(item) %}
+  
+  {% if item.children|length > 0 %}
+
+    {% set li_classes = ['nav-item', 'dropdown'] %}
+    {% if item.active %}
+      {% set li_classes = li_classes + ['active'] %}
+    {% endif %}
+
+    {% if item.id %}
+      {% set dropdown_id = item.id %}
+    {% else %}
+      {% set safe_name = item.name|lower|replace(' ', '-') %}
+      {% set dropdown_id = safe_name ~ '-dropdown' %}
+    {% endif %}
+
+    <li class="{{ li_classes|join(' ') }}" role="none">
+      <a
+        class="nav-link dropdown-toggle"
+        id="{{ dropdown_id }}"
+        href="{{ item.url }}" 
+        role="menuitem" 
+        data-toggle="dropdown" 
+        aria-haspopup="true" 
+        aria-expanded="false"
+        aria-label="{% if item.name == 'LesXon' %}Access LesXon data processing tools{% elif item.name == 'Autotrackr' %}Access Autotrackr service management tools{% elif item.name == 'Products' %}Browse product categories and management{% else %}{{ item.name }} navigation menu{% endif %}"
+        {% if item.active %}aria-current="page"{% endif %}>
+        {% if item.icon %}
+          <i class="{{ item.icon }} mr-2" aria-hidden="true"></i>
+        {% endif %}
+        {{ item.name }}
+        {% if item.active %}
+          <span class="sr-only">(current)</span>
+        {% endif %}
+      </a>
+
+      <div
+        class="dropdown-menu" 
+        role="menu"
+        aria-labelledby="{{ dropdown_id }}">
+        
+        {% for child in item.children %}
+          {% if child.divider %}
+            <div class="dropdown-divider" role="separator"></div>
+          
+          {% elif child.header %}
+            {% if child.id %}
+              {% set header_id = child.id %}
+            {% else %}
+              {% set safe_text = child.text|lower|replace(' ', '-') %}
+              {% set header_id = safe_text ~ '-header' %}
+            {% endif %}
+
+            <h6
+              class="dropdown-header" 
+              id="{{ header_id }}">
+              {{ child.text }}
+            </h6>
+
+          {% else %}
+            {% set a_classes = ['dropdown-item'] %}
+            {% if child.active %}
+              {% set a_classes = a_classes + ['active'] %}
+            {% endif %}
+
+            <a
+              class="{{ a_classes|join(' ') }}" 
+              href="{{ child.url }}" 
+              role="menuitem"
+              aria-label="{% if child.name == 'View' %}View data{% elif child.name == 'Download' %}Download data files{% elif child.name == 'Zip' %}Create zip archives{% elif child.name == 'Transactions' %}Process transaction data{% elif child.name == 'Klines' %}View kline charts{% elif child.name == 'Supabase' %}Access database{% elif child.name == 'Service orders' %}Manage service orders{% elif child.name == 'ERM model' %}View entity relationship model{% else %}{{ child.name }}{% endif %}"
+              {% if child.active %}aria-current="page"{% endif %}>
+              {% if child.icon %}
+                <i class="{{ child.icon }} mr-2" aria-hidden="true"></i>
+              {% endif %}
+              <span>{{ child.name }}</span>
+              {% if child.badge %}
+                <span
+                  class="badge badge-{{ child.badge.type|default('primary') }} badge-pill ml-2" 
+                  aria-label="{{ child.badge.label|default(child.badge.text) }}">
+                  {{ child.badge.text }}
+                </span>
+              {% endif %}
+            </a>
+          {% endif %}
+        {% endfor %}
+
+      </div>
+    </li>
+
+  {% else %}
+
+    {% set li_classes = ['nav-item'] %}
+    {% if item.active %}
+      {% set li_classes = li_classes + ['active'] %}
+    {% endif %}
+
+    <li class="{{ li_classes|join(' ') }}" role="none">
+      <a
+        class="nav-link" 
+        href="{{ item.url }}" 
+        role="menuitem"
+        aria-label="{% if item.name == 'Home' %}Go to home page{% else %}Navigate to {{ item.name }}{% endif %}"
+        {% if item.active %}aria-current="page"{% endif %}>
+        {% if item.icon %}
+          <i class="{{ item.icon }} mr-2" aria-hidden="true"></i>
+        {% endif %}
+        {{ item.name }}
+        {% if item.active %}
+          <span class="sr-only">(current)</span>
+        {% endif %}
+      </a>
+    </li>
+
+  {% endif %}
+{% endmacro %}
+
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-primary navbar-custom" 
+  role="navigation" 
+  aria-label="Main navigation">
+
+  <button
+    class="navbar-toggler" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#navbarMain" 
+    aria-controls="navbarMain" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div
+    class="collapse navbar-collapse" 
+    id="navbarMain">
+
+    <ul
+      class="navbar-nav mr-auto" 
+      role="menubar" 
+      aria-label="Main menu">
+      
+      {# Render main navigation items #}
+      {% for item in nav_items %}
+        {% if item.name == 'LesXon' %}
+          {% if current_user and current_user.is_authenticated %}
+            {{ render_nav_item(item) }}
+          {% endif %}
+        {% else %}
+          {{ render_nav_item(item) }}
+        {% endif %}
+      {% endfor %}
+      
+      {# Render any additional custom menu items #}
+      {% if additional_menu_items is defined %}
+        {% for item in additional_menu_items %}
+          {{ render_nav_item(item) }}
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+    <ul
+      class="navbar-nav ml-auto user-account-section" 
+      role="menubar" 
+      aria-label="User account">
+
+      {% if current_user and current_user.is_authenticated %}
+        <li class="nav-item dropdown" role="none">
+          <a
+            class="nav-link dropdown-toggle user-dropdown-toggle" 
+            id="userDropdown"
+            href="#" 
+            role="menuitem" 
+            data-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false"
+            aria-label="User account menu for {{ current_user.username }}">
+            
+            {% if current_user.avatar %}
+              <img
+                class="user-avatar rounded-circle"
+                src="{{ current_user.avatar }}" 
+                alt="{{ current_user.username }}'s avatar" 
+                width="24" 
+                height="24">
+            {% else %}
+              <i class="fas fa-user user-icon" aria-hidden="true"></i>
+            {% endif %}
+
+            <span class="d-none d-md-inline">{{ current_user.username }}</span>
+            <span class="d-md-none">My Account</span>
+          </a>
+
+          <div
+            class="dropdown-menu dropdown-menu-right" 
+            role="menu"
+            aria-labelledby="userDropdown">
+
+            {% set profile_classes = ['dropdown-item'] %}
+            {% if current_route == 'profile' %}
+              {% set profile_classes = profile_classes + ['active'] %}
+            {% endif %}
+            <a
+              class="{{ profile_classes|join(' ') }}" 
+              href="{{ url_for_profile|default('/profile') }}" 
+              role="menuitem"
+              aria-label="View your profile"
+              {% if current_route == 'profile' %}aria-current="page"{% endif %}>
+              <i class="fas fa-user-circle profile-icon" aria-hidden="true"></i>
+              <span>Profile</span>
+            </a>
+
+            {% set settings_classes = ['dropdown-item'] %}
+            {% if current_route == 'settings' %}
+              {% set settings_classes = settings_classes + ['active'] %}
+            {% endif %}
+            <a
+              class="{{ settings_classes|join(' ') }}"
+              href="{{ url_for_settings|default('/settings') }}" 
+              role="menuitem"
+              aria-label="Access account settings"
+              {% if current_route == 'settings' %}aria-current="page"{% endif %}>
+              <i class="fas fa-cog settings-icon" aria-hidden="true"></i>
+              <span>Settings</span>
+            </a>
+
+            <div class="dropdown-divider" role="separator"></div>
+
+            {% if notifications_enabled|default(true) %}
+              {% set notifications_classes = ['dropdown-item'] %}
+              {% if current_route == 'notifications' %}
+                {% set notifications_classes = notifications_classes + ['active'] %}
+              {% endif %}
+
+              <a
+                class="{{ notifications_classes|join(' ') }}"
+                href="{{ url_for_notifications|default('/notifications') }}" 
+                role="menuitem"
+                aria-label="View notifications{% if notification_count|default(0) > 0 %} ({{ notification_count }} unread){% endif %}"
+                {% if current_route == 'notifications' %}aria-current="page"{% endif %}>
+                <i class="fas fa-bell notifications-icon" aria-hidden="true"></i>
+                <span>Notifications</span>
+                
+                {% if notification_count|default(0) > 0 %}
+                  {% set notification_text = notification_count ~ " unread notification" %}
+                  {% if notification_count != 1 %}
+                    {% set notification_text = notification_text ~ "s" %}
+                  {% endif %}
+                  
+                  <span
+                    class="badge badge-primary badge-pill" 
+                    aria-label="{{ notification_text }}">
+                    {{ notification_count }}
+                  </span>
+                {% endif %}
+              </a>
+              
+              <div class="dropdown-divider" role="separator"></div>
+            {% endif %}
+
+            <a
+              class="dropdown-item" 
+              href="{{ url_for_logout|default('/logout') }}" 
+              role="menuitem"
+              aria-label="Sign out of your account">
+              <i class="fas fa-sign-out-alt logout-icon" aria-hidden="true"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </li>
+
+      {% else %}
+
+        <li class="nav-item d-none d-md-block" role="none">
+          <a
+            class="nav-link auth-link login-link" 
+            href="{{ url_for_login|default('/login') }}" 
+            role="menuitem"
+            aria-label="Login to your account">
+            <i class="fas fa-sign-in-alt login-icon" aria-hidden="true"></i>
+          </a>
+        </li>
+        
+        {% if registration_enabled|default(true) %}
+          <li class="nav-item d-none d-md-block" role="none">
+            <a
+              class="nav-link auth-link register-link" 
+              href="{{ url_for_register|default('/register') }}" 
+              role="menuitem"
+              aria-label="Create a new account">
+              <i class="fas fa-user-plus register-icon" aria-hidden="true"></i>
+            </a>
+          </li>
+        {% endif %}
+        
+        <li class="nav-item d-md-none w-100" role="none">
+          <div class="d-flex">
+            <a
+              class="nav-link auth-link login-link flex-grow-1 mr-1" 
+              href="{{ url_for_login|default('/login') }}" 
+              role="menuitem"
+              aria-label="Login to your account">
+              <i class="fas fa-sign-in-alt login-icon" aria-hidden="true"></i>
+            </a>
+            
+            {% if registration_enabled|default(true) %}
+              <a
+                class="nav-link auth-link register-link flex-grow-1 ml-1" 
+                href="{{ url_for_register|default('/register') }}" 
+                role="menuitem"
+                aria-label="Create a new account">
+                <i class="fas fa-user-plus register-icon" aria-hidden="true"></i>
+              </a>
+            {% endif %}
+          </div>
+        </li>
+
+      {% endif %}
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,256 @@
+/* 
+ * ZPlantilla Blueprint - Standard Template Styles
+ * 
+ * This CSS file contains utility classes and component styles
+ * that can be used as reference for new blueprint development.
+ */
+
+/* Utility Classes for Consistent Spacing */
+.u-margin-bottom-sm { margin-bottom: 0.5rem !important; }
+.u-margin-bottom-md { margin-bottom: 1rem !important; }
+.u-margin-bottom-lg { margin-bottom: 1.5rem !important; }
+.u-margin-bottom-xl { margin-bottom: 3rem !important; }
+
+.u-padding-sm { padding: 0.5rem !important; }
+.u-padding-md { padding: 1rem !important; }
+.u-padding-lg { padding: 1.5rem !important; }
+.u-padding-xl { padding: 3rem !important; }
+
+/* Shadow Utilities */
+.u-shadow-sm { box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; }
+.u-shadow { box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; }
+.u-shadow-lg { box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; }
+
+/* Text Color Utilities (Cerulean Theme) */
+.u-text-primary { color: #2FA4E7 !important; }
+.u-text-success { color: #73A839 !important; }
+.u-text-info { color: #033C73 !important; }
+.u-text-warning { color: #DD5600 !important; }
+.u-text-danger { color: #C71C22 !important; }
+
+/* Background Color Utilities */
+.u-bg-primary { background-color: #2FA4E7 !important; }
+.u-bg-success { background-color: #73A839 !important; }
+.u-bg-info { background-color: #033C73 !important; }
+.u-bg-warning { background-color: #DD5600 !important; }
+.u-bg-danger { background-color: #C71C22 !important; }
+
+/* Card Enhancements */
+.u-card-standard {
+    border: none;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.u-card-standard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.u-card-standard .card-header {
+    background: linear-gradient(135deg, #2FA4E7 0%, #033C73 100%);
+    color: white;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.u-card-standard .card-header h5 {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+/* Button Enhancements */
+.btn-group .btn {
+    border-radius: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+/* Form Enhancements */
+.form-control:focus {
+    border-color: #2FA4E7;
+    box-shadow: 0 0 0 0.2rem rgba(47, 164, 231, 0.25);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #6c757d;
+}
+
+/* Table Enhancements */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(47, 164, 231, 0.05);
+}
+
+/* Progress Bar Enhancements */
+.progress {
+    height: 0.75rem;
+    border-radius: 0.375rem;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 0.375rem;
+    transition: width 0.6s ease;
+}
+
+/* Alert Enhancements */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+    border-left: 4px solid;
+}
+
+.alert-info {
+    border-left-color: #033C73;
+    background-color: rgba(3, 60, 115, 0.1);
+}
+
+.alert-success {
+    border-left-color: #73A839;
+    background-color: rgba(115, 168, 57, 0.1);
+}
+
+.alert-warning {
+    border-left-color: #DD5600;
+    background-color: rgba(221, 86, 0, 0.1);
+}
+
+.alert-danger {
+    border-left-color: #C71C22;
+    background-color: rgba(199, 28, 34, 0.1);
+}
+
+/* Badge Enhancements */
+.badge {
+    font-size: 0.75em;
+    font-weight: 600;
+    padding: 0.375em 0.75em;
+    border-radius: 0.375rem;
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .u-mobile-center {
+        text-align: center !important;
+    }
+    
+    .u-mobile-full-width {
+        width: 100% !important;
+    }
+    
+    .u-mobile-margin-bottom {
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Animation Utilities */
+.u-fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.u-slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+/* Loading States */
+.u-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.u-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+}
+
+/* Accessibility Enhancements */
+.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* Focus Indicators */
+.btn:focus,
+.form-control:focus,
+.custom-control-input:focus ~ .custom-control-label::before {
+    outline: 2px solid #2FA4E7;
+    outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .u-card-standard {
+        border: 2px solid #000;
+    }
+    
+    .btn {
+        border: 2px solid;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .u-card-standard,
+    .progress-bar,
+    .u-fade-in,
+    .u-slide-in {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .btn,
+    .alert-dismissible .close,
+    .pagination {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+}

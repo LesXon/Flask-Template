@@ -1,0 +1,319 @@
+{# 
+  ZPLANTILLA BLUEPRINT - CONTACT FORM TEMPLATE
+  
+  This template demonstrates:
+  - Proper form validation with Bootstrap 4 classes
+  - Font Awesome icon integration
+  - Responsive form layout
+  - Client-side and server-side validation
+  - Loading states and user feedback
+  
+  Use this as a reference for implementing forms in new blueprints.
+#}
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import input_group, textarea_group, select_group, alert, card %}
+
+{% block title %}
+    {{ super() }}
+    Formulario de Contacto - Plantilla Estándar
+{% endblock %}
+
+{# {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('pruebas.static', filename='zplantilla.css') }}">
+{% endblock %} #}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if error %}
+                {{ alert(error, type="danger", icon="fas fa-exclamation-triangle") }}
+            {% endif %}
+            
+            {% if success %}
+                {{ alert(success, type="success", icon="fas fa-check-circle") }}
+            {% endif %}
+
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-envelope mr-2"></i>Formulario de Contacto
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('pruebas.contact') }}" id="contactForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ input_group(
+                                    name="name",
+                                    label="Nombre Completo",
+                                    type="text",
+                                    placeholder="Ingresa tu nombre completo",
+                                    value=request.form.get('name', '') if request.form else '',
+                                    required=true,
+                                    icon="fas fa-user",
+                                    error=errors.get('name') if errors else None,
+                                    id="name"
+                                ) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ input_group(
+                                    name="email",
+                                    label="Correo Electrónico",
+                                    type="email",
+                                    placeholder="Ingresa tu correo electrónico",
+                                    value=request.form.get('email', '') if request.form else '',
+                                    required=true,
+                                    icon="fas fa-envelope",
+                                    error=errors.get('email') if errors else None,
+                                    id="email"
+                                ) }}
+                            </div>
+                        </div>
+
+                        {{ input_group(
+                            name="phone",
+                            label="Teléfono",
+                            type="tel",
+                            placeholder="Ingresa tu número de teléfono",
+                            value=request.form.get('phone', '') if request.form else '',
+                            icon="fas fa-phone",
+                            error=errors.get('phone') if errors else None,
+                            id="phone"
+                        ) }}
+
+                        {{ select_group(
+                            name="subject",
+                            label="Asunto",
+                            options=[
+                                {"value": "", "text": "Selecciona un asunto"},
+                                {"value": "general", "text": "Consulta General"},
+                                {"value": "support", "text": "Soporte Técnico"},
+                                {"value": "sales", "text": "Ventas"},
+                                {"value": "feedback", "text": "Comentarios"}
+                            ],
+                            selected=request.form.get('subject', '') if request.form else '',
+                            required=true,
+                            icon="fas fa-tag",
+                            error=errors.get('subject') if errors else None,
+                            id="subject"
+                        ) }}
+
+                        {{ textarea_group(
+                            name="message",
+                            label="Mensaje",
+                            placeholder="Escribe tu mensaje aquí...",
+                            value=request.form.get('message', '') if request.form else '',
+                            rows="5",
+                            required=true,
+                            icon="fas fa-comment",
+                            error=errors.get('message') if errors else None,
+                            id="message",
+                            help_text="Mínimo 10 caracteres"
+                        ) }}
+
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="copy" name="copy" value="1">
+                                <label class="custom-control-label" for="copy">
+                                    Enviarme una copia de este mensaje
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <button type="submit" id="contactBtn" class="btn btn-primary btn-lg btn-block">
+                                <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                                Enviar Mensaje
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('contactBtn');
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Clear previous validation states
+        clearValidationStates();
+        
+        let isValid = true;
+        const formData = new FormData(form);
+        
+        // Name validation
+        const name = formData.get('name');
+        if (!name) {
+            showFieldError('name', 'El nombre es requerido');
+            isValid = false;
+        } else if (name.length < 2) {
+            showFieldError('name', 'El nombre debe tener al menos 2 caracteres');
+            isValid = false;
+        }
+        
+        // Email validation
+        const email = formData.get('email');
+        if (!email) {
+            showFieldError('email', 'El correo electrónico es requerido');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showFieldError('email', 'Ingresa un correo electrónico válido');
+            isValid = false;
+        }
+        
+        // Phone validation (optional)
+        const phone = formData.get('phone');
+        if (phone && !isValidPhone(phone)) {
+            showFieldError('phone', 'Ingresa un número de teléfono válido');
+            isValid = false;
+        }
+        
+        // Subject validation
+        const subject = formData.get('subject');
+        if (!subject) {
+            showFieldError('subject', 'Selecciona un asunto');
+            isValid = false;
+        }
+        
+        // Message validation
+        const message = formData.get('message');
+        if (!message) {
+            showFieldError('message', 'El mensaje es requerido');
+            isValid = false;
+        } else if (message.length < 10) {
+            showFieldError('message', 'El mensaje debe tener al menos 10 caracteres');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Show loading state
+            showLoadingState(submitBtn);
+            
+            // Submit form (in a real app, this would be an AJAX call)
+            setTimeout(() => {
+                form.submit();
+            }, 1000);
+        }
+    });
+    
+    // Real-time validation
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const messageInput = document.getElementById('message');
+    
+    nameInput.addEventListener('blur', function() {
+        const name = this.value;
+        if (name && name.length >= 2) {
+            showFieldSuccess('name');
+        } else if (name && name.length < 2) {
+            showFieldError('name', 'El nombre debe tener al menos 2 caracteres');
+        }
+    });
+    
+    emailInput.addEventListener('blur', function() {
+        const email = this.value;
+        if (email && !isValidEmail(email)) {
+            showFieldError('email', 'Ingresa un correo electrónico válido');
+        } else if (email) {
+            showFieldSuccess('email');
+        }
+    });
+    
+    phoneInput.addEventListener('blur', function() {
+        const phone = this.value;
+        if (phone && !isValidPhone(phone)) {
+            showFieldError('phone', 'Ingresa un número de teléfono válido');
+        } else if (phone) {
+            showFieldSuccess('phone');
+        }
+    });
+    
+    messageInput.addEventListener('input', function() {
+        const message = this.value;
+        if (message && message.length >= 10) {
+            showFieldSuccess('message');
+        } else if (message && message.length < 10) {
+            showFieldError('message', 'El mensaje debe tener al menos 10 caracteres');
+        }
+    });
+});
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    // Basic phone validation (can be customized for specific formats)
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
+}
+
+function showFieldError(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
+    feedback.textContent = message;
+    feedback.classList.add('invalid-feedback');
+    feedback.classList.remove('valid-feedback');
+    
+    if (!field.parentNode.querySelector('.invalid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function showFieldSuccess(fieldName) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback, .valid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-valid');
+    field.classList.remove('is-invalid');
+    feedback.textContent = '¡Correcto!';
+    feedback.classList.add('valid-feedback');
+    feedback.classList.remove('invalid-feedback');
+    
+    if (!field.parentNode.querySelector('.valid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function clearValidationStates() {
+    const fields = document.querySelectorAll('.form-control');
+    fields.forEach(field => {
+        field.classList.remove('is-valid', 'is-invalid');
+    });
+    
+    const feedbacks = document.querySelectorAll('.invalid-feedback, .valid-feedback');
+    feedbacks.forEach(feedback => feedback.remove());
+}
+
+function createFeedbackElement() {
+    const feedback = document.createElement('div');
+    return feedback;
+}
+
+function showLoadingState(button) {
+    const buttonText = button.querySelector('.button-text');
+    const spinner = button.querySelector('.spinner-border');
+    
+    button.disabled = true;
+    buttonText.textContent = button.getAttribute('data-loading-text');
+    spinner.classList.remove('d-none');
+}
+</script>
+{% endblock %}

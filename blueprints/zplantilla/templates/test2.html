@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card %}
+
+{% block title %}
+    {{ super() }}
+    Test Page 2
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Test Page 2</h1>
+    {{ card(title="Test Card", body="This is a test card.") }}
+</div>
+{% endblock %}

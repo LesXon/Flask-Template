@@ -1,0 +1,715 @@
+{# 
+  ZPLANTILLA BLUEPRINT - STANDARD TEMPLATE FOR NEW BLUEPRINTS
+  
+  This template serves as a standardized starting point for new blueprint development.
+  
+  Features included:
+  - Hero section with feature introduction
+  - Configuration panel with form controls
+  - Main dashboard with statistics and progress bars
+  - Data table with CRUD operations
+  - Responsive grid layout
+  - Consistent styling and iconography
+  - JavaScript functionality examples
+  - Accessibility compliance
+  
+  To use this template for a new blueprint:
+  1. Copy this file to your new blueprint's templates folder
+  2. Update the title, content, and parameter names
+  3. Modify the route functions to match your blueprint's functionality
+  4. Customize the styling and components as needed
+  
+  This template demonstrates best practices for:
+  - Bootstrap 4 Cerulean theme usage
+  - Font Awesome icon integration
+  - Form validation and user feedback
+  - Data presentation and manipulation
+  - Responsive design patterns
+#}
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, textarea_group, table, alert, badge, progress_bar %}
+
+{% block title %}
+    {{ super() }}
+    Plantilla Estándar - Blueprint Base
+{% endblock %}
+
+{# {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('pruebas.static', filename='zplantilla.css') }}">
+{% endblock %} #}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-rocket mr-3"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+            <p class="text-center text-muted u-margin-bottom-xl">
+                Esta es una plantilla estándar que puede ser utilizada como base para nuevos blueprints
+            </p>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <div class="row u-margin-bottom-lg">
+        <div class="col-12">
+            {{ icon_card(
+                title="Bienvenido a la Plantilla Estándar",
+                icon="fas fa-star",
+                icon_class="text-warning",
+                body=hero_content(),
+                card_class="u-shadow-lg bg-gradient-primary text-white"
+            ) }}
+        </div>
+    </div>
+    
+    <!-- Main Content Grid -->
+    <div class="row">
+        <div class="col-lg-4">
+            {{ icon_card(
+                title="Configuración",
+                icon="fas fa-cog",
+                icon_class="text-primary",
+                body=configuration_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-lg-8">
+            {{ icon_card(
+                title="Panel Principal",
+                icon="fas fa-tachometer-alt",
+                icon_class="text-info",
+                body=main_panel_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <!-- Secondary Content -->
+    <div class="row">
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Formulario de Ejemplo",
+                icon="fas fa-edit",
+                icon_class="text-success",
+                body=example_form_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Datos y Estadísticas",
+                icon="fas fa-chart-bar",
+                icon_class="text-warning",
+                body=stats_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <!-- Data Table Section -->
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Tabla de Datos",
+                icon="fas fa-table",
+                icon_class="text-secondary",
+                body=data_table_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+
+{% macro hero_content() %}
+<div class="text-center py-4">
+    <h3 class="mb-3">🚀 Plantilla Estándar para Blueprints</h3>
+    <p class="lead mb-4">
+        Esta plantilla incluye todos los componentes UI estandarizados, patrones de diseño responsivo,
+        y mejores prácticas para el desarrollo rápido y consistente de nuevas funcionalidades.
+    </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="fas fa-puzzle-piece fa-2x mb-2"></i>
+                <h6>Componentes Reutilizables</h6>
+                <small>Biblioteca completa de componentes UI</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="fas fa-mobile-alt fa-2x mb-2"></i>
+                <h6>Diseño Responsivo</h6>
+                <small>Optimizado para todos los dispositivos</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <i class="fas fa-palette fa-2x mb-2"></i>
+                <h6>Tema Consistente</h6>
+                <small>Colores y estilos estandarizados</small>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        {{ button(
+            text="Comenzar",
+            variant="light",
+            size="lg",
+            icon="fas fa-arrow-right",
+            onclick="startTour()"
+        ) }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro configuration_content() %}
+<form id="configForm">
+    {{ select_group(
+        name="theme",
+        label="Tema de la Aplicación",
+        options=[
+            {"value": "cerulean", "text": "Cerulean (Actual)"},
+            {"value": "bootstrap", "text": "Bootstrap Default"},
+            {"value": "dark", "text": "Modo Oscuro"},
+            {"value": "custom", "text": "Personalizado"}
+        ],
+        selected="cerulean",
+        icon="fas fa-palette",
+        id="theme"
+    ) }}
+    
+    {{ select_group(
+        name="language",
+        label="Idioma",
+        options=[
+            {"value": "es", "text": "Español"},
+            {"value": "en", "text": "English"},
+            {"value": "fr", "text": "Français"},
+            {"value": "pt", "text": "Português"}
+        ],
+        selected="es",
+        icon="fas fa-globe",
+        id="language"
+    ) }}
+    
+    {{ input_group(
+        name="items_per_page",
+        label="Elementos por Página",
+        type="number",
+        value="10",
+        icon="fas fa-list-ol",
+        id="items_per_page",
+        help_text="Número de elementos a mostrar en las tablas"
+    ) }}
+    
+    <div class="form-group">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="notifications" checked>
+            <label class="custom-control-label" for="notifications">
+                <i class="fas fa-bell mr-1"></i>
+                Habilitar Notificaciones
+            </label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="auto_save">
+            <label class="custom-control-label" for="auto_save">
+                <i class="fas fa-save mr-1"></i>
+                Guardado Automático
+            </label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ button(
+            text="Guardar Configuración",
+            variant="primary",
+            icon="fas fa-save",
+            class="btn-block",
+            onclick="saveConfiguration()"
+        ) }}
+    </div>
+    
+    <div class="form-group mb-0">
+        {{ button(
+            text="Restaurar Valores por Defecto",
+            variant="outline-secondary",
+            icon="fas fa-undo",
+            class="btn-block",
+            onclick="resetConfiguration()"
+        ) }}
+    </div>
+</form>
+{% endmacro %}
+
+{% macro main_panel_content() %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="text-center">
+            <h4 class="u-text-primary">1,234</h4>
+            <small class="text-muted">Total de Registros</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="text-center">
+            <h4 class="u-text-success">98.5%</h4>
+            <small class="text-muted">Tasa de Éxito</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="text-center">
+            <h4 class="u-text-info">45</h4>
+            <small class="text-muted">Activos</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="text-center">
+            <h4 class="u-text-warning">12</h4>
+            <small class="text-muted">Pendientes</small>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h6><i class="fas fa-chart-line text-primary mr-2"></i>Progreso del Proyecto</h6>
+        <div class="mb-2">
+            <div class="d-flex justify-content-between">
+                <small>Desarrollo</small>
+                <small><strong>75%</strong></small>
+            </div>
+            {{ progress_bar(value=75, variant="primary", striped=true, label="75%") }}
+        </div>
+        <div class="mb-2">
+            <div class="d-flex justify-content-between">
+                <small>Pruebas</small>
+                <small><strong>60%</strong></small>
+            </div>
+            {{ progress_bar(value=60, variant="success", striped=true, label="60%") }}
+        </div>
+        <div class="mb-2">
+            <div class="d-flex justify-content-between">
+                <small>Documentación</small>
+                <small><strong>40%</strong></small>
+            </div>
+            {{ progress_bar(value=40, variant="warning", striped=true, label="40%") }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h6><i class="fas fa-tasks text-info mr-2"></i>Acciones Rápidas</h6>
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
+                {{ button(
+                    text="Nuevo",
+                    variant="success",
+                    icon="fas fa-plus",
+                    onclick="createNew()"
+                ) }}
+                {{ button(
+                    text="Editar",
+                    variant="primary",
+                    icon="fas fa-edit",
+                    onclick="editSelected()"
+                ) }}
+                {{ button(
+                    text="Eliminar",
+                    variant="danger",
+                    icon="fas fa-trash",
+                    onclick="deleteSelected()"
+                ) }}
+            </div>
+            <div class="btn-group mr-2" role="group">
+                {{ button(
+                    text="Exportar",
+                    variant="info",
+                    icon="fas fa-download",
+                    onclick="exportData()"
+                ) }}
+                {{ button(
+                    text="Importar",
+                    variant="warning",
+                    icon="fas fa-upload",
+                    onclick="importData()"
+                ) }}
+            </div>
+            <div class="btn-group" role="group">
+                {{ button(
+                    text="Actualizar",
+                    variant="outline-secondary",
+                    icon="fas fa-sync",
+                    onclick="refreshData()"
+                ) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro example_form_content() %}
+<form id="exampleForm">
+    {{ input_group(
+        name="title",
+        label="Título",
+        type="text",
+        placeholder="Ingresa un título",
+        icon="fas fa-heading",
+        id="title",
+        required=true
+    ) }}
+    
+    {{ select_group(
+        name="category",
+        label="Categoría",
+        options=[
+            {"value": "", "text": "Selecciona una categoría"},
+            {"value": "general", "text": "General"},
+            {"value": "technical", "text": "Técnico"},
+            {"value": "business", "text": "Negocio"},
+            {"value": "support", "text": "Soporte"}
+        ],
+        icon="fas fa-tags",
+        id="category",
+        required=true
+    ) }}
+    
+    {{ textarea_group(
+        name="description",
+        label="Descripción",
+        placeholder="Describe los detalles...",
+        rows="4",
+        icon="fas fa-align-left",
+        id="description",
+        help_text="Proporciona una descripción detallada"
+    ) }}
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ input_group(
+                name="start_date",
+                label="Fecha de Inicio",
+                type="date",
+                icon="fas fa-calendar-alt",
+                id="start_date"
+            ) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_group(
+                name="end_date",
+                label="Fecha de Fin",
+                type="date",
+                icon="fas fa-calendar-alt",
+                id="end_date"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" checked>
+            <label class="custom-control-label" for="is_active">
+                <i class="fas fa-check-circle mr-1"></i>
+                Elemento activo
+            </label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ button(
+            text="Guardar",
+            variant="success",
+            icon="fas fa-save",
+            class="mr-2",
+            onclick="saveForm()"
+        ) }}
+        {{ button(
+            text="Cancelar",
+            variant="outline-secondary",
+            icon="fas fa-times",
+            onclick="cancelForm()"
+        ) }}
+    </div>
+</form>
+{% endmacro %}
+
+{% macro stats_content() %}
+<div class="row text-center mb-3">
+    <div class="col-6">
+        <h5 class="u-text-primary">156</h5>
+        <small class="text-muted">Elementos Totales</small>
+    </div>
+    <div class="col-6">
+        <h5 class="u-text-success">142</h5>
+        <small class="text-muted">Completados</small>
+    </div>
+</div>
+
+<div class="row text-center mb-3">
+    <div class="col-6">
+        <h5 class="u-text-warning">12</h5>
+        <small class="text-muted">En Progreso</small>
+    </div>
+    <div class="col-6">
+        <h5 class="u-text-danger">2</h5>
+        <small class="text-muted">Con Errores</small>
+    </div>
+</div>
+
+<hr>
+
+<div class="mb-3">
+    <h6><i class="fas fa-chart-pie text-primary mr-2"></i>Distribución por Categoría</h6>
+    <div class="mb-2">
+        <div class="d-flex justify-content-between">
+            <small>General</small>
+            <small>45%</small>
+        </div>
+        {{ progress_bar(value=45, variant="primary", class="mb-1") }}
+    </div>
+    <div class="mb-2">
+        <div class="d-flex justify-content-between">
+            <small>Técnico</small>
+            <small>30%</small>
+        </div>
+        {{ progress_bar(value=30, variant="success", class="mb-1") }}
+    </div>
+    <div class="mb-2">
+        <div class="d-flex justify-content-between">
+            <small>Negocio</small>
+            <small>25%</small>
+        </div>
+        {{ progress_bar(value=25, variant="info", class="mb-1") }}
+    </div>
+</div>
+
+<div class="text-center">
+    {{ button(
+        text="Ver Reporte Completo",
+        variant="outline-primary",
+        size="sm",
+        icon="fas fa-chart-line",
+        onclick="viewFullReport()"
+    ) }}
+</div>
+{% endmacro %}
+
+{% macro data_table_content() %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h6 class="mb-0">Lista de Elementos</h6>
+        <small class="text-muted">Gestiona todos los elementos desde esta tabla</small>
+    </div>
+    <div>
+        {{ button(
+            text="Agregar Nuevo",
+            variant="success",
+            size="sm",
+            icon="fas fa-plus",
+            onclick="addNewItem()"
+        ) }}
+    </div>
+</div>
+
+{{ table(
+    headers=["ID", "Título", "Categoría", "Estado", "Fecha", "Acciones"],
+    rows=[
+        [
+            "001",
+            "Elemento de Ejemplo 1",
+            '<span class="badge badge-primary">General</span>',
+            '<span class="badge badge-success">Activo</span>',
+            "2024-01-15",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewItem(1)" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editItem(1)" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-danger" onclick="deleteItem(1)" title="Eliminar"><i class="fas fa-trash"></i></button>' +
+            '</div>'
+        ],
+        [
+            "002",
+            "Elemento de Ejemplo 2",
+            '<span class="badge badge-info">Técnico</span>',
+            '<span class="badge badge-warning">Pendiente</span>',
+            "2024-01-14",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewItem(2)" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editItem(2)" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-danger" onclick="deleteItem(2)" title="Eliminar"><i class="fas fa-trash"></i></button>' +
+            '</div>'
+        ],
+        [
+            "003",
+            "Elemento de Ejemplo 3",
+            '<span class="badge badge-success">Negocio</span>',
+            '<span class="badge badge-success">Activo</span>',
+            "2024-01-13",
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" onclick="viewItem(3)" title="Ver"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-success" onclick="editItem(3)" title="Editar"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-outline-danger" onclick="deleteItem(3)" title="Eliminar"><i class="fas fa-trash"></i></button>' +
+            '</div>'
+        ]
+    ],
+    striped=true,
+    hover=true,
+    responsive=true
+) }}
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <small class="text-muted">Mostrando 3 de 156 elementos</small>
+    <nav>
+        <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled">
+                <span class="page-link">Anterior</span>
+            </li>
+            <li class="page-item active">
+                <span class="page-link">1</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endmacro %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Hero section functions
+function startTour() {
+    alert('¡Bienvenido al tour de la plantilla estándar!\n\nEsta plantilla incluye:\n• Componentes UI reutilizables\n• Diseño responsivo\n• Tema consistente\n• Mejores prácticas de desarrollo');
+}
+
+// Configuration functions
+function saveConfiguration() {
+    const theme = document.getElementById('theme').value;
+    const language = document.getElementById('language').value;
+    const itemsPerPage = document.getElementById('items_per_page').value;
+    
+    console.log('Guardando configuración:', { theme, language, itemsPerPage });
+    alert('Configuración guardada exitosamente');
+}
+
+function resetConfiguration() {
+    if (confirm('¿Restaurar todos los valores por defecto?')) {
+        document.getElementById('configForm').reset();
+        alert('Configuración restaurada a valores por defecto');
+    }
+}
+
+// Main panel functions
+function createNew() {
+    alert('Abriendo formulario para crear nuevo elemento...');
+}
+
+function editSelected() {
+    alert('Editando elemento seleccionado...');
+}
+
+function deleteSelected() {
+    if (confirm('¿Eliminar elementos seleccionados?')) {
+        alert('Elementos eliminados');
+    }
+}
+
+function exportData() {
+    alert('Exportando datos...');
+}
+
+function importData() {
+    alert('Abriendo herramienta de importación...');
+}
+
+function refreshData() {
+    alert('Actualizando datos...');
+}
+
+// Form functions
+function saveForm() {
+    const title = document.getElementById('title').value;
+    const category = document.getElementById('category').value;
+    
+    if (!title) {
+        alert('Por favor, ingresa un título');
+        return;
+    }
+    
+    if (!category) {
+        alert('Por favor, selecciona una categoría');
+        return;
+    }
+    
+    alert(`Guardando elemento: ${title} (${category})`);
+}
+
+function cancelForm() {
+    if (confirm('¿Cancelar y perder los cambios?')) {
+        document.getElementById('exampleForm').reset();
+        alert('Formulario cancelado');
+    }
+}
+
+// Stats functions
+function viewFullReport() {
+    alert('Abriendo reporte completo de estadísticas...');
+}
+
+// Table functions
+function addNewItem() {
+    alert('Agregando nuevo elemento a la tabla...');
+}
+
+function viewItem(id) {
+    alert(`Viendo detalles del elemento ${id}`);
+}
+
+function editItem(id) {
+    alert(`Editando elemento ${id}`);
+}
+
+function deleteItem(id) {
+    if (confirm(`¿Eliminar elemento ${id}?`)) {
+        alert(`Elemento ${id} eliminado`);
+    }
+}
+
+// Initialize components on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Initialize popovers
+    $('[data-toggle="popover"]').popover();
+    
+    // Form validation example
+    const exampleForm = document.getElementById('exampleForm');
+    if (exampleForm) {
+        exampleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveForm();
+        });
+    }
+    
+    console.log('Plantilla estándar inicializada correctamente');
+});
+</script>
+{% endblock %}
+
+

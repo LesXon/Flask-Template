@@ -1,0 +1,1847 @@
+/* 
+ * Navbar specific styles
+ * This file contains styles specific to the responsive navbar component
+ * Using Bootstrap Cerulean theme colors for consistency
+ */
+
+/* Navbar container */
+.navbar-custom {
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #2FA4E7 !important; /* Cerulean primary color */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Navbar scroll effect - add this class via JavaScript when scrolling */
+.navbar-custom.navbar-scrolled {
+  padding: 0.3rem 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #1a8ad4 !important; /* Slightly darker on scroll */
+}
+
+/* Brand section styling */
+.navbar-brand-container {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+.navbar-brand:hover {
+  opacity: 0.9;
+}
+
+.navbar-brand:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.navbar-brand img.navbar-logo {
+  height: 30px;
+  width: auto;
+  margin-right: 0.75rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.brand-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar toggler (hamburger menu) customization */
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  margin-left: auto;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+/* Dropdown menu enhancements */
+.dropdown-menu {
+  border-radius: 0.25rem;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-top: 0;
+  border-top: 2px solid #1a8ad4; /* Slightly darker than primary for contrast */
+}
+
+.dropdown-item {
+  padding: 0.5rem 1.5rem;
+  transition: background-color 0.2s ease;
+  color: #495057; /* Cerulean text color for consistency */
+}
+
+.dropdown-item:hover {
+  background-color: rgba(47, 164, 231, 0.1); /* Light blue background on hover */
+  color: #2FA4E7; /* Cerulean primary color */
+}
+
+.dropdown-item:active {
+  background-color: #2FA4E7; /* Bootstrap Cerulean primary color */
+  color: white;
+}
+
+.dropdown-header {
+  color: #6c757d; /* Cerulean secondary text color */
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+}
+
+.dropdown-divider {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0.5rem 0;
+}
+
+/* Nested dropdown (submenu) styles */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-item.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-submenu > .dropdown-item.dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 0.5em;
+  vertical-align: middle;
+  content: "";
+  border-top: 0.3em solid transparent;
+  border-right: 0;
+  border-bottom: 0.3em solid transparent;
+  border-left: 0.3em solid;
+}
+
+.dropdown-submenu > .dropdown-submenu-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.5rem;
+  margin-left: 0;
+  display: none;
+}
+
+/* Nav links styling */
+.navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav .nav-link:focus {
+  color: #fff !important;
+}
+
+/* Enhanced collapsible search styles */
+.search-container {
+  margin-right: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.search-form {
+  position: relative;
+}
+
+.search-form .form-control {
+  border: none;
+  border-radius: 2rem 0 0 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding-left: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.search-form .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+  background-color: #fff;
+  width: calc(100% + 20px);
+}
+
+.search-form .btn-secondary {
+  background-color: #1a8ad4; /* Slightly darker than primary */
+  border-color: #1a8ad4;
+  color: #fff;
+  border-radius: 0 2rem 2rem 0;
+  padding: 0.375rem 0.75rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form .btn-secondary:hover {
+  background-color: #1670b3;
+  border-color: #1670b3;
+  transform: translateX(2px);
+}
+
+.search-form .btn-secondary:active {
+  transform: translateX(0) scale(0.98);
+}
+
+.search-form .btn-secondary i {
+  font-size: 0.9rem;
+}
+
+/* Mobile search collapse animation - Enhanced for task 7.2 */
+.search-collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  width: 100%;
+  pointer-events: none; /* Prevent interaction when hidden */
+  will-change: max-height, opacity, transform; /* Performance optimization */
+}
+
+.search-collapse.show {
+  max-height: 60px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* Allow interaction when visible */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+}
+
+/* Closing animation - Enhanced for task 7.2 */
+.search-collapse.closing {
+  max-height: 60px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Search toggle ripple effect - Added for task 7.2 */
+.search-toggle {
+  position: relative;
+  overflow: hidden; /* Contain ripple effect */
+}
+
+.search-toggle-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none; /* Don't interfere with clicks */
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Search button click animation - Added for task 7.2 */
+.search-button-clicked {
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
+/* Search input validation animation - Added for task 7.2 */
+.search-form input.empty {
+  border-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  animation: pulse-error 1.5s infinite;
+}
+
+@keyframes pulse-error {
+  0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(220, 53, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* Search shake animation - Added for task 7.2 */
+.search-shake {
+  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+  40%, 60% { transform: translate3d(3px, 0, 0); }
+}
+
+/* Search input with content - Added for task 7.2 */
+.search-form input.has-content {
+  background-color: #fff;
+  border-color: #28a745;
+}
+
+/* Search focused state - Added for task 7.2 */
+.search-focused .form-control {
+  box-shadow: 0 0 0 0.2rem rgba(47, 164, 231, 0.25);
+  border-color: #2FA4E7;
+}
+
+/* Screen reader only class - Added for task 7.2 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enhanced search toggle button */
+.search-toggle {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.search-toggle:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.search-toggle i {
+  font-size: 0.9rem;
+}
+
+/* Search icon animation */
+.search-toggle i, .search-form .btn-secondary i {
+  transition: transform 0.2s ease;
+}
+
+.search-toggle:hover i, .search-form .btn-secondary:hover i {
+  transform: scale(1.1);
+}
+
+/* Active state highlighting */
+.navbar-nav .nav-item.active .nav-link {
+  font-weight: bold;
+  position: relative;
+}
+
+.navbar-nav .nav-item.active .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 3px 3px 0 0;
+}
+
+/* Active dropdown item highlighting */
+.dropdown-item.active, 
+.dropdown-item:active {
+  background-color: #2FA4E7;
+  color: white;
+  position: relative;
+}
+
+/* Add a subtle indicator to active dropdown items */
+.dropdown-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/* Active submenu parent highlighting */
+.dropdown-submenu.active > .dropdown-item,
+.dropdown-submenu > .dropdown-item.active {
+  background-color: rgba(47, 164, 231, 0.1);
+  color: #2FA4E7;
+  font-weight: bold;
+}
+
+/* Active state for dropdown parent when child is active */
+.navbar-nav .nav-item.dropdown.active-parent > .nav-link {
+  font-weight: bold;
+  color: #fff;
+  position: relative;
+}
+
+/* Visual indicator for active dropdown parent */
+.navbar-nav .nav-item.dropdown.active-parent > .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Enhanced active state for mobile view */
+@media (max-width: 767.98px) {
+  .navbar-nav .nav-item.active .nav-link,
+  .navbar-nav .nav-item.active-parent > .nav-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.25rem;
+  }
+  
+  .navbar-nav .nav-item.active .nav-link::after,
+  .navbar-nav .nav-item.active-parent > .nav-link::after {
+    display: none;
+  }
+  
+  .dropdown-item.active {
+    padding-left: 2rem;
+  }
+  
+  .dropdown-item.active::before {
+    left: 1rem;
+  }
+}
+
+/* Accessibility focus styles - Enhanced for task 8.2 */
+.nav-link:focus, 
+.navbar-brand:focus,
+.dropdown-item:focus,
+.navbar-toggler:focus,
+.search-toggle:focus,
+.search-form .form-control:focus,
+.search-form .btn-secondary:focus,
+.auth-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(47, 164, 231, 0.25);
+  position: relative;
+  z-index: 5;
+}
+
+/* High contrast mode support - Enhanced for task 8.2 */
+@media (forced-colors: active) {
+  .nav-link:focus, 
+  .navbar-brand:focus,
+  .dropdown-item:focus,
+  .navbar-toggler:focus,
+  .search-toggle:focus,
+  .search-form .form-control:focus,
+  .search-form .btn-secondary:focus,
+  .auth-link:focus {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+  
+  /* Ensure buttons have visible borders in high contrast mode */
+  .navbar-toggler,
+  .search-toggle,
+  .search-form .btn-secondary {
+    border: 1px solid ButtonText;
+  }
+  
+  /* Ensure dropdown menus have visible borders */
+  .dropdown-menu {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .navbar-brand img {
+    height: 25px;
+  }
+  
+  .brand-text {
+    font-size: 1.1rem;
+  }
+  
+  .navbar-toggler {
+    padding: 0.5rem 0.75rem;
+    font-size: 1.25rem;
+  }
+  
+  .nav-link {
+    padding: 0.75rem 1rem;
+  }
+  
+  .search-form .input-group {
+    width: 100%;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .navbar-brand img {
+    height: 28px;
+  }
+  
+  .nav-link {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .navbar-nav .nav-link {
+    padding: 1rem 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .search-form .form-control {
+    width: 120px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .navbar-nav .nav-link {
+    padding: 1rem 0.75rem;
+  }
+  
+  .search-form .form-control {
+    width: 180px;
+  }
+}
+
+/* Enhanced mobile-specific styles - Task 7.1 & 7.2 */
+@media (max-width: 767.98px) {
+  .navbar-collapse {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding-top: 0.5rem;
+    background-color: #2FA4E7; /* Maintain Cerulean theme on mobile */
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+    border-radius: 0 0 0.5rem 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Enhanced collapsible navigation animations - Task 7.2 */
+  .navbar-collapse.collapsing {
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    transform: scaleY(0.8);
+    opacity: 0.5;
+  }
+  
+  .navbar-collapse:not(.show) {
+    transform: scaleY(0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .navbar-collapse.show {
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: slideDownFade 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideDownFade {
+    0% {
+      transform: scaleY(0) translateY(-10px);
+      opacity: 0;
+    }
+    50% {
+      transform: scaleY(0.5) translateY(-5px);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scaleY(1) translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Enhanced navbar collapse closing animation - Task 7.2 */
+  .navbar-collapse.closing {
+    animation: slideUpFade 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideUpFade {
+    0% {
+      transform: scaleY(1) translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: scaleY(0.5) translateY(-5px);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scaleY(0) translateY(-10px);
+      opacity: 0;
+    }
+  }
+  
+  /* Enhanced navbar toggler animations - Task 7.2 */
+  .navbar-toggler {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+  }
+  
+  .navbar-toggler:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .navbar-toggler:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+  }
+  
+  /* Enhanced hamburger icon animation - Task 7.2 */
+  .navbar-toggler-icon {
+    position: relative;
+    width: 2.2rem;
+    height: 2.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-image: none;
+  }
+  
+  /* Create custom hamburger lines */
+  .navbar-toggler-icon::before,
+  .navbar-toggler-icon::after,
+  .navbar-toggler-icon {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .navbar-toggler-icon::before,
+  .navbar-toggler-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    left: 0;
+  }
+  
+  .navbar-toggler-icon::before {
+    top: 0.5rem;
+  }
+  
+  .navbar-toggler-icon::after {
+    bottom: 0.5rem;
+  }
+  
+  /* Middle line (the icon itself) */
+  .navbar-toggler-icon {
+    background-color: rgba(255, 255, 255, 0.9);
+    height: 3px;
+    margin-top: 1.1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Hamburger to X animation - Task 7.2 */
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background-color: transparent;
+  }
+  
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    top: 1rem;
+    transform: rotate(45deg);
+  }
+  
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    bottom: 1rem;
+    transform: rotate(-45deg);
+  }
+  
+  /* Add pulse animation when toggler is activated */
+  .navbar-toggler.toggler-active {
+    animation: togglerPulse 0.6s ease-out;
+  }
+  
+  @keyframes togglerPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  
+  /* Ensure touch targets are large enough on mobile */
+  .nav-link {
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+  }
+  
+  .nav-link:hover, .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Adjust search form on mobile */
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-inline .form-control {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Dropdown submenu handling on mobile */
+  .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    box-shadow: none;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    margin-left: 1rem;
+  }
+  
+  /* User account section on mobile */
+  .user-account-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  
+  /* Enhanced user account styling for mobile */
+  .user-account-section .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+  }
+  
+  .user-account-section .nav-link:hover,
+  .user-account-section .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  .user-account-section .nav-link i {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .user-account-section .auth-link {
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .user-account-section .login-link {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-account-section .register-link {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .user-account-section .dropdown-menu {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  
+  .user-account-section .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-account-section .dropdown-item i {
+    margin-right: 0.75rem;
+    opacity: 0.7;
+    width: 1.25rem;
+    text-align: center;
+  }
+  
+  /* Enhance mobile dropdown headers */
+  .dropdown-header {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Enhance mobile dropdown items */
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.75rem 1rem;
+  }
+  
+  .dropdown-item:hover, .dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  
+  /* Enhance mobile dividers */
+  .dropdown-divider {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Desktop-specific styles */
+@media (min-width: 768px) {
+  /* Dropdown animations */
+  .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s;
+    border-top: 2px solid #1a8ad4; /* Cerulean theme consistency */
+    pointer-events: none; /* Prevent interaction until visible */
+    display: block;
+  }
+  
+  /* Enhanced dropdown behavior - Task 7.1 */
+  .dropdown:hover > .dropdown-menu,
+  .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto; /* Allow interaction when visible */
+    transition-delay: 0s;
+  }
+  
+  /* Nested dropdown (submenu) hover behavior */
+  .dropdown-submenu:hover > .dropdown-submenu-menu,
+  .dropdown-submenu-menu.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* Allow interaction when visible */
+  }
+  
+  /* Position submenu properly on desktop */
+  .dropdown-submenu > .dropdown-submenu-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-top: -0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-left: 2px solid #1a8ad4; /* Cerulean theme consistency */
+    pointer-events: none; /* Prevent interaction until visible */
+    display: none;
+  }
+  
+  /* Touch-friendly dropdown enhancements - Task 7.1 */
+  .dropdown-toggle.touch-active,
+  .dropdown-item.dropdown-toggle.touch-active {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Improve touch target sizes on desktop for touch devices */
+  .navbar-nav .nav-link {
+    min-height: 44px; /* Minimum touch target size */
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown-item {
+    min-height: 44px; /* Minimum touch target size */
+    display: flex;
+    align-items: center;
+  }
+}
+  
+  /* Mega menu support for larger dropdowns */
+  .dropdown-menu.mega-menu {
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: #fff;
+  }
+  
+  .mega-menu .row {
+    width: 100%;
+  }
+  
+  .mega-menu .dropdown-header {
+    color: #2FA4E7; /* Cerulean primary color */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.5rem;
+  }
+  
+  /* User account section styling */
+  .user-account-section {
+    margin-left: 0.5rem;
+  }
+  
+  .user-account-section .nav-item {
+    margin-left: 0.25rem;
+  }
+  
+  .user-account-section .nav-link {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-account-section .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
+  
+  /* Enhanced user account styling for desktop */
+  .user-account-section .auth-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+  }
+  
+  .user-account-section .login-link {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-account-section .register-link {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .user-account-section .nav-link i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+  
+  /* User dropdown styling */
+  .user-account-section .user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    transition: all 0.2s ease;
+  }
+  
+  .user-account-section .user-dropdown-toggle:hover,
+  .user-account-section .user-dropdown-toggle:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  .user-account-section .dropdown-menu {
+    min-width: 220px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    right: 0;
+    left: auto;
+  }
+  
+  .user-account-section .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+  }
+  
+  .user-account-section .dropdown-item i {
+    margin-right: 0.75rem;
+    opacity: 0.7;
+    width: 1.25rem;
+    text-align: center;
+  }
+  
+  .user-account-section .dropdown-item:hover {
+    background-color: rgba(47, 164, 231, 0.1);
+    color: #2FA4E7;
+    transform: translateX(3px);
+  }
+  
+  .user-account-section .dropdown-item .badge {
+    margin-left: auto;
+  }
+}
+
+/* User account icons styling */
+.user-icon::before {
+  content: "\f007"; /* Font Awesome user icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.profile-icon::before {
+  content: "\f2bd"; /* Font Awesome user-circle icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.settings-icon::before {
+  content: "\f013"; /* Font Awesome cog icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.notifications-icon::before {
+  content: "\f0f3"; /* Font Awesome bell icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.logout-icon::before {
+  content: "\f2f5"; /* Font Awesome sign-out-alt icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.login-icon::before {
+  content: "\f2f6"; /* Font Awesome sign-in-alt icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.register-icon::before {
+  content: "\f234"; /* Font Awesome user-plus icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+/* Enhanced User Account Styling - Task 5.2 */
+
+/* User account icons styling enhancements */
+.user-icon::before,
+.profile-icon::before,
+.settings-icon::before,
+.notifications-icon::before,
+.logout-icon::before,
+.login-icon::before,
+.register-icon::before {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+/* Enhanced badge styling */
+.user-account-section .badge {
+  background-color: #1a8ad4;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* User account section general styling */
+.user-account-section {
+  transition: all 0.3s ease;
+}
+
+.user-account-section .dropdown-item .badge {
+  margin-left: auto;
+}
+
+/* Desktop-specific user account enhancements */
+@media (min-width: 768px) {
+  .user-account-section {
+    margin-left: 0.75rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-account-section .dropdown-menu-right {
+    right: 0;
+    left: auto;
+    min-width: 240px; /* Ensure dropdown is wide enough for content */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+    padding: 0.75rem 0;
+    margin-top: 0.75rem;
+    border-top: 2px solid #1a8ad4; /* Match the main navbar dropdown styling */
+    animation: fadeInDown 0.3s ease;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Enhanced user dropdown styling */
+  .user-account-section .user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 2rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  .user-account-section .user-dropdown-toggle:hover,
+  .user-account-section .user-dropdown-toggle:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #fff !important;
+  }
+  
+  .user-account-section .user-dropdown-toggle i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .user-account-section .user-dropdown-toggle:hover i,
+  .user-account-section .dropdown-item:hover i {
+    transform: translateX(2px);
+  }
+  
+  /* Enhanced auth links styling */
+  .user-account-section .auth-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  .user-account-section .auth-link i {
+    margin-right: 0.5rem;
+  }
+  
+  .user-account-section .login-link {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .user-account-section .login-link:hover,
+  .user-account-section .login-link:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #fff !important;
+  }
+  
+  .user-account-section .register-link {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  .user-account-section .register-link:hover,
+  .user-account-section .register-link:focus {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #fff !important;
+  }
+  
+  /* Enhanced dropdown items */
+  .user-account-section .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
+    color: #495057; /* Match main navbar dropdown item color */
+  }
+  
+  .user-account-section .dropdown-item i {
+    margin-right: 0.75rem;
+    opacity: 0.8;
+    width: 1.25rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .user-account-section .dropdown-item:hover {
+    background-color: rgba(47, 164, 231, 0.1); /* Match main navbar dropdown hover */
+    color: #2FA4E7;
+    transform: translateX(3px);
+  }
+  
+  .user-account-section .dropdown-item:hover i {
+    opacity: 1;
+  }
+  
+  .user-account-section .dropdown-item:active {
+    background-color: #2FA4E7;
+    color: white;
+  }
+  
+  .user-account-section .dropdown-divider {
+    margin: 0.5rem 0.75rem;
+    opacity: 0.8;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Match main navbar divider */
+  }
+}
+
+/* Enhanced mobile user account styling */
+@media (max-width: 767.98px) {
+  .user-account-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+  }
+  
+  .user-account-section .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    box-shadow: none;
+    margin-left: 1rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 0;
+    width: calc(100% - 1rem);
+    animation: fadeIn 0.2s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .user-account-section .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin: 0.25rem 0.5rem;
+    width: calc(100% - 1rem);
+  }
+  
+  .user-account-section .dropdown-item i {
+    margin-right: 0.75rem;
+    opacity: 0.9;
+    width: 1.25rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .user-account-section .dropdown-item:hover,
+  .user-account-section .dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateX(3px);
+  }
+  
+  .user-account-section .dropdown-item:hover i {
+    transform: translateX(2px);
+  }
+  
+  .user-account-section .dropdown-item:active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .user-account-section .dropdown-divider {
+    border-top-color: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+  }
+  
+  /* Enhanced user dropdown toggle for mobile */
+  .user-account-section .user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .user-account-section .user-dropdown-toggle i {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+  }
+  
+  .user-account-section .user-dropdown-toggle:active {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  /* Make login/register buttons more prominent and accessible on mobile */
+  .user-account-section .auth-link {
+    margin: 0.25rem 0;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    min-height: 3.5rem; /* Larger touch target */
+  }
+  
+  .user-account-section .auth-link i {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .user-account-section .login-link {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .user-account-section .login-link:active {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(0.98);
+  }
+  
+  .user-account-section .register-link {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  .user-account-section .register-link:active {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: scale(0.98);
+  }
+  
+  /* Improved touch targets for mobile */
+  .user-account-section .nav-link,
+  .user-account-section .dropdown-item {
+    min-height: 3.5rem; /* Ensure touch targets are at least 56px high for better accessibility */
+  }
+  
+  /* Improved layout for mobile auth buttons */
+  .user-account-section .d-flex {
+    gap: 0.5rem; /* Add space between login and register buttons */
+    width: 100%;
+  }
+  
+  /* Sticky mobile account section for better accessibility */
+  .navbar-collapse.show .user-account-section {
+    position: sticky;
+    bottom: 0;
+    background-color: #2FA4E7;
+    margin-bottom: -0.5rem;
+    padding-bottom: 1rem;
+    z-index: 1;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Improve accessibility for user account section */
+.user-account-section .dropdown-item:focus {
+  outline: 2px solid rgba(47, 164, 231, 0.5);
+  outline-offset: -2px;
+}
+
+/* Ensure consistent focus styles for all interactive elements */
+.user-account-section .nav-link:focus,
+.user-account-section .dropdown-toggle:focus,
+.user-account-section .auth-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .user-account-section .nav-link,
+  .user-account-section .dropdown-toggle,
+  .user-account-section .auth-link,
+  .user-account-section .dropdown-item {
+    border: 1px solid transparent;
+  }
+  
+  .user-account-section .nav-link:focus,
+  .user-account-section .dropdown-toggle:focus,
+  .user-account-section .auth-link:focus,
+  .user-account-section .dropdown-item:focus {
+    border-color: CanvasText;
+  }
+}
+/* Search form submission enhancements - Task 6.2 */
+
+/* Improve search input focus state */
+.search-form .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+  background-color: #fff;
+  border-color: #1a8ad4;
+}
+
+/* Add transition for empty search indicator */
+.search-form .form-control.empty {
+  border-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  animation: pulse-error 1.5s infinite;
+}
+
+/* Conditional search visibility */
+.search-container.hidden,
+.search-toggle.hidden {
+  display: none !important;
+}
+
+/* Search results highlight */
+.search-highlight {
+  background-color: rgba(255, 193, 7, 0.3);
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.2rem;
+}
+
+/* Responsive adjustments for search form */
+@media (max-width: 767.98px) {
+  .search-form {
+    width: 100%;
+  }
+  
+  .search-form .input-group {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .search-form .form-control {
+    width: 150px;
+    transition: width 0.3s ease;
+  }
+  
+  .search-form .form-control:focus {
+    width: 200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-form .form-control {
+    width: 200px;
+    transition: width 0.3s ease;
+  }
+  
+  .search-form .form-control:focus {
+    width: 250px;
+  }
+}
+/* Skip 
+link for keyboard users - Added for task 8.2 */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #2FA4E7;
+  color: white;
+  padding: 8px 16px;
+  z-index: 1050;
+  transition: top 0.3s ease;
+  border-radius: 0 0 4px 0;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid white;
+  text-decoration: none;
+  color: white;
+}
+
+/* Focus visible polyfill - Added for task 8.2 */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(47, 164, 231, 0.25);
+}
+
+/* Improved focus indication for keyboard navigation - Added for task 8.2 */
+.keyboard-nav .nav-link:focus,
+.keyboard-nav .navbar-brand:focus,
+.keyboard-nav .dropdown-item:focus,
+.keyboard-nav .navbar-toggler:focus,
+.keyboard-nav .search-toggle:focus,
+.keyboard-nav .search-form .form-control:focus,
+.keyboard-nav .search-form .btn-secondary:focus,
+.keyboard-nav .auth-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(47, 164, 231, 0.4);
+  position: relative;
+  z-index: 5;
+}
+
+/* Improved focus indication for dropdown items - Added for task 8.2 */
+.keyboard-nav .dropdown-menu .dropdown-item:focus {
+  outline: 2px solid rgba(47, 164, 231, 0.7);
+  outline-offset: -2px;
+  background-color: rgba(47, 164, 231, 0.1);
+  color: #2FA4E7;
+}
+
+/* Ensure proper focus for screen readers - Added for task 8.2 */
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Improved ARIA live region styling - Added for task 8.2 */
+#navbar-live-region {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indication for main content when skipped to - Added for task 8.2 */
+main:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #2FA4E7;
+}
+
+/* Improved tab focus indication - Added for task 8.2 */
+[tabindex]:focus {
+  outline: 2px solid rgba(47, 164, 231, 0.5);
+  outline-offset: 2px;
+}
+
+/* Ensure dropdown items have proper focus indication - Added for task 8.2 */
+.dropdown-item:focus-visible {
+  outline: 2px solid rgba(47, 164, 231, 0.7);
+  outline-offset: -2px;
+  background-color: rgba(47, 164, 231, 0.1);
+  color: #2FA4E7;
+}
+/
+* ===== ENHANCED TOUCH FEEDBACK - Task 7.1 ===== */
+
+/* Touch feedback for interactive elements */
+.touch-feedback {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* Form control touch feedback */
+.form-control.touch-active {
+  border-color: var(--cerulean-primary-light);
+  box-shadow: 0 0 0 0.2rem rgba(var(--cerulean-primary-rgb), 0.25);
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* ===== ENHANCED RESPONSIVE BREAKPOINT STYLES - Task 7.4 ===== */
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .navbar-custom {
+    padding: 0.25rem 0.75rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1rem;
+    padding: 0.25rem 0;
+  }
+  
+  .navbar-brand img.navbar-logo {
+    height: 24px;
+  }
+  
+  .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.75rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .dropdown-menu {
+    font-size: 0.9rem;
+  }
+  
+  .dropdown-item {
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Optimize user account section for very small screens */
+  .user-account-section .auth-link {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .user-account-section .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .navbar-custom {
+    padding: 0.375rem 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.125rem;
+  }
+  
+  .navbar-brand img.navbar-logo {
+    height: 26px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .dropdown-item {
+    padding: 0.625rem 1.25rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .navbar-nav .nav-link {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .search-form .form-control {
+    width: 140px;
+  }
+  
+  /* Adjust dropdown positioning for medium screens */
+  .dropdown-menu {
+    min-width: 180px;
+  }
+  
+  .user-account-section .dropdown-menu {
+    min-width: 200px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-nav .nav-link {
+    padding: 0.75rem 0.625rem;
+  }
+  
+  .search-form .form-control {
+    width: 160px;
+  }
+  
+  .dropdown-menu {
+    min-width: 200px;
+  }
+  
+  .user-account-section .dropdown-menu {
+    min-width: 220px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .navbar-nav .nav-link {
+    padding: 0.75rem 0.75rem;
+  }
+  
+  .search-form .form-control {
+    width: 200px;
+  }
+  
+  .dropdown-menu {
+    min-width: 220px;
+  }
+  
+  .user-account-section .dropdown-menu {
+    min-width: 240px;
+  }
+  
+  /* Enhanced mega menu support for large screens */
+  .dropdown-menu.mega-menu {
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 1200px;
+  }
+}
+
+/* ===== ENHANCED ANIMATION PERFORMANCE - Task 7.2 ===== */
+
+/* Use hardware acceleration for smooth animations */
+.navbar-collapse,
+.dropdown-menu,
+.search-collapse,
+.navbar-toggler-icon {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize transitions for 60fps */
+.navbar-collapse.collapsing {
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height;
+}
+
+.dropdown-menu {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s linear 0.2s;
+}
+
+.dropdown-menu.show {
+  transition-delay: 0s;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-collapse,
+  .dropdown-menu,
+  .search-collapse,
+  .navbar-toggler-icon,
+  .nav-link,
+  .dropdown-item,
+  .btn {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .navbar-collapse.collapsing {
+    transition: none !important;
+  }
+}
+
+/* ===== ENHANCED FOCUS MANAGEMENT - Task 7.1 ===== */
+
+/* Improved focus indicators for better accessibility */
+.nav-link:focus-visible,
+.dropdown-item:focus-visible,
+.navbar-toggler:focus-visible,
+.search-toggle:focus-visible,
+.auth-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(47, 164, 231, 0.3);
+  border-radius: 4px;
+}
+
+/* High contrast mode improvements */
+@media (forced-colors: active) {
+  .nav-link:focus-visible,
+  .dropdown-item:focus-visible,
+  .navbar-toggler:focus-visible,
+  .search-toggle:focus-visible,
+  .auth-link:focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+}
+
+/* Skip link styling */
+.sr-only-focusable:focus {
+  position: absolute !important;
+  top: 6px !important;
+  left: 6px !important;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  overflow: visible !important;
+  z-index: 10000 !important;
+  padding: 8px 16px !important;
+  background: #2FA4E7 !important;
+  color: white !important;
+  text-decoration: none !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ===== PRINT STYLES - Task 7.4 ===== */
+
+@media print {
+  .navbar-custom {
+    display: none !important;
+  }
+  
+  /* Ensure main content starts at top when navbar is hidden */
+  body {
+    padding-top: 0 !important;
+  }
+}

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import input_group, alert, card, checkbox_group %}
+
+{% block title %}
+    {{ super() }}
+    Login
+{% endblock %}
+
+{% block content %}
+
+{% macro login_form_content() %}
+<form method="POST" action="{{ url_for('home.login') }}" id="loginForm" novalidate role="form" aria-label="Login form">
+    {{ input_group(
+        name="email",
+        label="Correo Electrónico",
+        type="email",
+        placeholder="Ingresa tu correo electrónico",
+        value=request.form.get('email', 'test@example.com') if request.form else 'test@example.com',
+        required=true,
+        icon="fas fa-envelope",
+        error=errors.get('email') if errors else None,
+        id="email",
+        autocomplete="email"
+    ) }}
+
+    {{ input_group(
+        name="password",
+        label="Contraseña",
+        type="password",
+        placeholder="Ingresa tu contraseña",
+        value=request.form.get('password', 'password123') if request.form else 'password123',
+        required=true,
+        icon="fas fa-lock",
+        error=errors.get('password') if errors else None,
+        id="password",
+        autocomplete="current-password"
+    ) }}
+
+    {{ checkbox_group(
+        name="remember",
+        label="Recordarme",
+        checked=false,
+        value="1",
+        id="remember"
+    ) }}
+
+    <div class="form-group mb-0">
+        <button type="submit" id="loginBtn" class="btn btn-primary btn-lg btn-block" aria-label="Submit login form">
+            <i class="fas fa-sign-in-alt mr-2" aria-hidden="true"></i>
+            Iniciar Sesión
+        </button>
+    </div>
+
+    <div class="text-center mt-3">
+        <p class="mb-0">
+            ¿No tienes cuenta? 
+            <a href="{{ url_for('home.register') }}" class="text-primary" aria-label="Go to registration page">
+                <i class="fas fa-user-plus mr-1" aria-hidden="true"></i>Regístrate aquí
+            </a>
+        </p>
+    </div>
+</form>
+{% endmacro %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            {% if error %}
+                {{ alert(error, type="danger", icon="fas fa-exclamation-triangle") }}
+            {% endif %}
+            
+            {% if success %}
+                {{ alert(success, type="success", icon="fas fa-check-circle") }}
+            {% endif %}
+
+            {% call card(
+                title='Iniciar Sesión',
+                card_class='shadow'
+            ) %}
+                {{ login_form_content() }}
+            {% endcall %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('loginBtn');
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Clear previous validation states
+        clearValidationStates();
+        
+        let isValid = true;
+        const formData = new FormData(form);
+        
+        // Email validation
+        const email = formData.get('email');
+        if (!email) {
+            showFieldError('email', 'El correo electrónico es requerido');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showFieldError('email', 'Ingresa un correo electrónico válido');
+            isValid = false;
+        }
+        
+        // Password validation
+        const password = formData.get('password');
+        if (!password) {
+            showFieldError('password', 'La contraseña es requerida');
+            isValid = false;
+        } else if (password.length < 6) {
+            showFieldError('password', 'La contraseña debe tener al menos 6 caracteres');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Submit form
+            form.submit();
+        }
+    });
+    
+    // Real-time validation
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    
+    emailInput.addEventListener('blur', function() {
+        const email = this.value;
+        if (email && !isValidEmail(email)) {
+            showFieldError('email', 'Ingresa un correo electrónico válido');
+        } else if (email) {
+            showFieldSuccess('email');
+        }
+    });
+    
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        if (password && password.length >= 6) {
+            showFieldSuccess('password');
+        } else if (password && password.length < 6) {
+            showFieldError('password', 'La contraseña debe tener al menos 6 caracteres');
+        }
+    });
+});
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showFieldError(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
+    feedback.textContent = message;
+    feedback.classList.add('invalid-feedback');
+    feedback.classList.remove('valid-feedback');
+    
+    if (!field.parentNode.querySelector('.invalid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function showFieldSuccess(fieldName) {
+    const field = document.getElementById(fieldName);
+    const feedback = field.parentNode.querySelector('.invalid-feedback, .valid-feedback') || createFeedbackElement();
+    
+    field.classList.add('is-valid');
+    field.classList.remove('is-invalid');
+    feedback.textContent = '¡Correcto!';
+    feedback.classList.add('valid-feedback');
+    feedback.classList.remove('invalid-feedback');
+    
+    if (!field.parentNode.querySelector('.valid-feedback')) {
+        field.parentNode.appendChild(feedback);
+    }
+}
+
+function clearValidationStates() {
+    const fields = document.querySelectorAll('.form-control');
+    fields.forEach(field => {
+        field.classList.remove('is-valid', 'is-invalid');
+    });
+    
+    const feedbacks = document.querySelectorAll('.invalid-feedback, .valid-feedback');
+    feedbacks.forEach(feedback => feedback.remove());
+}
+
+function createFeedbackElement() {
+    const feedback = document.createElement('div');
+    return feedback;
+}
+
+
+</script>
+{% endblock %}
+
+

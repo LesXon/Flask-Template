@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import input_group, alert, card, checkbox_group %}
+
+{% block title %}
+    {{ super() }}
+    Registro
+{% endblock %}
+
+{% block content %}
+
+{% macro register_form_content(errors={}, request=None) %}
+<form method="POST" action="{{ url_for('home.register') }}" id="registerForm" novalidate>
+    <div class="row">
+        <div class="col-md-6">
+            {{ input_group(
+                name="first_name",
+                label="Nombre",
+                placeholder="Ingresa tu nombre",
+                required=true,
+                icon="fas fa-user",
+                value=request.form.get('first_name', ''),
+                error=errors.get('first_name')
+            ) }}
+        </div>
+        <div class="col-md-6">
+            {{ input_group(
+                name="last_name",
+                label="Apellido",
+                placeholder="Ingresa tu apellido",
+                required=true,
+                icon="fas fa-user",
+                value=request.form.get('last_name', ''),
+                error=errors.get('last_name')
+            ) }}
+        </div>
+    </div>
+
+    {{ input_group(
+        name="email",
+        type="email",
+        label="Correo Electrónico",
+        placeholder="Ingresa tu correo",
+        required=true,
+        icon="fas fa-envelope",
+        value=request.form.get('email', ''),
+        error=errors.get('email')
+    ) }}
+
+    {{ input_group(
+        name="password",
+        type="password",
+        label="Contraseña",
+        placeholder="Crea una contraseña segura",
+        required=true,
+        icon="fas fa-lock",
+        error=errors.get('password'),
+        help_text="Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número."
+    ) }}
+
+    {{ input_group(
+        name="confirm_password",
+        type="password",
+        label="Confirmar Contraseña",
+        placeholder="Vuelve a escribir la contraseña",
+        required=true,
+        icon="fas fa-lock",
+        error=errors.get('confirm_password')
+    ) }}
+    
+    {{ input_group(
+        name="phone",
+        type="tel",
+        label="Teléfono (Opcional)",
+        placeholder="Ingresa tu número de teléfono",
+        icon="fas fa-phone",
+        value=request.form.get('phone', ''),
+        error=errors.get('phone')
+    ) }}
+
+    {{ checkbox_group(
+        name="terms",
+        label='Acepto los <a href="#">Términos y Condiciones</a>',
+        checked=request.form.get('terms') == '1',
+        error=errors.get('terms')
+    ) }}
+
+    {{ checkbox_group(
+        name="newsletter",
+        label="Suscribirme al boletín de noticias",
+        checked=request.form.get('newsletter') == '1'
+    ) }}
+
+    <div class="form-group mt-4">
+        <button type="submit" id="registerSubmitBtn" class="btn btn-primary btn-block">
+            <i class="fas fa-user-plus mr-2" aria-hidden="true"></i>
+            Crear Cuenta
+        </button>
+    </div>
+
+    {% if error %}
+    <div class="mt-3">
+        {{ alert(error, type="danger", dismissible=true, icon="fas fa-exclamation-triangle") }}
+    </div>
+    {% endif %}
+</form>
+{% endmacro %}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            {% call card(
+                title='Crear Cuenta',
+                footer='<div class="text-center"><p class="mb-0">¿Ya tienes cuenta? <a href="' ~ url_for('home.login') ~ '">Inicia sesión</a></p></div>'
+            ) %}
+                {{ register_form_content(errors=errors, request=request) }}
+            {% endcall %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('registerSubmitBtn');
+    const buttonText = submitBtn.querySelector('.button-text');
+    const spinner = submitBtn.querySelector('.spinner-border');
+
+    if (form) {
+        form.addEventListener('submit', function() {
+            if (form.checkValidity()) {
+                submitBtn.disabled = true;
+                buttonText.textContent = submitBtn.dataset.loadingText || 'Procesando...';
+                spinner.classList.remove('d-none');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
+
+

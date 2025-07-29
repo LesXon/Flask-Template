@@ -1,0 +1,172 @@
+{% from 'components/ui_components.html' import card, icon_card, button, input_group, select_group, table %}
+
+{% macro config_form_content() %}
+<form id="klineConfigForm">
+    {{ input_group(
+        name="symbol",
+        label="Símbolo",
+        type="text",
+        placeholder="BTCUSDT",
+        value="BTCUSDT",
+        icon="fas fa-coins",
+        id="symbol"
+    ) }}
+    
+    {{ select_group(
+        name="interval",
+        label="Intervalo",
+        options=[
+            {"value": "1m", "text": "1 minuto"},
+            {"value": "5m", "text": "5 minutos"},
+            {"value": "15m", "text": "15 minutos"},
+            {"value": "1h", "text": "1 hora"},
+            {"value": "4h", "text": "4 horas"},
+            {"value": "1d", "text": "1 día"}
+        ],
+        selected="1h",
+        icon="fas fa-clock",
+        id="interval"
+    ) }}
+    
+    {{ input_group(
+        name="limit",
+        label="Límite de Registros",
+        type="number",
+        placeholder="100",
+        value="100",
+        icon="fas fa-list-ol",
+        id="limit"
+    ) }}
+    
+    <div class="form-group">
+        {{ button(
+            text="Actualizar Gráfico",
+            variant="primary",
+            icon="fas fa-sync",
+            class="btn-block",
+            onclick="updateChart()"
+        ) }}
+    </div>
+    
+    <div class="form-group mb-0">
+        {{ button(
+            text="Exportar Datos",
+            variant="outline-secondary",
+            icon="fas fa-download",
+            class="btn-block",
+            onclick="exportData()"
+        ) }}
+    </div>
+</form>
+{% endmacro %}
+
+{% macro chart_content() %}
+<div class="text-center p-5">
+    <div class="mb-4">
+        <i class="fas fa-chart-line fa-5x text-muted"></i>
+    </div>
+    <h4 class="text-muted">Gráfico K-Lines</h4>
+    <p class="text-muted">El gráfico de velas japonesas se mostrará aquí</p>
+    <div class="mt-4">
+        {{ button(
+            text="Cargar Gráfico",
+            variant="primary",
+            icon="fas fa-play",
+            onclick="loadChart()"
+        ) }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro data_table_content() %}
+{{ table(
+    headers=[
+        '<i class="fas fa-clock mr-1"></i>Tiempo',
+        '<i class="fas fa-arrow-up text-success mr-1"></i>Apertura',
+        '<i class="fas fa-arrow-up text-success mr-1"></i>Máximo',
+        '<i class="fas fa-arrow-down text-danger mr-1"></i>Mínimo',
+        '<i class="fas fa-chart-line text-primary mr-1"></i>Cierre',
+        '<i class="fas fa-chart-bar text-info mr-1"></i>Volumen',
+        '<i class="fas fa-cogs mr-1"></i>Acciones'
+    ],
+    rows=[
+        [
+            '<span class="text-muted">2024-01-15 10:00</span>',
+            '<span class="font-weight-bold text-success">$42,500.00</span>',
+            '<span class="font-weight-bold text-success">$42,750.00</span>',
+            '<span class="font-weight-bold text-danger">$42,300.00</span>',
+            '<span class="font-weight-bold text-primary">$42,650.00</span>',
+            '<span class="badge badge-light">125.45</span>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" title="Ver detalles"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-info" title="Análisis"><i class="fas fa-chart-line"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<span class="text-muted">2024-01-15 09:00</span>',
+            '<span class="font-weight-bold text-success">$42,300.00</span>',
+            '<span class="font-weight-bold text-success">$42,600.00</span>',
+            '<span class="font-weight-bold text-danger">$42,200.00</span>',
+            '<span class="font-weight-bold text-primary">$42,500.00</span>',
+            '<span class="badge badge-light">98.32</span>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" title="Ver detalles"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-info" title="Análisis"><i class="fas fa-chart-line"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<span class="text-muted">2024-01-15 08:00</span>',
+            '<span class="font-weight-bold text-success">$42,100.00</span>',
+            '<span class="font-weight-bold text-success">$42,400.00</span>',
+            '<span class="font-weight-bold text-danger">$42,050.00</span>',
+            '<span class="font-weight-bold text-primary">$42,300.00</span>',
+            '<span class="badge badge-light">156.78</span>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" title="Ver detalles"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-info" title="Análisis"><i class="fas fa-chart-line"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<span class="text-muted">2024-01-15 07:00</span>',
+            '<span class="font-weight-bold text-success">$41,950.00</span>',
+            '<span class="font-weight-bold text-success">$42,200.00</span>',
+            '<span class="font-weight-bold text-danger">$41,900.00</span>',
+            '<span class="font-weight-bold text-primary">$42,100.00</span>',
+            '<span class="badge badge-light">203.45</span>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" title="Ver detalles"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-info" title="Análisis"><i class="fas fa-chart-line"></i></button>' +
+            '</div>'
+        ],
+        [
+            '<span class="text-muted">2024-01-15 06:00</span>',
+            '<span class="font-weight-bold text-success">$41,800.00</span>',
+            '<span class="font-weight-bold text-success">$42,000.00</span>',
+            '<span class="font-weight-bold text-danger">$41,750.00</span>',
+            '<span class="font-weight-bold text-primary">$41,950.00</span>',
+            '<span class="badge badge-light">87.23</span>',
+            '<div class="btn-group btn-group-sm" role="group">' +
+            '<button class="btn btn-outline-primary" title="Ver detalles"><i class="fas fa-eye"></i></button>' +
+            '<button class="btn btn-outline-info" title="Análisis"><i class="fas fa-chart-line"></i></button>' +
+            '</div>'
+        ]
+    ],
+    striped=true,
+    hover=true,
+    responsive=true,
+    caption="Datos históricos de K-Lines para análisis técnico"
+) }}
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <small class="text-muted">Mostrando 5 de 100 registros</small>
+    <div>
+        {{ button(
+            text="Ver Más",
+            variant="outline-primary",
+            size="sm",
+            icon="fas fa-chevron-down",
+            onclick="loadMoreData()"
+        ) }}
+    </div>
+</div>
+{% endmacro %} 

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% from 'components/ui_components.html' import icon_card %}
+{% from '_supabase_macros.html' import connection_status_content, sql_query_content, database_tables_content, data_operations_content, query_results_content %}
+
+{% block title %}
+    {{ super() }}
+    Gestión Supabase
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center u-text-primary u-margin-bottom-lg">
+                <i class="fas fa-database mr-3"></i>
+                {% set route1 = parameter['route1'] %}
+                {{ route1 }}
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ icon_card(
+                title="Conexión a Base de Datos",
+                icon="fas fa-plug",
+                icon_class="text-success",
+                body=connection_status_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-8">
+            {{ icon_card(
+                title="Consulta SQL",
+                icon="fas fa-code",
+                icon_class="text-primary",
+                body=sql_query_content(),
+                card_class="u-shadow u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Tablas de la Base de Datos",
+                icon="fas fa-table",
+                icon_class="text-info",
+                body=database_tables_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+        
+        <div class="col-md-6">
+            {{ icon_card(
+                title="Operaciones de Datos",
+                icon="fas fa-cogs",
+                icon_class="text-warning",
+                body=data_operations_content(),
+                card_class="u-shadow-sm u-margin-bottom-md"
+            ) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            {{ icon_card(
+                title="Resultados de Consulta",
+                icon="fas fa-search",
+                icon_class="text-secondary",
+                body=query_results_content(),
+                card_class="u-shadow-sm"
+            ) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function testConnection() {
+    alert('Probando conexión a Supabase...');
+}
+
+function showConfig() {
+    alert('Mostrando configuración de la base de datos...');
+}
+
+function executeQuery() {
+    const query = document.getElementById('sql_query').value;
+    if (!query.trim()) {
+        alert('Por favor, ingresa una consulta SQL');
+        return;
+    }
+    
+    // Hide info alert and show sample results
+    document.getElementById('queryResults').style.display = 'none';
+    document.getElementById('sampleResults').style.display = 'block';
+    
+    console.log('Ejecutando consulta:', query);
+    alert('Ejecutando consulta SQL...');
+}
+
+function clearQuery() {
+    document.getElementById('sql_query').value = '';
+    document.getElementById('queryResults').style.display = 'block';
+    document.getElementById('sampleResults').style.display = 'none';
+}
+
+function loadQuery(query) {
+    document.getElementById('sql_query').value = query;
+}
+
+function describeTable(tableName) {
+    alert(`Describiendo estructura de la tabla: ${tableName}`);
+}
+
+function queryTable(tableName) {
+    const query = `SELECT * FROM ${tableName} LIMIT 10;`;
+    document.getElementById('sql_query').value = query;
+    alert(`Consulta cargada para la tabla: ${tableName}`);
+}
+
+function refreshTables() {
+    alert('Actualizando lista de tablas...');
+}
+
+function backupDatabase() {
+    if (confirm('¿Crear backup completo de la base de datos?')) {
+        alert('Iniciando backup de la base de datos...');
+    }
+}
+
+function importData() {
+    alert('Abriendo herramienta de importación de datos...');
+}
+
+function exportTable() {
+    alert('Selecciona la tabla a exportar...');
+}
+
+function optimizeTables() {
+    if (confirm('¿Optimizar todas las tablas? Esto puede tomar varios minutos.')) {
+        alert('Iniciando optimización de tablas...');
+    }
+}
+
+function viewLogs() {
+    alert('Abriendo logs de la base de datos...');
+}
+
+function exportResults() {
+    alert('Exportando resultados de la consulta...');
+}
+</script>
+{% endblock %}
+
+

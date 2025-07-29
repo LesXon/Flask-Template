@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="{% block meta_description %}Flask Template - Data processing and visualization platform{% endblock %}">
+    <meta name="author" content="Flask Template">
+    <meta name="theme-color" content="#2FA4E7">
+    
+    <title>{% block title %}ETL{% endblock %}</title>
+    
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- DNS prefetch for better performance -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <!-- Critical CSS - Inline for better performance -->
+    <style>
+        /* Critical CSS for above-the-fold content */
+        :root {
+            --bs-primary: #2FA4E7;
+            --bs-primary-rgb: 47, 164, 231;
+            --bs-secondary: #6c757d;
+            --bs-success: #73A839;
+            --bs-info: #033C73;
+            --bs-warning: #DD5600;
+            --bs-danger: #C71C22;
+            --bs-light: #f8f9fa;
+            --bs-dark: #343a40;
+        }
+        
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bs-light);
+            color: #495057;
+        }
+        
+        .navbar-custom {
+            background-color: var(--bs-primary) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .sr-only {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+    </style>
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"></noscript>
+    
+    <!-- BOOTSTRAP 4 Cerulean Theme - Optimized -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css"></noscript>
+    
+    <!-- FONT AWESOME Icons - Full Set from CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Application Stylesheets - Optimized -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.min.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.min.css') }}" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='navbar.min.css') }}">
+    </noscript>
+    
+    <!-- Additional CSS block for page-specific styles -->
+    {% block extra_css %}{% endblock %}
+    
+    <!-- CSS Custom Properties for Cerulean Theme -->
+    <style>
+        :root {
+            /* Cerulean Theme Colors */
+            --bs-primary: #2FA4E7;
+            --bs-primary-rgb: 47, 164, 231;
+            --bs-primary-dark: #1a8ad4;
+            --bs-primary-light: #5fb7eb;
+            --bs-secondary: #6c757d;
+            --bs-secondary-rgb: 108, 117, 125;
+            --bs-success: #73A839;
+            --bs-success-rgb: 115, 168, 57;
+            --bs-info: #033C73;
+            --bs-info-rgb: 3, 60, 115;
+            --bs-warning: #DD5600;
+            --bs-warning-rgb: 221, 86, 0;
+            --bs-danger: #C71C22;
+            --bs-danger-rgb: 199, 28, 34;
+            --bs-light: #f8f9fa;
+            --bs-light-rgb: 248, 249, 250;
+            --bs-dark: #343a40;
+            --bs-dark-rgb: 52, 58, 64;
+            
+            /* Typography Scale */
+            --font-family-base: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-size-base: 1rem;
+            --font-size-sm: 0.875rem;
+            --font-size-lg: 1.125rem;
+            --line-height-base: 1.5;
+            
+            /* Spacing Scale */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Border Radius */
+            --border-radius-sm: 0.125rem;
+            --border-radius: 0.25rem;
+            --border-radius-lg: 0.375rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-base: all 0.2s ease-in-out;
+            --transition-fast: all 0.15s ease-in-out;
+            --transition-slow: all 0.3s ease-in-out;
+        }
+        
+        /* Utility Classes for Consistent Spacing */
+        .u-margin-top-xs { margin-top: var(--spacing-xs) !important; }
+        .u-margin-top-sm { margin-top: var(--spacing-sm) !important; }
+        .u-margin-top-md { margin-top: var(--spacing-md) !important; }
+        .u-margin-top-lg { margin-top: var(--spacing-lg) !important; }
+        .u-margin-top-xl { margin-top: var(--spacing-xl) !important; }
+        
+        .u-margin-bottom-xs { margin-bottom: var(--spacing-xs) !important; }
+        .u-margin-bottom-sm { margin-bottom: var(--spacing-sm) !important; }
+        .u-margin-bottom-md { margin-bottom: var(--spacing-md) !important; }
+        .u-margin-bottom-lg { margin-bottom: var(--spacing-lg) !important; }
+        .u-margin-bottom-xl { margin-bottom: var(--spacing-xl) !important; }
+        
+        .u-padding-xs { padding: var(--spacing-xs) !important; }
+        .u-padding-sm { padding: var(--spacing-sm) !important; }
+        .u-padding-md { padding: var(--spacing-md) !important; }
+        .u-padding-lg { padding: var(--spacing-lg) !important; }
+        .u-padding-xl { padding: var(--spacing-xl) !important; }
+        
+        /* Typography Utility Classes */
+        .u-text-primary { color: var(--bs-primary) !important; }
+        .u-text-secondary { color: var(--bs-secondary) !important; }
+        .u-text-muted { color: #6c757d !important; }
+        .u-text-center { text-align: center !important; }
+        .u-text-left { text-align: left !important; }
+        .u-text-right { text-align: right !important; }
+        
+        .u-font-weight-light { font-weight: 300 !important; }
+        .u-font-weight-normal { font-weight: 400 !important; }
+        .u-font-weight-bold { font-weight: 700 !important; }
+        
+        /* Layout Utility Classes */
+        .u-full-width { width: 100% !important; }
+        .u-full-height { height: 100% !important; }
+        .u-flex-center { display: flex; align-items: center; justify-content: center; }
+        .u-flex-between { display: flex; align-items: center; justify-content: space-between; }
+        
+        /* Visual Enhancement Classes */
+        .u-shadow-sm { box-shadow: var(--shadow-sm) !important; }
+        .u-shadow { box-shadow: var(--shadow) !important; }
+        .u-shadow-lg { box-shadow: var(--shadow-lg) !important; }
+        .u-border-radius { border-radius: var(--border-radius) !important; }
+        .u-border-radius-lg { border-radius: var(--border-radius-lg) !important; }
+        
+        /* Responsive Typography */
+        @media (max-width: 576px) {
+            :root {
+                --font-size-base: 0.9rem;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            :root {
+                --font-size-base: 1.1rem;
+            }
+        }
+        
+        /* Accessibility Enhancements */
+        
+        /* Screen reader only class - Enhanced for accessibility */
+        .sr-only {
+          position: absolute !important;
+          width: 1px !important;
+          height: 1px !important;
+          padding: 0 !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important;
+          white-space: nowrap !important;
+          border: 0 !important;
+        }
+        
+        /* Screen reader only focusable - shows when focused */
+        .sr-only-focusable:focus {
+          position: static !important;
+          width: auto !important;
+          height: auto !important;
+          padding: 0.5rem 1rem !important;
+          margin: 0 !important;
+          overflow: visible !important;
+          clip: auto !important;
+          white-space: normal !important;
+          background-color: var(--cerulean-primary) !important;
+          color: white !important;
+          text-decoration: none !important;
+          border-radius: var(--border-radius) !important;
+          z-index: 9999 !important;
+          display: block !important;
+          text-align: center !important;
+          font-weight: bold !important;
+        }
+        
+        /* Enhanced focus styles for better visibility */
+        *:focus {
+          outline: 2px solid var(--cerulean-primary) !important;
+          outline-offset: 2px !important;
+        }
+        
+        /* High contrast focus for buttons and interactive elements */
+        button:focus,
+        .btn:focus,
+        input:focus,
+        textarea:focus,
+        select:focus,
+        a:focus {
+          outline: 3px solid var(--cerulean-primary) !important;
+          outline-offset: 2px !important;
+          box-shadow: 0 0 0 1px rgba(var(--cerulean-primary-rgb), 0.5) !important;
+        }
+        
+        /* Ensure sufficient color contrast for text */
+        .text-muted {
+          color: #6c757d !important; /* WCAG AA compliant */
+        }
+        
+        /* High contrast mode support */
+        @media (forced-colors: active) {
+          .btn,
+          .form-control,
+          .card,
+          .alert {
+            border: 1px solid ButtonText !important;
+          }
+          
+          .btn:focus,
+          .form-control:focus,
+          a:focus {
+            outline: 2px solid Highlight !important;
+            outline-offset: 2px !important;
+          }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+        
+        /* Keyboard navigation indicators */
+        .keyboard-navigation *:focus {
+          outline: 3px solid var(--cerulean-warning) !important;
+          outline-offset: 2px !important;
+        }
+    </style>
+    
+    <!-- MERMAID for Diagrams -->    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Skip to main content link for accessibility -->
+    <a class="sr-only sr-only-focusable" href="#main-content" tabindex="1">Skip to main content</a>
+    
+    <!-- Screen reader announcements region -->
+    <div id="sr-announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    
+    <!-- Navigation Header -->
+    <header role="banner">
+        {% block navbar %}
+            {% include 'navbar.html' %}
+        {% endblock %}
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="container-fluid flex-grow-1 u-padding-lg" role="main">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="row">
+                    <div class="col-12">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show u-margin-bottom-md" 
+                                 role="alert" 
+                                 aria-live="polite" 
+                                 aria-atomic="true"
+                                 tabindex="0">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'warning' else 'info-circle' if category == 'info' else 'check-circle' if category == 'success' else 'times-circle' }} mr-2" 
+                                   aria-hidden="true"></i>
+                                <span class="sr-only">{{ 'Error' if category == 'error' else category|title }} message: </span>
+                                {{ message }}
+                                <button type="button" 
+                                        class="close" 
+                                        data-dismiss="alert" 
+                                        aria-label="Close {{ category }} message"
+                                        title="Close this message">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Page Content -->
+        {% block content %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card u-shadow">
+                        <div class="card-body">
+                            <h1 class="card-title u-text-primary">Welcome to ETL Application</h1>
+                            <p class="card-text">This is the default content. Override the content block in your templates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </main>
+
+    <!-- Footer (optional) -->
+    <footer class="bg-light border-top u-padding-md mt-auto" role="contentinfo">
+        {% block footer %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-copyright mr-1"></i>
+                            {{ moment().format('YYYY') if moment else '2024' }} ETL Application
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </footer>
+    
+    <!-- JavaScript Libraries - Optimized Loading -->
+    <!-- jQuery (required for Bootstrap) - Deferred -->
+    <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Popper.js (required for Bootstrap tooltips and popovers) - Deferred -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap JavaScript - Deferred -->
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Application JavaScript - Deferred -->
+    <script defer src="{{ url_for('static', filename='navbar.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='components.min.js') }}"></script>
+    
+    <!-- Mermaid - Async loading -->
+    <script async src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" onload="initMermaid()"></script>
+    
+    <!-- Performance optimized initialization -->
+    <script>
+        // Optimize page loading
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize critical functionality immediately
+            if (typeof initCriticalFeatures === 'function') {
+                initCriticalFeatures();
+            }
+        });
+        
+        // Initialize Mermaid when loaded
+        function initMermaid() {
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    theme: 'default',
+                    themeVariables: {
+                        primaryColor: '#2FA4E7',
+                        primaryTextColor: '#fff',
+                        primaryBorderColor: '#1a8ad4',
+                        lineColor: '#6c757d',
+                        secondaryColor: '#f8f9fa',
+                        tertiaryColor: '#e9ecef'
+                    },
+                    startOnLoad: true
+                });
+            }
+        }
+        
+        // Service Worker registration for caching (if available)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js').catch(function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+    
+    <!-- Additional JavaScript block for page-specific scripts -->
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
