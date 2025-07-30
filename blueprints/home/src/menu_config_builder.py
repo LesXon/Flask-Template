@@ -15,6 +15,12 @@ def build_unified_menu_config():
     
     UNIFIED_MENU_CONFIG = {}
 
+    # ===== MÓDULO HOME =====
+    UNIFIED_MENU_CONFIG['home'] = {}
+
+    # Habilitar módulo home (sin secciones para que no tenga submenú)
+    UNIFIED_MENU_CONFIG['home']['enabled'] = True
+
     # ===== MÓDULO LESXON =====
     UNIFIED_MENU_CONFIG['lesxon'] = {}
 
