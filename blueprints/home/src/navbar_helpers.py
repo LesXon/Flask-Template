@@ -88,7 +88,8 @@ def generate_url_from_permission(permission: str, module_prefix: str) -> str:
         return f"/{module_prefix}/{url_part}"
     return f"/{module_prefix}/{permission}"
 
-# CONFIGURACIÓN UNIFICADA DE MENÚS - MÁXIMA OPTIMIZACIÓN: Agrupada por módulo y sección (CERO repetición)
+# ========== CONFIGURACIÓN COMPLETAMENTE UNIFICADA - CADA OPCIÓN COMPLETA EN SU LUGAR ==========
+
 UNIFIED_MENU_CONFIG = {
     'lesxon': {
         'ETL.EXTRACT:': {
@@ -101,7 +102,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/view',
                     'route': 'lesxon.view',
                     'icon': 'fas fa-eye',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 },
                 'lesxon_download': {
                     'permission': 'lesxon_download',
@@ -110,7 +112,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/download',
                     'route': 'lesxon.download',
                     'icon': 'fas fa-download',
-                    'item_order': 2
+                    'item_order': 2,
+                    'enabled': True
                 },
                 'lesxon_zip': {
                     'permission': 'lesxon_zip',
@@ -119,9 +122,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/zip',
                     'route': 'lesxon.zip',
                     'icon': 'fas fa-file-archive',
-                    'item_order': 3
+                    'item_order': 3,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'ETL.TRANSFORM:': {
             'section_order': 2,
@@ -133,7 +138,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/transactions',
                     'route': 'lesxon.transactions',
                     'icon': 'fas fa-exchange-alt',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 },
                 'lesxon_klines': {
                     'permission': 'lesxon_klines',
@@ -142,9 +148,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/klines',
                     'route': 'lesxon.klines',
                     'icon': 'fas fa-chart-bar',
-                    'item_order': 2
+                    'item_order': 2,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'ETL.LOAD:': {
             'section_order': 3,
@@ -156,10 +164,13 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/lesxon/supabase',
                     'route': 'lesxon.supabase',
                     'icon': 'fas fa-database',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 }
-            }
-        }
+            },
+            'enabled': True
+        },
+        'enabled': True
     },
     
     'autotrackr': {
@@ -173,9 +184,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/autotrackr/service_orders',
                     'route': 'autotrackr.service_orders',
                     'icon': 'fas fa-clipboard-list',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'ETL.TRANSFORM:': {
             'section_order': 2,
@@ -187,9 +200,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/autotrackr/erm_model',
                     'route': 'autotrackr.erm_model',
                     'icon': 'fas fa-project-diagram',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'ETL.LOAD:': {
             'section_order': 3,
@@ -201,10 +216,13 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/autotrackr/supabase',
                     'route': 'autotrackr.supabase',
                     'icon': 'fas fa-database',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 }
-            }
-        }
+            },
+            'enabled': True
+        },
+        'enabled': True
     },
     
     'products': {
@@ -218,7 +236,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/products/category/electronics',
                     'route': 'products.category.electronics',
                     'icon': 'fas fa-laptop',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 },
                 'products_clothing': {
                     'permission': 'products_clothing',
@@ -227,7 +246,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/products/category/clothing',
                     'route': 'products.category.clothing',
                     'icon': 'fas fa-tshirt',
-                    'item_order': 2
+                    'item_order': 2,
+                    'enabled': True
                 },
                 'products_home_garden': {
                     'permission': 'products_home_garden',
@@ -236,9 +256,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/products/category/home',
                     'route': 'products.category.home',
                     'icon': 'fas fa-home',
-                    'item_order': 3
+                    'item_order': 3,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'Product Management:': {
             'section_order': 2,
@@ -250,7 +272,8 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/products/new',
                     'route': 'products.new',
                     'icon': 'fas fa-plus-circle',
-                    'item_order': 1
+                    'item_order': 1,
+                    'enabled': True
                 },
                 'products_manage': {
                     'permission': 'products_manage',
@@ -259,9 +282,11 @@ UNIFIED_MENU_CONFIG = {
                     'url': '/products/manage',
                     'route': 'products.manage',
                     'icon': 'fas fa-edit',
-                    'item_order': 2
+                    'item_order': 2,
+                    'enabled': True
                 }
-            }
+            },
+            'enabled': True
         },
         'All Products': {
             'section_order': 3,
@@ -274,14 +299,17 @@ UNIFIED_MENU_CONFIG = {
                     'route': 'products.index',
                     'icon': 'fas fa-list',
                     'item_order': 1,
+                    'enabled': True,
                     'badge': {
                         'text': 'New',
                         'type': 'primary',
                         'label': 'New item'
                     }
                 }
-            }
-        }
+            },
+            'enabled': True
+        },
+        'enabled': True
     }
 }
 
@@ -290,27 +318,68 @@ def get_menu_permissions():
     """Extrae permisos del diccionario unificado por módulo"""
     permissions = {}
     for module_name, module_sections in UNIFIED_MENU_CONFIG.items():
+        # Verificar si el módulo está habilitado y saltar campos de configuración
+        if not isinstance(module_sections, dict) or not module_sections.get('enabled', True):
+            continue
+            
         permissions[module_name] = {}
         for section_name, section_config in module_sections.items():
+            # Saltar campos que no son secciones (como 'enabled')
+            if section_name == 'enabled' or not isinstance(section_config, dict):
+                continue
+            # Verificar si la sección está habilitada
+            if not section_config.get('enabled', True):
+                continue
+                
             for permission_key, config in section_config['items'].items():
-                permissions[module_name][config['permission']] = config['description']
+                # Verificar si el item está habilitado
+                if config.get('enabled', True):
+                    permissions[module_name][config['permission']] = config['description']
     return permissions
 
 def get_permission_icons():
     """Extrae iconos del diccionario unificado"""
     icons = {}
     for module_name, module_sections in UNIFIED_MENU_CONFIG.items():
+        # Verificar si el módulo está habilitado y saltar campos de configuración
+        if not isinstance(module_sections, dict) or not module_sections.get('enabled', True):
+            continue
+            
         for section_name, section_config in module_sections.items():
+            # Saltar campos que no son secciones (como 'enabled')
+            if section_name == 'enabled' or not isinstance(section_config, dict):
+                continue
+            # Verificar si la sección está habilitada
+            if not section_config.get('enabled', True):
+                continue
+                
             for permission_key, config in section_config['items'].items():
-                icons[config['permission']] = config['icon']
+                # Verificar si el item está habilitado
+                if config.get('enabled', True):
+                    icons[config['permission']] = config['icon']
     return icons
 
 def get_special_routes():
     """Extrae rutas especiales del diccionario unificado"""
     special_routes = {}
     for module_name, module_sections in UNIFIED_MENU_CONFIG.items():
+        # Verificar si el módulo está habilitado y saltar campos de configuración
+        if not isinstance(module_sections, dict) or not module_sections.get('enabled', True):
+            continue
+            
         for section_name, section_config in module_sections.items():
+            # Saltar campos que no son secciones (como 'enabled')
+            if section_name == 'enabled' or not isinstance(section_config, dict):
+                continue
+            # Verificar si la sección está habilitada
+            if not section_config.get('enabled', True):
+                continue
+                
             for permission_key, config in section_config['items'].items():
+                # Verificar si el item está habilitado
+                if not config.get('enabled', True):
+                    continue
+                    
                 permission = config['permission']
                 url = config['url']
                 route = config['route']
@@ -331,8 +400,23 @@ def get_special_display_names():
     special_names = {}
     
     for module_name, module_sections in UNIFIED_MENU_CONFIG.items():
+        # Verificar si el módulo está habilitado y saltar campos de configuración
+        if not isinstance(module_sections, dict) or not module_sections.get('enabled', True):
+            continue
+            
         for section_name, section_config in module_sections.items():
+            # Saltar campos que no son secciones (como 'enabled')
+            if section_name == 'enabled' or not isinstance(section_config, dict):
+                continue
+            # Verificar si la sección está habilitada
+            if not section_config.get('enabled', True):
+                continue
+                
             for permission_key, config in section_config['items'].items():
+                # Verificar si el item está habilitado
+                if not config.get('enabled', True):
+                    continue
+                    
                 permission = config['permission']
                 display_name = config['display_name']
                 
@@ -370,19 +454,36 @@ def get_module_menu_structure():
     structure = {}
     
     for module_name, module_sections in UNIFIED_MENU_CONFIG.items():
+        # Verificar si el módulo está habilitado y saltar campos de configuración
+        if not isinstance(module_sections, dict) or not module_sections.get('enabled', True):
+            continue
+            
         structure[module_name] = {'sections': []}
         
         for section_name, section_config in module_sections.items():
-            # Crear sección con todos sus permisos
+            # Saltar campos que no son secciones (como 'enabled')
+            if section_name == 'enabled' or not isinstance(section_config, dict):
+                continue
+            # Verificar si la sección está habilitada
+            if not section_config.get('enabled', True):
+                continue
+                
+            # Crear sección con todos sus permisos habilitados
             permissions = []
             for permission_key, config in section_config['items'].items():
-                permissions.append(config['permission'])
+                # Verificar si el item está habilitado
+                if config.get('enabled', True):
+                    permissions.append(config['permission'])
+            
+            # Solo agregar la sección si tiene permisos habilitados
+            if not permissions:
+                continue
             
             # Ordenar permisos por item_order
             permissions.sort(key=lambda p: next(
                 (config['item_order'] 
                  for config in section_config['items'].values()
-                 if config['permission'] == p), 0
+                 if config['permission'] == p and config.get('enabled', True)), 0
             ))
             
             new_section = {
