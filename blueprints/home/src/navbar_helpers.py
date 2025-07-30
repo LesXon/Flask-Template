@@ -88,193 +88,181 @@ def generate_url_from_permission(permission: str, module_prefix: str) -> str:
         return f"/{module_prefix}/{url_part}"
     return f"/{module_prefix}/{permission}"
 
-# CONFIGURACIÓN UNIFICADA DE MENÚS - Cada opción definida en un solo lugar
+# CONFIGURACIÓN UNIFICADA DE MENÚS - Agrupada por módulo para eliminar repetición
 UNIFIED_MENU_CONFIG = {
-    # LESXON MODULE
-    'lesxon_view': {
-        'module': 'lesxon',
-        'permission': 'lesxon_view',
-        'display_name': 'View',
-        'description': 'View data and reports',
-        'url': '/lesxon/view',
-        'route': 'lesxon.view',
-        'icon': 'fas fa-eye',
-        'section': 'ETL.EXTRACT:',
-        'section_order': 1,
-        'item_order': 1
-    },
-    'lesxon_download': {
-        'module': 'lesxon',
-        'permission': 'lesxon_download',
-        'display_name': 'Download',
-        'description': 'Download files and datasets',
-        'url': '/lesxon/download',
-        'route': 'lesxon.download',
-        'icon': 'fas fa-download',
-        'section': 'ETL.EXTRACT:',
-        'section_order': 1,
-        'item_order': 2
-    },
-    'lesxon_zip': {
-        'module': 'lesxon',
-        'permission': 'lesxon_zip',
-        'display_name': 'Zip',
-        'description': 'Create and manage zip archives',
-        'url': '/lesxon/zip',
-        'route': 'lesxon.zip',
-        'icon': 'fas fa-file-archive',
-        'section': 'ETL.EXTRACT:',
-        'section_order': 1,
-        'item_order': 3
-    },
-    'lesxon_transactions': {
-        'module': 'lesxon',
-        'permission': 'lesxon_transactions',
-        'display_name': 'Transactions',
-        'description': 'Manage transaction data',
-        'url': '/lesxon/transactions',
-        'route': 'lesxon.transactions',
-        'icon': 'fas fa-exchange-alt',
-        'section': 'ETL.TRANSFORM:',
-        'section_order': 2,
-        'item_order': 1
-    },
-    'lesxon_klines': {
-        'module': 'lesxon',
-        'permission': 'lesxon_klines',
-        'display_name': 'Klines',
-        'description': 'View and analyze klines data',
-        'url': '/lesxon/klines',
-        'route': 'lesxon.klines',
-        'icon': 'fas fa-chart-bar',
-        'section': 'ETL.TRANSFORM:',
-        'section_order': 2,
-        'item_order': 2
-    },
-    'lesxon_supabase': {
-        'module': 'lesxon',
-        'permission': 'lesxon_supabase',
-        'display_name': 'Supabase',
-        'description': 'Access LesXon Supabase integration',
-        'url': '/lesxon/supabase',
-        'route': 'lesxon.supabase',
-        'icon': 'fas fa-database',
-        'section': 'ETL.LOAD:',
-        'section_order': 3,
-        'item_order': 1
+    'lesxon': {
+        'lesxon_view': {
+            'permission': 'lesxon_view',
+            'display_name': 'View',
+            'description': 'View data and reports',
+            'url': '/lesxon/view',
+            'route': 'lesxon.view',
+            'icon': 'fas fa-eye',
+            'section': 'ETL.EXTRACT:',
+            'section_order': 1,
+            'item_order': 1
+        },
+        'lesxon_download': {
+            'permission': 'lesxon_download',
+            'display_name': 'Download',
+            'description': 'Download files and datasets',
+            'url': '/lesxon/download',
+            'route': 'lesxon.download',
+            'icon': 'fas fa-download',
+            'section': 'ETL.EXTRACT:',
+            'section_order': 1,
+            'item_order': 2
+        },
+        'lesxon_zip': {
+            'permission': 'lesxon_zip',
+            'display_name': 'Zip',
+            'description': 'Create and manage zip archives',
+            'url': '/lesxon/zip',
+            'route': 'lesxon.zip',
+            'icon': 'fas fa-file-archive',
+            'section': 'ETL.EXTRACT:',
+            'section_order': 1,
+            'item_order': 3
+        },
+        'lesxon_transactions': {
+            'permission': 'lesxon_transactions',
+            'display_name': 'Transactions',
+            'description': 'Manage transaction data',
+            'url': '/lesxon/transactions',
+            'route': 'lesxon.transactions',
+            'icon': 'fas fa-exchange-alt',
+            'section': 'ETL.TRANSFORM:',
+            'section_order': 2,
+            'item_order': 1
+        },
+        'lesxon_klines': {
+            'permission': 'lesxon_klines',
+            'display_name': 'Klines',
+            'description': 'View and analyze klines data',
+            'url': '/lesxon/klines',
+            'route': 'lesxon.klines',
+            'icon': 'fas fa-chart-bar',
+            'section': 'ETL.TRANSFORM:',
+            'section_order': 2,
+            'item_order': 2
+        },
+        'lesxon_supabase': {
+            'permission': 'lesxon_supabase',
+            'display_name': 'Supabase',
+            'description': 'Access LesXon Supabase integration',
+            'url': '/lesxon/supabase',
+            'route': 'lesxon.supabase',
+            'icon': 'fas fa-database',
+            'section': 'ETL.LOAD:',
+            'section_order': 3,
+            'item_order': 1
+        }
     },
     
-    # AUTOTRACKR MODULE
-    'autotrackr_service_orders': {
-        'module': 'autotrackr',
-        'permission': 'autotrackr_service_orders',
-        'display_name': 'Service Orders',
-        'description': 'Manage service orders',
-        'url': '/autotrackr/service_orders',
-        'route': 'autotrackr.service_orders',
-        'icon': 'fas fa-clipboard-list',
-        'section': 'ETL.EXTRACT:',
-        'section_order': 1,
-        'item_order': 1
-    },
-    'autotrackr_erm_model': {
-        'module': 'autotrackr',
-        'permission': 'autotrackr_erm_model',
-        'display_name': 'ERM Model',
-        'description': 'Access ERM model tools',
-        'url': '/autotrackr/erm_model',
-        'route': 'autotrackr.erm_model',
-        'icon': 'fas fa-project-diagram',
-        'section': 'ETL.TRANSFORM:',
-        'section_order': 2,
-        'item_order': 1
-    },
-    'autotrackr_supabase': {
-        'module': 'autotrackr',
-        'permission': 'autotrackr_supabase',
-        'display_name': 'Supabase',
-        'description': 'Access Autotrackr Supabase integration',
-        'url': '/autotrackr/supabase',
-        'route': 'autotrackr.supabase',
-        'icon': 'fas fa-database',
-        'section': 'ETL.LOAD:',
-        'section_order': 3,
-        'item_order': 1
+    'autotrackr': {
+        'autotrackr_service_orders': {
+            'permission': 'autotrackr_service_orders',
+            'display_name': 'Service Orders',
+            'description': 'Manage service orders',
+            'url': '/autotrackr/service_orders',
+            'route': 'autotrackr.service_orders',
+            'icon': 'fas fa-clipboard-list',
+            'section': 'ETL.EXTRACT:',
+            'section_order': 1,
+            'item_order': 1
+        },
+        'autotrackr_erm_model': {
+            'permission': 'autotrackr_erm_model',
+            'display_name': 'ERM Model',
+            'description': 'Access ERM model tools',
+            'url': '/autotrackr/erm_model',
+            'route': 'autotrackr.erm_model',
+            'icon': 'fas fa-project-diagram',
+            'section': 'ETL.TRANSFORM:',
+            'section_order': 2,
+            'item_order': 1
+        },
+        'autotrackr_supabase': {
+            'permission': 'autotrackr_supabase',
+            'display_name': 'Supabase',
+            'description': 'Access Autotrackr Supabase integration',
+            'url': '/autotrackr/supabase',
+            'route': 'autotrackr.supabase',
+            'icon': 'fas fa-database',
+            'section': 'ETL.LOAD:',
+            'section_order': 3,
+            'item_order': 1
+        }
     },
     
-    # PRODUCTS MODULE
-    'products_electronics': {
-        'module': 'products',
-        'permission': 'products_electronics',
-        'display_name': 'Electronics',
-        'description': 'Manage electronics catalog',
-        'url': '/products/category/electronics',
-        'route': 'products.category.electronics',
-        'icon': 'fas fa-laptop',
-        'section': 'Categories:',
-        'section_order': 1,
-        'item_order': 1
-    },
-    'products_clothing': {
-        'module': 'products',
-        'permission': 'products_clothing',
-        'display_name': 'Clothing',
-        'description': 'Manage clothing catalog',
-        'url': '/products/category/clothing',
-        'route': 'products.category.clothing',
-        'icon': 'fas fa-tshirt',
-        'section': 'Categories:',
-        'section_order': 1,
-        'item_order': 2
-    },
-    'products_home_garden': {
-        'module': 'products',
-        'permission': 'products_home_garden',
-        'display_name': 'Home & Garden',
-        'description': 'Manage home & garden catalog',
-        'url': '/products/category/home',
-        'route': 'products.category.home',
-        'icon': 'fas fa-home',
-        'section': 'Categories:',
-        'section_order': 1,
-        'item_order': 3
-    },
-    'products_new': {
-        'module': 'products',
-        'permission': 'products_new',
-        'display_name': 'Add New Product',
-        'description': 'Manage new product listings',
-        'url': '/products/new',
-        'route': 'products.new',
-        'icon': 'fas fa-plus-circle',
-        'section': 'Product Management:',
-        'section_order': 2,
-        'item_order': 1
-    },
-    'products_manage': {
-        'module': 'products',
-        'permission': 'products_manage',
-        'display_name': 'Manage Products',
-        'description': 'Full product management access',
-        'url': '/products/manage',
-        'route': 'products.manage',
-        'icon': 'fas fa-edit',
-        'section': 'Product Management:',
-        'section_order': 2,
-        'item_order': 2
-    },
-    'products_all': {
-        'module': 'products',
-        'permission': 'products_all',
-        'display_name': 'All Products',
-        'description': 'View all products',
-        'url': '/products',
-        'route': 'products.index',
-        'icon': 'fas fa-list',
-        'section': 'All Products',
-        'section_order': 3,
-        'item_order': 1,
-        'badge': {'text': 'New', 'type': 'primary', 'label': 'New item'}
+    'products': {
+        'products_electronics': {
+            'permission': 'products_electronics',
+            'display_name': 'Electronics',
+            'description': 'Manage electronics catalog',
+            'url': '/products/category/electronics',
+            'route': 'products.category.electronics',
+            'icon': 'fas fa-laptop',
+            'section': 'Categories:',
+            'section_order': 1,
+            'item_order': 1
+        },
+        'products_clothing': {
+            'permission': 'products_clothing',
+            'display_name': 'Clothing',
+            'description': 'Manage clothing catalog',
+            'url': '/products/category/clothing',
+            'route': 'products.category.clothing',
+            'icon': 'fas fa-tshirt',
+            'section': 'Categories:',
+            'section_order': 1,
+            'item_order': 2
+        },
+        'products_home_garden': {
+            'permission': 'products_home_garden',
+            'display_name': 'Home & Garden',
+            'description': 'Manage home & garden catalog',
+            'url': '/products/category/home',
+            'route': 'products.category.home',
+            'icon': 'fas fa-home',
+            'section': 'Categories:',
+            'section_order': 1,
+            'item_order': 3
+        },
+        'products_new': {
+            'permission': 'products_new',
+            'display_name': 'Add New Product',
+            'description': 'Manage new product listings',
+            'url': '/products/new',
+            'route': 'products.new',
+            'icon': 'fas fa-plus-circle',
+            'section': 'Product Management:',
+            'section_order': 2,
+            'item_order': 1
+        },
+        'products_manage': {
+            'permission': 'products_manage',
+            'display_name': 'Manage Products',
+            'description': 'Full product management access',
+            'url': '/products/manage',
+            'route': 'products.manage',
+            'icon': 'fas fa-edit',
+            'section': 'Product Management:',
+            'section_order': 2,
+            'item_order': 2
+        },
+        'products_all': {
+            'permission': 'products_all',
+            'display_name': 'All Products',
+            'description': 'View all products',
+            'url': '/products',
+            'route': 'products.index',
+            'icon': 'fas fa-list',
+            'section': 'All Products',
+            'section_order': 3,
+            'item_order': 1,
+            'badge': {'text': 'New', 'type': 'primary', 'label': 'New item'}
+        }
     }
 }
 
@@ -282,63 +270,75 @@ UNIFIED_MENU_CONFIG = {
 def get_menu_permissions():
     """Extrae permisos del diccionario unificado por módulo"""
     permissions = {}
-    for config in UNIFIED_MENU_CONFIG.values():
-        module = config['module']
-        if module not in permissions:
-            permissions[module] = {}
-        permissions[module][config['permission']] = config['description']
+    for module_name, module_items in UNIFIED_MENU_CONFIG.items():
+        permissions[module_name] = {}
+        for permission_key, config in module_items.items():
+            permissions[module_name][config['permission']] = config['description']
     return permissions
 
 def get_permission_icons():
     """Extrae iconos del diccionario unificado"""
-    return {config['permission']: config['icon'] for config in UNIFIED_MENU_CONFIG.values()}
+    icons = {}
+    for module_name, module_items in UNIFIED_MENU_CONFIG.items():
+        for permission_key, config in module_items.items():
+            icons[config['permission']] = config['icon']
+    return icons
 
 def get_special_routes():
     """Extrae rutas especiales del diccionario unificado"""
-    return {
-        config['permission']: {
-            'url': config['url'],
-            'route': config['route']
-        }
-        for config in UNIFIED_MENU_CONFIG.values()
-        if not config['url'].startswith(f"/{config['module']}/{config['permission'].replace(config['module'] + '_', '')}")
-    }
+    special_routes = {}
+    for module_name, module_items in UNIFIED_MENU_CONFIG.items():
+        for permission_key, config in module_items.items():
+            permission = config['permission']
+            url = config['url']
+            route = config['route']
+            
+            # Verificar si no sigue el patrón estándar
+            expected_url_part = permission.replace(f"{module_name}_", "")
+            expected_url = f"/{module_name}/{expected_url_part}"
+            
+            if url != expected_url:
+                special_routes[permission] = {
+                    'url': url,
+                    'route': route
+                }
+    return special_routes
 
 def get_special_display_names():
     """Extrae nombres especiales del diccionario unificado"""
     special_names = {}
     
-    for config in UNIFIED_MENU_CONFIG.values():
-        permission = config['permission']
-        display_name = config['display_name']
-        module = config['module']
-        
-        # Calcular el nombre que se generaría automáticamente
-        if module and permission.startswith(f"{module}_"):
-            name_part = permission[len(module) + 1:]
-        else:
-            parts = permission.split('_', 1)
-            name_part = parts[1] if len(parts) > 1 else permission
-        
-        # Casos especiales conocidos
-        auto_special_cases = {
-            'home_garden': 'Home & Garden',
-            'service_orders': 'Service Orders',
-            'erm_model': 'ERM Model',
-            'klines': 'Klines',
-            'supabase': 'Supabase',
-        }
-        
-        if name_part in auto_special_cases:
-            expected_name = auto_special_cases[name_part]
-        else:
-            # Conversión estándar
-            words = name_part.split('_')
-            expected_name = ' '.join(word.capitalize() for word in words)
-        
-        # Si el display_name es diferente al esperado, es especial
-        if display_name != expected_name:
-            special_names[permission] = display_name
+    for module_name, module_items in UNIFIED_MENU_CONFIG.items():
+        for permission_key, config in module_items.items():
+            permission = config['permission']
+            display_name = config['display_name']
+            
+            # Calcular el nombre que se generaría automáticamente
+            if permission.startswith(f"{module_name}_"):
+                name_part = permission[len(module_name) + 1:]
+            else:
+                parts = permission.split('_', 1)
+                name_part = parts[1] if len(parts) > 1 else permission
+            
+            # Casos especiales conocidos
+            auto_special_cases = {
+                'home_garden': 'Home & Garden',
+                'service_orders': 'Service Orders',
+                'erm_model': 'ERM Model',
+                'klines': 'Klines',
+                'supabase': 'Supabase',
+            }
+            
+            if name_part in auto_special_cases:
+                expected_name = auto_special_cases[name_part]
+            else:
+                # Conversión estándar
+                words = name_part.split('_')
+                expected_name = ' '.join(word.capitalize() for word in words)
+            
+            # Si el display_name es diferente al esperado, es especial
+            if display_name != expected_name:
+                special_names[permission] = display_name
     
     return special_names
 
@@ -346,37 +346,38 @@ def get_module_menu_structure():
     """Genera estructura de menú del diccionario unificado"""
     structure = {}
     
-    for config in UNIFIED_MENU_CONFIG.values():
-        module = config['module']
-        if module not in structure:
-            structure[module] = {'sections': []}
+    for module_name, module_items in UNIFIED_MENU_CONFIG.items():
+        structure[module_name] = {'sections': []}
         
-        # Buscar o crear sección
-        section_found = False
-        for section in structure[module]['sections']:
-            if section.get('header') == config['section']:
-                if 'permissions' not in section:
-                    section['permissions'] = []
-                section['permissions'].append(config['permission'])
-                section_found = True
-                break
-        
-        if not section_found:
-            new_section = {
-                'header': config['section'],
-                'permissions': [config['permission']],
-                'order': config['section_order']
-            }
-            structure[module]['sections'].append(new_section)
+        for permission_key, config in module_items.items():
+            # Buscar o crear sección
+            section_found = False
+            for section in structure[module_name]['sections']:
+                if section.get('header') == config['section']:
+                    if 'permissions' not in section:
+                        section['permissions'] = []
+                    section['permissions'].append(config['permission'])
+                    section_found = True
+                    break
+            
+            if not section_found:
+                new_section = {
+                    'header': config['section'],
+                    'permissions': [config['permission']],
+                    'order': config['section_order']
+                }
+                structure[module_name]['sections'].append(new_section)
     
     # Ordenar secciones y permisos
-    for module_data in structure.values():
+    for module_name, module_data in structure.items():
         module_data['sections'].sort(key=lambda x: x['order'])
         for section in module_data['sections']:
             if 'permissions' in section:
-                # Ordenar permisos dentro de cada sección
+                # Ordenar permisos dentro de cada sección usando la nueva estructura
                 section['permissions'].sort(key=lambda p: next(
-                    (config['item_order'] for config in UNIFIED_MENU_CONFIG.values() 
+                    (config['item_order'] 
+                     for module_items in UNIFIED_MENU_CONFIG.values()
+                     for config in module_items.values()
                      if config['permission'] == p), 0
                 ))
     
@@ -1041,12 +1042,14 @@ def add_module_config(module_name: str, display_name: str, icon: str,
     }
     
     # Add menu items to unified configuration
+    if module_name not in UNIFIED_MENU_CONFIG:
+        UNIFIED_MENU_CONFIG[module_name] = {}
+    
     for item in menu_items:
         permission = item['permission']
         
         # Generate defaults for missing fields
         item_config = {
-            'module': module_name,
             'permission': permission,
             'display_name': item.get('display_name', permission_to_display_name(permission, module_name)),
             'description': item.get('description', f'Access {item.get("display_name", permission)}'),
@@ -1062,7 +1065,7 @@ def add_module_config(module_name: str, display_name: str, icon: str,
         if 'badge' in item:
             item_config['badge'] = item['badge']
         
-        UNIFIED_MENU_CONFIG[permission] = item_config
+        UNIFIED_MENU_CONFIG[module_name][permission] = item_config
     
     # Refresh all configurations
     refresh_all_configurations()
@@ -1079,13 +1082,8 @@ def remove_module_config(module_name: str):
         del MODULE_CONFIG[module_name]
     
     # Remove all permissions for this module from unified config
-    permissions_to_remove = [
-        permission for permission, config in UNIFIED_MENU_CONFIG.items()
-        if config['module'] == module_name
-    ]
-    
-    for permission in permissions_to_remove:
-        del UNIFIED_MENU_CONFIG[permission]
+    if module_name in UNIFIED_MENU_CONFIG:
+        del UNIFIED_MENU_CONFIG[module_name]
     
     # Refresh all derived configurations
     refresh_all_configurations()
@@ -1182,26 +1180,29 @@ def add_permission_to_module(module_name: str, permission: str, description: str
         max_section_order = 0
         max_item_order = 0
         
-        for config in UNIFIED_MENU_CONFIG.values():
-            if config['module'] == module_name:
+        if module_name in UNIFIED_MENU_CONFIG:
+            for config in UNIFIED_MENU_CONFIG[module_name].values():
                 if config['section'] == section_header:
                     max_item_order = max(max_item_order, config.get('item_order', 0))
                 max_section_order = max(max_section_order, config.get('section_order', 0))
         
         if section_order is None:
             # If section exists, use its order, otherwise increment max
-            section_order = next(
-                (config['section_order'] for config in UNIFIED_MENU_CONFIG.values() 
-                 if config['module'] == module_name and config['section'] == section_header),
-                max_section_order + 1
-            )
+            section_order = max_section_order + 1
+            if module_name in UNIFIED_MENU_CONFIG:
+                for config in UNIFIED_MENU_CONFIG[module_name].values():
+                    if config['section'] == section_header:
+                        section_order = config['section_order']
+                        break
         
         if item_order is None:
             item_order = max_item_order + 1
     
     # Add to unified configuration
-    UNIFIED_MENU_CONFIG[permission] = {
-        'module': module_name,
+    if module_name not in UNIFIED_MENU_CONFIG:
+        UNIFIED_MENU_CONFIG[module_name] = {}
+    
+    UNIFIED_MENU_CONFIG[module_name][permission] = {
         'permission': permission,
         'display_name': display_name,
         'description': description,
@@ -1215,7 +1216,7 @@ def add_permission_to_module(module_name: str, permission: str, description: str
     
     # Add badge if provided
     if badge:
-        UNIFIED_MENU_CONFIG[permission]['badge'] = badge
+        UNIFIED_MENU_CONFIG[module_name][permission]['badge'] = badge
     
     # Refresh all derived configurations
     refresh_all_configurations()
@@ -1254,8 +1255,12 @@ def remove_permission_from_module(module_name: str, permission: str):
         remove_permission_from_module('lesxon', 'lesxon_old_feature')
     """
     # Remove from unified configuration
-    if permission in UNIFIED_MENU_CONFIG:
-        del UNIFIED_MENU_CONFIG[permission]
+    if module_name in UNIFIED_MENU_CONFIG and permission in UNIFIED_MENU_CONFIG[module_name]:
+        del UNIFIED_MENU_CONFIG[module_name][permission]
+        
+        # Remove empty module if no permissions left
+        if not UNIFIED_MENU_CONFIG[module_name]:
+            del UNIFIED_MENU_CONFIG[module_name]
     
     # Refresh all derived configurations
     refresh_all_configurations()
@@ -1347,14 +1352,14 @@ def get_unified_config_summary() -> Dict[str, Any]:
     # Analyze modules
     for module_name, config in MODULE_CONFIG.items():
         # Count menu items for this module
-        module_items = [item for item in UNIFIED_MENU_CONFIG.values() if item['module'] == module_name]
+        module_items = UNIFIED_MENU_CONFIG.get(module_name, {})
         
         module_info = {
             'display_name': config['display_name'],
             'dependencies': config['depends_on'],
             'is_public': config['public_access'],
             'menu_items_count': len(module_items),
-            'sections': list(set(item['section'] for item in module_items))
+            'sections': list(set(item['section'] for item in module_items.values())) if module_items else []
         }
         
         summary['modules'][module_name] = module_info
@@ -1368,8 +1373,12 @@ def get_unified_config_summary() -> Dict[str, Any]:
         summary['dependency_tree'][module_name] = config['depends_on']
     
     # Calculate optimization metrics
-    total_fields_in_unified = sum(len(item) for item in UNIFIED_MENU_CONFIG.values())
-    estimated_old_system_fields = len(UNIFIED_MENU_CONFIG) * 8  # Estimated fields in old distributed system
+    total_items = sum(len(module_items) for module_items in UNIFIED_MENU_CONFIG.values())
+    total_fields_in_unified = sum(
+        len(item) for module_items in UNIFIED_MENU_CONFIG.values() 
+        for item in module_items.values()
+    )
+    estimated_old_system_fields = total_items * 9  # Estimated fields in old distributed system (including 'module' field)
     
     summary['optimization_metrics'] = {
         'single_source_of_truth': True,
@@ -1474,18 +1483,19 @@ def demo_unified_system():
     
     print("\n✨ AFTER: Single unified dictionary, ZERO duplication")
     print("   - UNIFIED_MENU_CONFIG: {")
-    print("       'lesxon_view': {")
-    print("         'permission': 'lesxon_view',")
-    print("         'display_name': 'View',")
-    print("         'description': 'View data and reports',")
-    print("         'url': '/lesxon/view',")
-    print("         'route': 'lesxon.view',")
-    print("         'icon': 'fas fa-eye',")
-    print("         'section': 'ETL.EXTRACT:',")
-    print("         'module': 'lesxon'")
+    print("       'lesxon': {")
+    print("         'lesxon_view': {")
+    print("           'permission': 'lesxon_view',")
+    print("           'display_name': 'View',")
+    print("           'description': 'View data and reports',")
+    print("           'url': '/lesxon/view',")
+    print("           'route': 'lesxon.view',")
+    print("           'icon': 'fas fa-eye',")
+    print("           'section': 'ETL.EXTRACT:'")
+    print("         }")
     print("       }")
     print("     }")
-    print("   → 1 place to define EVERYTHING! 🎉")
+    print("   → 1 place to define EVERYTHING! Sin repetir 'module'! 🎉")
     
     # Show current status
     print("\n📊 CURRENT UNIFIED SYSTEM STATUS:")
@@ -1546,14 +1556,14 @@ def demo_unified_system():
     
     # Scenario 3: Show the power of unified configuration
     print("\n⚡ Scenario 3: Demonstrating unified power...")
-    quantum_config = UNIFIED_MENU_CONFIG.get('lesxon_quantum_analysis', {})
+    quantum_config = UNIFIED_MENU_CONFIG.get('lesxon', {}).get('lesxon_quantum_analysis', {})
     print(f"   From ONE entry, we auto-generated:")
     print(f"   • URL: {quantum_config.get('url', 'N/A')}")
     print(f"   • Route: {quantum_config.get('route', 'N/A')}")
     print(f"   • Display Name: {quantum_config.get('display_name', 'N/A')}")
     print(f"   • Icon: {quantum_config.get('icon', 'N/A')}")
     print(f"   • Section: {quantum_config.get('section', 'N/A')}")
-    print("   All from defining it ONCE! 🎯")
+    print("   All from defining it ONCE, without repeating 'module'! 🎯")
     
     # Show optimization achievements
     print("\n🏆 OPTIMIZATION ACHIEVEMENTS:")
@@ -1572,6 +1582,8 @@ def demo_unified_system():
     print("   ✅ Change URL → 1 field update (was 2+ places)")
     print("   ✅ Update display name → 1 field (was 2+ places)")
     print("   ✅ Change icon → 1 field (was 2+ places)")
+    print("   ✅ No more repeating 'module': 'name' in every entry!")
+    print("   ✅ Grouped by module - super organized structure!")
     print("   ✅ No more forgetting to update all dictionaries!")
     print("   ✅ No more inconsistencies between dictionaries!")
     print("   ✅ Auto-generated URLs, routes, and names!")
@@ -1585,7 +1597,8 @@ def demo_unified_system():
     
     print("\n🎉 UNIFIED SYSTEM DEMO COMPLETED!")
     print("   Every menu option is now defined in EXACTLY ONE PLACE")
-    print("   with ZERO duplication and MAXIMUM maintainability! 🚀")
+    print("   with ZERO duplication (including 'module' field eliminated)")
+    print("   and MAXIMUM maintainability! 🚀")
     
     return unified_summary
 
@@ -1612,17 +1625,17 @@ PROBLEMA RESUELTO:
 
 BENEFICIOS PRINCIPALES:
 ✅ Fuente única de verdad (Single Source of Truth)
-✅ Cero duplicación de código
+✅ Cero duplicación de código - incluido el campo 'module'
 ✅ Auto-generación de URLs, rutas y nombres
 ✅ Gestión centralizada y consistente
 ✅ Fácil mantenimiento y escalabilidad
 ✅ Organización perfecta con secciones
+✅ Estructura agrupada por módulo - sin repetir 'module': 'nombre' en cada entrada
 
 EJEMPLOS DE USO:
 
 1. AGREGAR NUEVA OPCIÓN DE MENÚ (súper fácil):
-   UNIFIED_MENU_CONFIG['mi_nueva_opcion'] = {
-       'module': 'lesxon',
+   UNIFIED_MENU_CONFIG['lesxon']['lesxon_nueva_funcion'] = {
        'permission': 'lesxon_nueva_funcion',
        'display_name': 'Nueva Función',
        'description': 'Acceso a nueva funcionalidad',
@@ -1660,20 +1673,21 @@ EJEMPLOS DE USO:
        icon='fas fa-brain'
    )
 
-ESTRUCTURA DEL DICCIONARIO UNIFICADO:
+ESTRUCTURA DEL DICCIONARIO UNIFICADO (OPTIMIZADA - SIN REPETIR 'module'):
 {
-    'permission_key': {
-        'module': 'módulo_propietario',
-        'permission': 'nombre_del_permiso',
-        'display_name': 'Nombre en la UI',
-        'description': 'Descripción del permiso',
-        'url': '/ruta/completa',
-        'route': 'nombre.de.ruta',
-        'icon': 'fas fa-icono',
-        'section': 'SECCIÓN:',
-        'section_order': 1,
-        'item_order': 1,
-        'badge': {'text': 'Nuevo', 'type': 'primary'} # Opcional
+    'module_name': {
+        'permission_key': {
+            'permission': 'nombre_del_permiso',
+            'display_name': 'Nombre en la UI',
+            'description': 'Descripción del permiso',
+            'url': '/ruta/completa',
+            'route': 'nombre.de.ruta',
+            'icon': 'fas fa-icono',
+            'section': 'SECCIÓN:',
+            'section_order': 1,
+            'item_order': 1,
+            'badge': {'text': 'Nuevo', 'type': 'primary'} # Opcional
+        }
     }
 }
 
