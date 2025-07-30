@@ -90,228 +90,265 @@ def generate_url_from_permission(permission: str, module_prefix: str) -> str:
 
 # ========== CONFIGURACIÓN COMPLETAMENTE UNIFICADA - CADA OPCIÓN COMPLETA EN SU LUGAR ==========
 
-UNIFIED_MENU_CONFIG = {
-    'lesxon': {
-        'ETL.EXTRACT:': {
-            'section_order': 1,
-            'items': {
-                'lesxon_view': {
-                    'permission': 'lesxon_view',
-                    'display_name': 'View',
-                    'description': 'View data and reports',
-                    'url': '/lesxon/view',
-                    'route': 'lesxon.view',
-                    'icon': 'fas fa-eye',
-                    'item_order': 1,
-                    'enabled': True
-                },
-                'lesxon_download': {
-                    'permission': 'lesxon_download',
-                    'display_name': 'Download',
-                    'description': 'Download files and datasets',
-                    'url': '/lesxon/download',
-                    'route': 'lesxon.download',
-                    'icon': 'fas fa-download',
-                    'item_order': 2,
-                    'enabled': True
-                },
-                'lesxon_zip': {
-                    'permission': 'lesxon_zip',
-                    'display_name': 'Zip',
-                    'description': 'Create and manage zip archives',
-                    'url': '/lesxon/zip',
-                    'route': 'lesxon.zip',
-                    'icon': 'fas fa-file-archive',
-                    'item_order': 3,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'ETL.TRANSFORM:': {
-            'section_order': 2,
-            'items': {
-                'lesxon_transactions': {
-                    'permission': 'lesxon_transactions',
-                    'display_name': 'Transactions',
-                    'description': 'Manage transaction data',
-                    'url': '/lesxon/transactions',
-                    'route': 'lesxon.transactions',
-                    'icon': 'fas fa-exchange-alt',
-                    'item_order': 1,
-                    'enabled': True
-                },
-                'lesxon_klines': {
-                    'permission': 'lesxon_klines',
-                    'display_name': 'Klines',
-                    'description': 'View and analyze klines data',
-                    'url': '/lesxon/klines',
-                    'route': 'lesxon.klines',
-                    'icon': 'fas fa-chart-bar',
-                    'item_order': 2,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'ETL.LOAD:': {
-            'section_order': 3,
-            'items': {
-                'lesxon_supabase': {
-                    'permission': 'lesxon_supabase',
-                    'display_name': 'Supabase',
-                    'description': 'Access LesXon Supabase integration',
-                    'url': '/lesxon/supabase',
-                    'route': 'lesxon.supabase',
-                    'icon': 'fas fa-database',
-                    'item_order': 1,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'enabled': True
-    },
-    
-    'autotrackr': {
-        'ETL.EXTRACT:': {
-            'section_order': 1,
-            'items': {
-                'autotrackr_service_orders': {
-                    'permission': 'autotrackr_service_orders',
-                    'display_name': 'Service Orders',
-                    'description': 'Manage service orders',
-                    'url': '/autotrackr/service_orders',
-                    'route': 'autotrackr.service_orders',
-                    'icon': 'fas fa-clipboard-list',
-                    'item_order': 1,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'ETL.TRANSFORM:': {
-            'section_order': 2,
-            'items': {
-                'autotrackr_erm_model': {
-                    'permission': 'autotrackr_erm_model',
-                    'display_name': 'ERM Model',
-                    'description': 'Access ERM model tools',
-                    'url': '/autotrackr/erm_model',
-                    'route': 'autotrackr.erm_model',
-                    'icon': 'fas fa-project-diagram',
-                    'item_order': 1,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'ETL.LOAD:': {
-            'section_order': 3,
-            'items': {
-                'autotrackr_supabase': {
-                    'permission': 'autotrackr_supabase',
-                    'display_name': 'Supabase',
-                    'description': 'Access Autotrackr Supabase integration',
-                    'url': '/autotrackr/supabase',
-                    'route': 'autotrackr.supabase',
-                    'icon': 'fas fa-database',
-                    'item_order': 1,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'enabled': True
-    },
-    
-    'products': {
-        'Categories:': {
-            'section_order': 1,
-            'items': {
-                'products_electronics': {
-                    'permission': 'products_electronics',
-                    'display_name': 'Electronics',
-                    'description': 'Manage electronics catalog',
-                    'url': '/products/category/electronics',
-                    'route': 'products.category.electronics',
-                    'icon': 'fas fa-laptop',
-                    'item_order': 1,
-                    'enabled': True
-                },
-                'products_clothing': {
-                    'permission': 'products_clothing',
-                    'display_name': 'Clothing',
-                    'description': 'Manage clothing catalog',
-                    'url': '/products/category/clothing',
-                    'route': 'products.category.clothing',
-                    'icon': 'fas fa-tshirt',
-                    'item_order': 2,
-                    'enabled': True
-                },
-                'products_home_garden': {
-                    'permission': 'products_home_garden',
-                    'display_name': 'Home & Garden',
-                    'description': 'Manage home & garden catalog',
-                    'url': '/products/category/home',
-                    'route': 'products.category.home',
-                    'icon': 'fas fa-home',
-                    'item_order': 3,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'Product Management:': {
-            'section_order': 2,
-            'items': {
-                'products_new': {
-                    'permission': 'products_new',
-                    'display_name': 'Add New Product',
-                    'description': 'Manage new product listings',
-                    'url': '/products/new',
-                    'route': 'products.new',
-                    'icon': 'fas fa-plus-circle',
-                    'item_order': 1,
-                    'enabled': True
-                },
-                'products_manage': {
-                    'permission': 'products_manage',
-                    'display_name': 'Manage Products',
-                    'description': 'Full product management access',
-                    'url': '/products/manage',
-                    'route': 'products.manage',
-                    'icon': 'fas fa-edit',
-                    'item_order': 2,
-                    'enabled': True
-                }
-            },
-            'enabled': True
-        },
-        'All Products': {
-            'section_order': 3,
-            'items': {
-                'products_all': {
-                    'permission': 'products_all',
-                    'display_name': 'All Products',
-                    'description': 'View all products',
-                    'url': '/products',
-                    'route': 'products.index',
-                    'icon': 'fas fa-list',
-                    'item_order': 1,
-                    'enabled': True,
-                    'badge': {
-                        'text': 'New',
-                        'type': 'primary',
-                        'label': 'New item'
-                    }
-                }
-            },
-            'enabled': True
-        },
-        'enabled': True
-    }
-}
+# ========== CONSTRUCCIÓN PASO A PASO DEL UNIFIED_MENU_CONFIG ==========
+
+UNIFIED_MENU_CONFIG = {}
+
+# ===== MÓDULO LESXON =====
+UNIFIED_MENU_CONFIG['lesxon'] = {}
+
+# ----- SECCIÓN ETL.EXTRACT -----
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:'] = {}
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['section_order'] = 1
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['items'] = {}
+
+# Item: lesxon_view
+item_menu = {}
+item_menu['permission'] = 'lesxon_view'
+item_menu['display_name'] = 'View'
+item_menu['description'] = 'View data and reports'
+item_menu['url'] = '/lesxon/view'
+item_menu['route'] = 'lesxon.view'
+item_menu['icon'] = 'fas fa-eye'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['items']['lesxon_view'] = item_menu
+
+# Item: lesxon_download
+item_menu = {}
+item_menu['permission'] = 'lesxon_download'
+item_menu['display_name'] = 'Download'
+item_menu['description'] = 'Download files and datasets'
+item_menu['url'] = '/lesxon/download'
+item_menu['route'] = 'lesxon.download'
+item_menu['icon'] = 'fas fa-download'
+item_menu['item_order'] = 2
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['items']['lesxon_download'] = item_menu
+
+# Item: lesxon_zip
+item_menu = {}
+item_menu['permission'] = 'lesxon_zip'
+item_menu['display_name'] = 'Zip'
+item_menu['description'] = 'Create and manage zip archives'
+item_menu['url'] = '/lesxon/zip'
+item_menu['route'] = 'lesxon.zip'
+item_menu['icon'] = 'fas fa-file-archive'
+item_menu['item_order'] = 3
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.EXTRACT:']['items']['lesxon_zip'] = item_menu
+
+# ----- SECCIÓN ETL.TRANSFORM -----
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:'] = {}
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:']['section_order'] = 2
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:']['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:']['items'] = {}
+
+# Item: lesxon_transactions
+item_menu = {}
+item_menu['permission'] = 'lesxon_transactions'
+item_menu['display_name'] = 'Transactions'
+item_menu['description'] = 'Manage transaction data'
+item_menu['url'] = '/lesxon/transactions'
+item_menu['route'] = 'lesxon.transactions'
+item_menu['icon'] = 'fas fa-exchange-alt'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:']['items']['lesxon_transactions'] = item_menu
+
+# Item: lesxon_klines
+item_menu = {}
+item_menu['permission'] = 'lesxon_klines'
+item_menu['display_name'] = 'Klines'
+item_menu['description'] = 'View and analyze klines data'
+item_menu['url'] = '/lesxon/klines'
+item_menu['route'] = 'lesxon.klines'
+item_menu['icon'] = 'fas fa-chart-bar'
+item_menu['item_order'] = 2
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.TRANSFORM:']['items']['lesxon_klines'] = item_menu
+
+# ----- SECCIÓN ETL.LOAD -----
+UNIFIED_MENU_CONFIG['lesxon']['ETL.LOAD:'] = {}
+UNIFIED_MENU_CONFIG['lesxon']['ETL.LOAD:']['section_order'] = 3
+UNIFIED_MENU_CONFIG['lesxon']['ETL.LOAD:']['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.LOAD:']['items'] = {}
+
+# Item: lesxon_supabase
+item_menu = {}
+item_menu['permission'] = 'lesxon_supabase'
+item_menu['display_name'] = 'Supabase'
+item_menu['description'] = 'Access LesXon Supabase integration'
+item_menu['url'] = '/lesxon/supabase'
+item_menu['route'] = 'lesxon.supabase'
+item_menu['icon'] = 'fas fa-database'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['lesxon']['ETL.LOAD:']['items']['lesxon_supabase'] = item_menu
+
+# Habilitar módulo lesxon
+UNIFIED_MENU_CONFIG['lesxon']['enabled'] = True
+
+# ===== MÓDULO AUTOTRACKR =====
+UNIFIED_MENU_CONFIG['autotrackr'] = {}
+
+# ----- SECCIÓN ETL.EXTRACT -----
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.EXTRACT:'] = {}
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.EXTRACT:']['section_order'] = 1
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.EXTRACT:']['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.EXTRACT:']['items'] = {}
+
+# Item: autotrackr_service_orders
+item_menu = {}
+item_menu['permission'] = 'autotrackr_service_orders'
+item_menu['display_name'] = 'Service Orders'
+item_menu['description'] = 'Manage service orders'
+item_menu['url'] = '/autotrackr/service_orders'
+item_menu['route'] = 'autotrackr.service_orders'
+item_menu['icon'] = 'fas fa-clipboard-list'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.EXTRACT:']['items']['autotrackr_service_orders'] = item_menu
+
+# ----- SECCIÓN ETL.TRANSFORM -----
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.TRANSFORM:'] = {}
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.TRANSFORM:']['section_order'] = 2
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.TRANSFORM:']['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.TRANSFORM:']['items'] = {}
+
+# Item: autotrackr_erm_model
+item_menu = {}
+item_menu['permission'] = 'autotrackr_erm_model'
+item_menu['display_name'] = 'ERM Model'
+item_menu['description'] = 'Access ERM model tools'
+item_menu['url'] = '/autotrackr/erm_model'
+item_menu['route'] = 'autotrackr.erm_model'
+item_menu['icon'] = 'fas fa-project-diagram'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.TRANSFORM:']['items']['autotrackr_erm_model'] = item_menu
+
+# ----- SECCIÓN ETL.LOAD -----
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.LOAD:'] = {}
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.LOAD:']['section_order'] = 3
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.LOAD:']['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.LOAD:']['items'] = {}
+
+# Item: autotrackr_supabase
+item_menu = {}
+item_menu['permission'] = 'autotrackr_supabase'
+item_menu['display_name'] = 'Supabase'
+item_menu['description'] = 'Access Autotrackr Supabase integration'
+item_menu['url'] = '/autotrackr/supabase'
+item_menu['route'] = 'autotrackr.supabase'
+item_menu['icon'] = 'fas fa-database'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['autotrackr']['ETL.LOAD:']['items']['autotrackr_supabase'] = item_menu
+
+# Habilitar módulo autotrackr
+UNIFIED_MENU_CONFIG['autotrackr']['enabled'] = True
+
+# ===== MÓDULO PRODUCTS =====
+UNIFIED_MENU_CONFIG['products'] = {}
+
+# ----- SECCIÓN Categories -----
+UNIFIED_MENU_CONFIG['products']['Categories:'] = {}
+UNIFIED_MENU_CONFIG['products']['Categories:']['section_order'] = 1
+UNIFIED_MENU_CONFIG['products']['Categories:']['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Categories:']['items'] = {}
+
+# Item: products_electronics
+item_menu = {}
+item_menu['permission'] = 'products_electronics'
+item_menu['display_name'] = 'Electronics'
+item_menu['description'] = 'Manage electronics catalog'
+item_menu['url'] = '/products/category/electronics'
+item_menu['route'] = 'products.category.electronics'
+item_menu['icon'] = 'fas fa-laptop'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Categories:']['items']['products_electronics'] = item_menu
+
+# Item: products_clothing
+item_menu = {}
+item_menu['permission'] = 'products_clothing'
+item_menu['display_name'] = 'Clothing'
+item_menu['description'] = 'Manage clothing catalog'
+item_menu['url'] = '/products/category/clothing'
+item_menu['route'] = 'products.category.clothing'
+item_menu['icon'] = 'fas fa-tshirt'
+item_menu['item_order'] = 2
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Categories:']['items']['products_clothing'] = item_menu
+
+# Item: products_home_garden
+item_menu = {}
+item_menu['permission'] = 'products_home_garden'
+item_menu['display_name'] = 'Home & Garden'
+item_menu['description'] = 'Manage home & garden catalog'
+item_menu['url'] = '/products/category/home'
+item_menu['route'] = 'products.category.home'
+item_menu['icon'] = 'fas fa-home'
+item_menu['item_order'] = 3
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Categories:']['items']['products_home_garden'] = item_menu
+
+# ----- SECCIÓN Product Management -----
+UNIFIED_MENU_CONFIG['products']['Product Management:'] = {}
+UNIFIED_MENU_CONFIG['products']['Product Management:']['section_order'] = 2
+UNIFIED_MENU_CONFIG['products']['Product Management:']['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Product Management:']['items'] = {}
+
+# Item: products_new
+item_menu = {}
+item_menu['permission'] = 'products_new'
+item_menu['display_name'] = 'Add New Product'
+item_menu['description'] = 'Manage new product listings'
+item_menu['url'] = '/products/new'
+item_menu['route'] = 'products.new'
+item_menu['icon'] = 'fas fa-plus-circle'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Product Management:']['items']['products_new'] = item_menu
+
+# Item: products_manage
+item_menu = {}
+item_menu['permission'] = 'products_manage'
+item_menu['display_name'] = 'Manage Products'
+item_menu['description'] = 'Full product management access'
+item_menu['url'] = '/products/manage'
+item_menu['route'] = 'products.manage'
+item_menu['icon'] = 'fas fa-edit'
+item_menu['item_order'] = 2
+item_menu['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['Product Management:']['items']['products_manage'] = item_menu
+
+# ----- SECCIÓN All Products -----
+UNIFIED_MENU_CONFIG['products']['All Products'] = {}
+UNIFIED_MENU_CONFIG['products']['All Products']['section_order'] = 3
+UNIFIED_MENU_CONFIG['products']['All Products']['enabled'] = True
+UNIFIED_MENU_CONFIG['products']['All Products']['items'] = {}
+
+# Item: products_all
+item_menu = {}
+item_menu['permission'] = 'products_all'
+item_menu['display_name'] = 'All Products'
+item_menu['description'] = 'View all products'
+item_menu['url'] = '/products'
+item_menu['route'] = 'products.index'
+item_menu['icon'] = 'fas fa-list'
+item_menu['item_order'] = 1
+item_menu['enabled'] = True
+item_menu['badge'] = {}
+item_menu['badge']['text'] = 'New'
+item_menu['badge']['type'] = 'primary'
+item_menu['badge']['label'] = 'New item'
+UNIFIED_MENU_CONFIG['products']['All Products']['items']['products_all'] = item_menu
+
+# Habilitar módulo products
+UNIFIED_MENU_CONFIG['products']['enabled'] = True
 
 # FUNCIONES HELPER PARA EXTRAER DATOS DEL DICCIONARIO UNIFICADO
 def get_menu_permissions():
